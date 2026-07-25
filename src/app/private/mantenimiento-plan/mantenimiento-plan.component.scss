@@ -1,0 +1,466 @@
+// VARIABLES (copiar de tu archivo principal)
+$red:      #e02020;
+$dark:     #111827;
+$mid:      #374151;
+$slate:    #6b7280;
+$light:    #f9fafb;
+$border:   #e5e7eb;
+$green:    #059669;
+$orange:   #d97706;
+$blue:     #2563eb;
+$red:        #DC2626;
+$radius:   1.5rem;
+$radius-sm: 0.75rem;
+
+// CONTAINER PRINCIPAL
+.mantenimiento-container {
+  padding: 2rem;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  min-height: 100vh;
+}
+
+// HEADER
+.page-header {
+  background: white;
+  padding: 2.5rem;
+  border-radius: $radius;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+}
+
+.header-content h1 {
+  font-size: 2.5rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, $dark, $mid);
+  -webkit-background-clip: text;
+  background-clip: text;
+  margin: 0 0 0.5rem 0;
+}
+
+.page-subtitle {
+  color: $slate;
+  font-size: 1.1rem;
+  margin: 0;
+  font-weight: 500;
+}
+
+// BOTONES
+.btn-primary {
+  background: linear-gradient(135deg, $red, #DC2626 );
+  color: white;
+  border: none;
+  padding: 1.25rem 2.5rem;
+  border-radius: $radius;
+  font-weight: 800;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 25px rgba(37, 99, 235, 0.3);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(37, 99, 235, 0.4);
+  }
+}
+
+.btn-secondary {
+  padding: 1.25rem 2.5rem;
+  border: 2px solid $border;
+  background: white;
+  color: $slate;
+  border-radius: $radius;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: $light;
+    border-color: $mid;
+  }
+}
+
+.btn-complete {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+  color: $green;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: linear-gradient(135deg, $green, #047857);
+    color: white;
+    transform: scale(1.1);
+  }
+}
+
+// TABLA
+.table-card {
+  background: white;
+  border-radius: $radius;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.12);
+  overflow: hidden;
+  border: 1px solid $border;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table thead th {
+  padding: 1.5rem 1.75rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: $slate;
+  font-weight: 900;
+  background: linear-gradient(90deg, $light 0%, white 100%);
+  border-bottom: 3px solid $border;
+}
+
+.data-table tbody tr {
+  transition: all 0.25s ease;
+}
+
+.data-table tbody tr:hover {
+  background: linear-gradient(90deg, #f0fdf4 0%, white 100%);
+  box-shadow: inset 5px 0 0 $red;
+}
+
+.data-table td {
+  padding: 1.5rem 1.75rem;
+  vertical-align: middle;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+// BADGES
+.badge-operativo {
+  background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+  color: $green;
+  padding: 0.5rem 1.25rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.badge-taller {
+  background: linear-gradient(135deg, #ffedd5, #fed7aa);
+  color: $orange;
+  padding: 0.5rem 1.25rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.badge-inactivo {
+  background: linear-gradient(135deg, #fee2e2, #fecaca);
+  color: $red;
+  padding: 0.5rem 1.25rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.km-critico {
+  color: $red !important;
+  font-weight: 900 !important;
+}
+
+// EMPTY STATE
+.empty-state {
+  padding: 6rem 3rem;
+  text-align: center;
+
+  .empty-icon {
+    font-size: 5rem;
+    margin-bottom: 2rem;
+  }
+
+  .empty-title {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: $dark;
+    margin-bottom: 1rem;
+  }
+
+  .empty-text {
+    font-size: 1.125rem;
+    color: $slate;
+    margin-bottom: 2.5rem;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+
+// =========================
+// MODAL
+// =========================
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(10px);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 2rem;
+
+  overflow-y: auto;
+
+  z-index: 9999;
+}
+
+.modal-box {
+  background: white;
+
+  border-radius: $radius;
+
+  width: 100%;
+  max-width: 650px;
+
+  max-height: 95vh;
+
+  display: flex;
+  flex-direction: column;
+
+  box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+
+  animation: modalSlide 0.4s ease;
+}
+
+.modal-header {
+  padding: 2rem 2rem 1.5rem;
+
+  border-bottom: 1px solid $border;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  flex-shrink: 0;
+
+  background: white;
+}
+
+.modal-title {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: $dark;
+
+  margin: 0;
+
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.modal-close {
+  width: 44px;
+  height: 44px;
+
+  border-radius: 12px;
+
+  background: #f8fafc;
+
+  border: none;
+
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: $slate;
+
+  transition: all 0.2s ease;
+
+  flex-shrink: 0;
+
+  &:hover {
+    background: $red;
+    color: white;
+    transform: rotate(90deg);
+  }
+}
+
+.modal-body {
+  padding: 2rem;
+
+  overflow-y: auto;
+
+  flex: 1;
+}
+
+// =========================
+// FORMULARIOS
+// =========================
+
+.form-group {
+  margin-bottom: 2rem;
+}
+
+.form-group label {
+  display: block;
+
+  font-weight: 700;
+  color: $mid;
+
+  margin-bottom: 0.75rem;
+
+  font-size: 0.95rem;
+}
+
+.form-input {
+  width: 100%;
+  max-width: 100%; /* Agrega esto para asegurar que no crezca más que el padre */
+  padding: 1.25rem;
+  border: 2px solid $border;
+  border-radius: $radius-sm;
+  font-size: 1rem;
+  transition: all 0.25s ease;
+  background: white;
+  
+  // Agrega esto específicamente para los select
+  overflow: hidden;
+  text-overflow: ellipsis; 
+  white-space: nowrap;
+
+  &:focus {
+    outline: none;
+    border-color: $red;
+    box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.12);
+    transform: translateY(-2px);
+  }
+}
+
+.form-help {
+  display: block;
+
+  margin-top: 0.65rem;
+
+  color: $slate;
+
+  font-size: 0.85rem;
+
+  line-height: 1.5;
+}
+
+// =========================
+// FOOTER
+// =========================
+
+.modal-footer {
+  padding: 1.5rem 2rem 2rem;
+
+  border-top: 1px solid $border;
+
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+
+  flex-shrink: 0;
+
+  background: white;
+}
+
+// =========================
+// ANIMACIÓN
+// =========================
+
+@keyframes modalSlide {
+
+  from {
+    opacity: 0;
+    transform: scale(0.92) translateY(-30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+
+}
+
+// =========================
+// RESPONSIVE
+// =========================
+
+@media (max-width: 768px) {
+
+  .mantenimiento-container {
+    padding: 1rem;
+  }
+
+  .page-header {
+    flex-direction: column;
+
+    gap: 2rem;
+
+    padding: 2rem 1.5rem;
+
+    text-align: center;
+  }
+
+  // =========================
+  // MODAL MOBILE
+  // =========================
+
+  .modal-backdrop {
+    padding: 1rem;
+  }
+
+  .modal-box {
+    max-height: 98vh;
+
+    border-radius: 1.25rem;
+  }
+
+  .modal-header {
+    padding: 1.5rem;
+  }
+
+  .modal-title {
+    font-size: 1.3rem;
+  }
+
+  .modal-body {
+    padding: 1.5rem;
+  }
+
+  .modal-footer {
+    padding: 1.5rem;
+
+    flex-direction: column;
+  }
+
+  .modal-footer button {
+    width: 100%;
+  }
+
+}

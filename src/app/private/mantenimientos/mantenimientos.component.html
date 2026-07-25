@@ -1,0 +1,434 @@
+<!-- ========================= -->
+<!-- mantenimientos.component.html -->
+<!-- ========================= -->
+
+<div class="mantenimiento-container">
+
+  <!-- ========================= -->
+  <!-- HEADER -->
+  <!-- ========================= -->
+  <div class="page-header">
+
+    <div class="header-content">
+
+      <h1>Gestión de Mantenimientos</h1>
+
+      <p class="page-subtitle">
+        Registro real de mantenimientos realizados.
+      </p>
+
+    </div>
+
+    <button class="btn-primary" (click)="abrirModal()">
+      <span>＋</span>
+      Nuevo mantenimiento
+    </button>
+
+  </div>
+
+  <!-- ========================= -->
+  <!-- FILTROS -->
+  <!-- ========================= -->
+  <div class="table-card p-6 mb-6">
+
+    <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+
+      <input type="text" [(ngModel)]="placa" placeholder="Buscar por placa..." class="form-input">
+
+      <select [(ngModel)]="tipo" class="form-input">
+
+        <option value="">Todos</option>
+        <option value="Preventivo">Preventivo</option>
+        <option value="Correctivo">Correctivo</option>
+        <option value="Inspección">Inspección</option>
+        <option value="Cambio">Cambio</option>
+
+      </select>
+
+      <input type="date" [(ngModel)]="desde" class="form-input">
+
+      <input type="date" [(ngModel)]="hasta" class="form-input">
+
+      <div class="flex gap-2">
+
+        <button class="btn-primary w-full" (click)="filtrar()">
+          Filtrar
+        </button>
+
+        <button class="btn-secondary w-full" (click)="limpiar()">
+          Limpiar
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- ========================= -->
+  <!-- LOADING -->
+  <!-- ========================= -->
+  <div *ngIf="loading" class="text-center py-10">
+    Cargando mantenimientos...
+  </div>
+
+<!-- ========================= -->
+<!-- TABLA -->
+<!-- ========================= -->
+<div class="table-card">
+
+  <div class="table-wrapper">
+
+    <table class="data-table">
+
+      <thead>
+
+        <tr>
+          <th>Vehículo</th>
+          <th>Fecha</th>
+          <th>Mantenimiento</th>
+          <th>Tipo</th>
+          <th>KM</th>
+          <th>Proveedor</th>
+          <th>Costo</th>
+          <th>Soporte</th>
+        </tr>
+
+      </thead>
+
+      <tbody>
+
+        <tr *ngFor="let m of mantenimientos" class="table-row">
+
+          <!-- VEHÍCULO -->
+          <td>
+
+            <div class="placa">
+              {{ m.vehiculo?.placa || m.vehiculo_id }}
+            </div>
+
+            <div class="vin">
+              {{ m.vehiculo?.marca }}
+              {{ m.vehiculo?.modelo }}
+            </div>
+
+          </td>
+
+          <!-- FECHA -->
+          <td class="conductor">
+            {{ m.fecha }}
+          </td>
+
+          <!-- MANTENIMIENTO -->
+          <td>
+
+            <div class="tipo">
+              {{ m.plan_item?.nombre }}
+            </div>
+
+          </td>
+
+          <!-- TIPO -->
+          <td>
+
+            <span class="badge"
+                  [ngClass]="getTipoClass(m.tipo)">
+
+              {{ getTipoTexto(m.tipo) }}
+
+            </span>
+
+          </td>
+
+          <!-- KM -->
+          <td class="km">
+
+            {{ m.km | number:'1.0-0' }} km
+
+          </td>
+
+          <!-- PROVEEDOR -->
+          <td class="conductor">
+
+            {{ m.proveedor || '—' }}
+
+          </td>
+
+          <!-- COSTO -->
+          <td class="km">
+
+            {{ m.costo | currency:'COP':'symbol':'1.0-0' }}
+
+          </td>
+
+          <!-- SOPORTE -->
+          <td>
+
+            <a
+              *ngIf="m.soporte"
+              [href]="'https://transmenasmart.com/' + m.soporte"
+              target="_blank"
+              class="action-link">
+
+              <i class="fas fa-file-alt"></i>
+              Ver archivo
+
+            </a>
+
+            <span
+              *ngIf="!m.soporte"
+              class="text-muted">
+
+              Sin archivo
+
+            </span>
+
+          </td>
+
+        </tr>
+
+        <!-- EMPTY -->
+
+        <tr *ngIf="mantenimientos.length === 0">
+
+          <td colspan="8" class="empty-row">
+
+            <i class="fas fa-tools"></i><br>
+
+            No hay mantenimientos registrados
+
+          </td>
+
+        </tr>
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+</div>
+
+</div>
+
+<!-- ========================= -->
+<!-- MODAL -->
+<!-- ========================= -->
+<div *ngIf="showModal" class="modal-backdrop">
+
+  <div class="modal-box">
+
+    <!-- HEADER -->
+    <div class="modal-header">
+
+      <div>
+        <h2 class="modal-title">🔧 Nuevo mantenimiento</h2>
+
+        <p class="text-sm text-slate-500">
+          Registra un mantenimiento realizado al vehículo seleccionado.
+        </p>
+      </div>
+
+      <button class="modal-close" (click)="cerrarModal()">✕</button>
+
+    </div>
+
+    <!-- BODY -->
+    <div class="modal-body">
+
+      <!-- VEHICULO -->
+      <div class="form-group">
+
+        <label>Vehículo</label>
+
+        <input [(ngModel)]="busquedaVehiculo" placeholder="Buscar por placa..." class="form-input">
+
+        <small class="form-help">
+          Selecciona el vehículo al que se le realizó el mantenimiento
+        </small>
+
+        <div *ngIf="!vehiculoSeleccionado" class="border rounded-xl mt-2 max-h-40 overflow-y-auto">
+
+          <div *ngFor="let v of vehiculosFiltrados" (click)="seleccionarVehiculo(v)"
+            class="p-3 hover:bg-slate-100 cursor-pointer">
+
+            {{ v.placa }} - {{ v.marca }} {{ v.modelo }}
+
+          </div>
+
+        </div>
+
+        <div *ngIf="vehiculoSeleccionado" class="mt-3 p-3 rounded-xl bg-emerald-100 flex justify-between">
+
+          <span>🚛 {{ vehiculoSeleccionado.placa }}</span>
+
+          <button (click)="limpiarVehiculo()">✕</button>
+
+        </div>
+
+      </div>
+
+      <!-- PLAN -->
+      <div class="form-group">
+
+        <label>Plan de mantenimiento</label>
+
+        <input [(ngModel)]="busquedaPlan" placeholder="Buscar mantenimiento del plan..." class="form-input">
+
+        <small class="form-help">
+          Selecciona el mantenimiento programado (ej: cambio de aceite, frenos, etc.)
+        </small>
+
+        <div *ngIf="!planSeleccionado" class="border rounded-xl mt-2 max-h-40 overflow-y-auto">
+
+          <div *ngFor="let p of planFiltrados" (click)="seleccionarPlan(p)"
+            class="p-3 hover:bg-slate-100 cursor-pointer">
+
+            <div class="font-bold">
+              {{ p.plan_item?.nombre }}
+            </div>
+
+            <div class="text-sm text-slate-500">
+              Tipo: {{ p.plan_item?.descripcion }}
+            </div>
+
+          </div>
+
+        </div>
+
+        <div *ngIf="planSeleccionado" class="mt-3 p-3 rounded-xl bg-blue-100 flex justify-between">
+
+          <span>
+            🔧 {{ planSeleccionado.plan_item?.descripcion }}
+          </span>
+
+          <button (click)="limpiarPlan()">✕</button>
+
+        </div>
+
+      </div>
+
+      <!-- FECHA -->
+      <div class="form-group">
+
+        <label>Fecha del mantenimiento</label>
+
+        <input type="date" [(ngModel)]="nuevo.fecha" class="form-input">
+
+        <small class="form-help">
+          Fecha en la que se realizó el mantenimiento
+        </small>
+
+      </div>
+
+      <!-- KM -->
+      <div class="form-group">
+
+        <label>Kilometraje actual</label>
+
+        <input type="number" [(ngModel)]="nuevo.km" class="form-input">
+
+        <small class="form-help">
+          Se carga automáticamente desde el GPS. Si el tablero del vehículo muestra otro valor puedes corregirlo; el
+          sistema recalibrará el kilometraje.
+        </small>
+
+      </div>
+
+      <!-- PROVEEDOR -->
+      <div class="form-group">
+
+        <label>Taller / Proveedor</label>
+
+        <input [(ngModel)]="nuevo.proveedor" class="form-input">
+
+        <small class="form-help">
+          Lugar donde se realizó el servicio
+        </small>
+
+      </div>
+
+      <!-- LUGAR -->
+      <div class="form-group">
+
+        <label>Lugar</label>
+
+        <input [(ngModel)]="nuevo.lugar" class="form-input">
+
+        <small class="form-help">
+          Ciudad o ubicación del mantenimiento
+        </small>
+
+      </div>
+
+      <!-- RESPONSABLE -->
+      <div class="form-group">
+
+        <label>Responsable</label>
+
+        <input [(ngModel)]="nuevo.responsable" class="form-input">
+
+        <small class="form-help">
+          Persona que autorizó o realizó el mantenimiento
+        </small>
+
+      </div>
+
+      <!-- COSTO -->
+      <div class="form-group">
+
+        <label>Costo del mantenimiento</label>
+
+        <input type="number" [(ngModel)]="nuevo.costo" class="form-input">
+
+        <small class="form-help">
+          Valor total del servicio realizado
+        </small>
+
+      </div>
+
+      <!-- SOPORTE -->
+      <div class="form-group">
+
+        <label>Factura / Soporte</label>
+
+        <input type="file" (change)="onFileSelected($event)" class="form-input">
+
+        <small class="form-help">
+          Adjunta factura, evidencia o soporte del mantenimiento (PDF o imagen)
+        </small>
+
+      </div>
+
+      <!-- OBS -->
+      <div class="form-group">
+
+        <label>Observaciones</label>
+
+        <textarea [(ngModel)]="nuevo.observaciones" rows="4" class="form-input"
+          placeholder="Ej: se cambió aceite y filtro, se recomienda revisión en 5000 km"></textarea>
+
+        <small class="form-help">
+          Detalles adicionales del mantenimiento realizado
+        </small>
+
+      </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <div class="modal-footer">
+
+      <button class="btn-secondary" (click)="cerrarModal()">
+        Cancelar
+      </button>
+
+      <button class="btn-primary" (click)="guardar()">
+        Guardar mantenimiento
+      </button>
+
+    </div>
+
+  </div>
+
+</div>

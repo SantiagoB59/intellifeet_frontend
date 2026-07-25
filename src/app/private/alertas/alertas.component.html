@@ -1,0 +1,553 @@
+<div class="p-4 lg:p-6 bg-gray-100 min-h-screen">
+
+<!-- ================================================= -->
+<!-- HEADER -->
+<!-- ================================================= -->
+
+<div class="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-6 mb-8">
+
+  <div>
+
+    <div class="flex items-center gap-3">
+
+      <h1 class="text-3xl font-black text-slate-800 tracking-tight">
+        Centro de Alertas
+      </h1>
+
+      <span
+        class="inline-flex items-center gap-2 bg-green-50 text-green-700 px-3 py-1 rounded-full text-xs font-bold">
+
+        <span class="w-2 h-2 rounded-full bg-green-500"></span>
+
+        MONITOREO ACTIVO
+
+      </span>
+
+    </div>
+
+    <p class="mt-2 text-slate-500 italic">
+      Supervisión en tiempo real de vehículos, maquinaria y mantenimientos.
+    </p>
+
+  </div>
+
+  <div class="flex flex-wrap gap-3">
+
+    <button
+      (click)="ejecutarMotor()"
+      [disabled]="ejecutandoMotor"
+      class="bg-red-600 hover:bg-red-700 disabled:opacity-50 text-white font-bold px-6 py-3 rounded-xl shadow-lg transition">
+
+      <i class="fas fa-cogs mr-2"></i>
+
+      {{ ejecutandoMotor ? 'Ejecutando...' : 'Ejecutar motor' }}
+
+    </button>
+
+    <button
+      (click)="cargarTodo()"
+      class="bg-slate-800 hover:bg-slate-900 text-white font-bold px-6 py-3 rounded-xl shadow-lg transition">
+
+      <i class="fas fa-sync-alt mr-2"></i>
+
+      Actualizar
+
+    </button>
+
+  </div>
+
+</div>
+
+<!-- ================================================= -->
+<!-- TARJETAS -->
+<!-- ================================================= -->
+
+<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
+
+  <div class="bg-white rounded-3xl shadow-xl border border-slate-100 p-6">
+
+    <div class="flex justify-between items-center">
+
+      <div>
+
+        <p class="text-slate-500 text-sm">
+          Total Alertas
+        </p>
+
+        <h2 class="text-4xl font-black text-slate-800 mt-2">
+          {{ estadisticas.total }}
+        </h2>
+
+      </div>
+
+      <div
+        class="w-14 h-14 rounded-2xl bg-slate-100 flex items-center justify-center">
+
+        <i class="fas fa-bell text-2xl text-slate-600"></i>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="bg-white rounded-3xl shadow-xl border border-slate-100 p-6">
+
+    <div class="flex justify-between items-center">
+
+      <div>
+
+        <p class="text-slate-500 text-sm">
+          Activas
+        </p>
+
+        <h2 class="text-4xl font-black text-orange-500  mt-2">
+          {{ estadisticas.activas }}
+        </h2>
+
+      </div>
+
+      <div
+        class="w-14 h-14 rounded-2xl bg-red-50 flex items-center justify-center">
+
+        <i class="fas fa-exclamation-circle text-2xl text-orange-500"></i>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="bg-white rounded-3xl shadow-xl border border-slate-100 p-6">
+
+    <div class="flex justify-between items-center">
+
+      <div>
+
+        <p class="text-slate-500 text-sm">
+          Resueltas
+        </p>
+
+        <h2 class="text-4xl font-black text-green-600 mt-2">
+          {{ estadisticas.resueltas }}
+        </h2>
+
+      </div>
+
+      <div
+        class="w-14 h-14 rounded-2xl bg-green-50 flex items-center justify-center">
+
+        <i class="fas fa-check-circle text-2xl text-green-600"></i>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="bg-white rounded-3xl shadow-xl border border-slate-100 p-6">
+
+    <div class="flex justify-between items-center">
+
+      <div>
+
+        <p class="text-slate-500 text-sm">
+          Críticas
+        </p>
+
+        <h2 class="text-4xl font-black text-red-600 mt-2">
+          {{ estadisticas.criticas }}
+        </h2>
+
+      </div>
+
+      <div
+        class="w-14 h-14 rounded-2xl bg-orange-50 flex items-center justify-center">
+
+        <i class="fas fa-triangle-exclamation text-2xl text-red-600"></i>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- ================================================= -->
+<!-- FILTROS -->
+<!-- ================================================= -->
+
+<div class="bg-white rounded-3xl shadow-xl border border-slate-100 p-6 mb-8">
+
+  <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+
+    <select
+      [(ngModel)]="filtros.prioridad"
+      class="w-full rounded-xl border border-slate-200 px-4 py-3 focus:ring-2 focus:ring-red-500 focus:outline-none">
+
+      <option value="">Todas las prioridades</option>
+      <option value="CRITICA">Crítica</option>
+      <option value="ALTA">Alta</option>
+      <option value="MEDIA">Media</option>
+      <option value="BAJA">Baja</option>
+
+    </select>
+
+    <select
+      [(ngModel)]="filtros.tipo"
+      class="w-full rounded-xl border border-slate-200 px-4 py-3 focus:ring-2 focus:ring-red-500 focus:outline-none">
+
+      <option value="">Todos los tipos</option>
+      <option value="DOCUMENTO">Documentos</option>
+      <option value="GPS">GPS</option>
+      <option value="MANTENIMIENTO">Mantenimiento</option>
+
+    </select>
+
+    <button
+      (click)="filtrar()"
+      class="bg-red-600 hover:bg-red-700 text-white rounded-xl font-bold py-3 transition">
+
+      <i class="fas fa-filter mr-2"></i>
+
+      Filtrar
+
+    </button>
+
+    <button
+      (click)="limpiarFiltros()"
+      class="bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold py-3 transition">
+
+      <i class="fas fa-eraser mr-2"></i>
+
+      Limpiar
+
+    </button>
+
+  </div>
+
+</div>
+
+  <div class="flex border-b border-gray-200 mb-6 gap-2">
+    <button (click)="cambiarPestana('VERIFICAR')"
+      [ngClass]="pestanaActiva === 'VERIFICAR' ? 'border-blue-600 text-blue-600 font-bold' : 'border-transparent text-gray-500 hover:text-gray-700'"
+      class="py-3 px-6 border-b-2 text-sm lg:text-base transition-all focus:outline-none flex items-center gap-2">
+      Por Verificar
+      <span class="bg-red-100 text-red-700 text-xs px-2 py-0.5 rounded-full font-black">
+        {{ estadisticas.activas }}
+      </span>
+    </button>
+
+    <button (click)="cambiarPestana('HISTORICO')"
+      [ngClass]="pestanaActiva === 'HISTORICO' ? 'border-blue-600 text-blue-600 font-bold' : 'border-transparent text-gray-500 hover:text-gray-700'"
+      class="py-3 px-6 border-b-2 text-sm lg:text-base transition-all focus:outline-none flex items-center gap-2">
+      Histórico / Resueltas
+    </button>
+  </div>
+
+  <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+
+    <div class="overflow-x-auto">
+      <div class="table-card">
+
+        <div class="table-wrapper">
+
+          <table>
+
+            <thead>
+
+              <tr>
+                <th>Tipo</th>
+                <th>Vehículo</th>
+                <th>Mensaje</th>
+                <th>Prioridad</th>
+                <th>Estado</th>
+                <th>Fecha</th>
+
+                <th *ngIf="pestanaActiva === 'VERIFICAR'" class="text-center">
+
+                  Acciones
+
+                </th>
+
+              </tr>
+
+            </thead>
+
+            <tbody>
+
+              <!-- LOADING -->
+              <tr *ngIf="loading">
+
+                <td colspan="7" class="loading-row">
+
+                  <div class="spinner"></div>
+
+                  Cargando alertas...
+
+                </td>
+
+              </tr>
+
+              <!-- EMPTY -->
+              <tr *ngIf="!loading && alertasPaginadas.length === 0">
+
+                <td colspan="7" class="empty-row">
+
+                  <i class="fas fa-bell-slash"></i><br>
+
+                  No hay alertas registradas
+
+                </td>
+
+              </tr>
+
+              <!-- DATA -->
+              <tr *ngFor="let alerta of alertasPaginadas; trackBy: trackByAlerta" class="table-row">
+
+                <!-- TIPO -->
+                <td>
+
+                  <div class="placa">
+
+                    {{ getIconoAlerta(alerta.tipo) }}
+                    {{ alerta.tipo }}
+
+                  </div>
+
+                  <div class="text-muted">
+
+                    {{ alerta.categoria }}
+
+                  </div>
+
+                </td>
+
+                <!-- VEHÍCULO -->
+                <td>
+
+                  <ng-container *ngIf="alerta.vehiculo">
+
+                    <div class="placa">
+
+                      {{ alerta.vehiculo.placa }}
+
+                    </div>
+
+                    <div class="text-muted">
+
+                      {{ alerta.vehiculo.marca }}
+
+                    </div>
+
+                  </ng-container>
+
+                  <ng-container *ngIf="alerta.maquinaria">
+
+                    <div class="placa">
+
+                      {{ alerta.maquinaria.codigo }}
+
+                    </div>
+
+                    <div class="text-muted">
+
+                      {{ alerta.maquinaria.marca }}
+
+                    </div>
+
+                  </ng-container>
+
+                  <span *ngIf="!alerta.vehiculo && !alerta.maquinaria" class="text-muted">
+
+                    N/A
+
+                  </span>
+
+                </td>
+
+                <!-- MENSAJE -->
+                <td>
+
+                  <div class="tipo">
+
+                    {{ alerta.mensaje }}
+
+                  </div>
+
+                  <div *ngIf="alerta.metadata?.fecha_vencimiento" class="text-muted">
+
+                    Vence: {{ alerta.metadata.fecha_vencimiento }}
+
+                  </div>
+
+                </td>
+
+                <!-- PRIORIDAD -->
+                <td>
+
+                  <span class="badge" [ngClass]="getClasePrioridad(alerta.prioridad)">
+
+                    {{ alerta.prioridad }}
+
+                  </span>
+
+                </td>
+
+                <!-- ESTADO -->
+                <td>
+
+                  <span class="badge" [ngClass]="getClaseEstado(alerta.estado)">
+
+                    {{ alerta.estado }}
+
+                  </span>
+
+                </td>
+
+                <!-- FECHA -->
+                <td class="text-muted">
+
+                  {{ alerta.created_at | date:'dd/MM/yyyy HH:mm' }}
+
+                </td>
+
+                <!-- ACCIONES -->
+                <td *ngIf="pestanaActiva === 'VERIFICAR'" class="actions">
+
+                  <button *ngIf="alerta.estado === 'ACTIVA'" class="action-btn action-btn--resolve"
+                    (click)="abrirResolver(alerta)">
+
+                    Resolver
+
+                  </button>
+
+                </td>
+
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+    </div>
+
+    <div *ngIf="totalPaginas > 1"
+      class="flex flex-col lg:flex-row items-center justify-between gap-4 px-6 py-5 border-t bg-gray-50">
+
+      <div class="text-sm text-gray-500">
+        Mostrando
+        <span class="font-bold text-gray-700">
+          {{ (paginaActual - 1) * itemsPorPagina + 1 }}
+        </span>
+        -
+        <span class="font-bold text-gray-700">
+          {{ getFinPagina() }}
+        </span>
+        de
+        <span class="font-bold text-gray-700">
+          {{ alertas.length }}
+        </span>
+        alertas
+      </div>
+
+      <div class="flex items-center gap-2 flex-wrap justify-center">
+
+        <button (click)="cambiarPagina(paginaActual - 1)" [disabled]="paginaActual === 1"
+          class="px-4 py-2 rounded-lg border bg-white hover:bg-gray-100 disabled:opacity-40">
+          ←
+        </button>
+
+        <button *ngFor="let pagina of paginas" (click)="cambiarPagina(pagina)"
+          class="w-10 h-10 rounded-lg font-semibold transition" [ngClass]="
+            pagina === paginaActual
+              ? 'bg-blue-600 text-white'
+              : 'bg-white border hover:bg-gray-100'
+          ">
+          {{ pagina }}
+        </button>
+
+        <button (click)="cambiarPagina(paginaActual + 1)" [disabled]="paginaActual === totalPaginas"
+          class="px-4 py-2 rounded-lg border bg-white hover:bg-gray-100 disabled:opacity-40">
+          →
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div *ngIf="!loading && alertas.length === 0" class="bg-white rounded-2xl shadow-lg p-10 text-center mt-6">
+    <div class="text-6xl mb-4">
+      🔕
+    </div>
+    <h2 class="text-2xl font-black text-gray-700">
+      No hay alertas
+    </h2>
+    <p class="text-gray-500 mt-2">
+      El sistema no encontró alertas en esta sección.
+    </p>
+  </div>
+
+</div>
+
+<div *ngIf="modalDocumento" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+
+  <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg p-6">
+
+    <div class="flex items-center justify-between mb-6">
+      <div>
+        <h2 class="text-2xl font-black text-gray-800">
+          Actualizar documento
+        </h2>
+        <p class="text-gray-500 mt-1">
+          {{ alertaSeleccionada.categoria }}
+        </p>
+      </div>
+      <button (click)="modalDocumento = false" class="text-gray-400 hover:text-black text-2xl">
+        ✕
+      </button>
+    </div>
+
+    <div class="bg-gray-100 rounded-xl p-4 mb-5">
+      <p class="font-bold text-gray-800">
+        Vehículo: {{ alertaSeleccionada.vehiculo?.placa || alertaSeleccionada.maquinaria?.codigo }}
+      </p>
+      <p class="text-gray-500 text-sm mt-1">
+        {{ alertaSeleccionada.vehiculo?.marca || alertaSeleccionada.maquinaria?.marca }}
+      </p>
+    </div>
+
+    <div class="mb-5">
+      <label class="block mb-2 font-semibold text-gray-700">
+        Nueva fecha vencimiento
+      </label>
+      <input type="date" [(ngModel)]="nuevaFecha" class="w-full border rounded-xl px-4 py-3" />
+    </div>
+
+    <div class="mb-6">
+      <label class="block mb-2 font-semibold text-gray-700">
+        Subir documento
+      </label>
+      <input type="file" (change)="onFileSelected($event)" class="w-full border rounded-xl px-4 py-3" />
+    </div>
+
+    <div class="flex justify-end gap-3">
+      <button (click)="modalDocumento = false" class="px-5 py-3 rounded-xl bg-gray-200 hover:bg-gray-300 font-semibold">
+        Cancelar
+      </button>
+      <button (click)="resolverDocumento()"
+        class="px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold">
+        Guardar documento
+      </button>
+    </div>
+
+  </div>
+
+</div>

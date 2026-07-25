@@ -1,0 +1,23 @@
+[
+  {
+    "title": "Cóctel Clásico",
+    "price": 45000,
+    "description": "Una mezcla refrescante de sabores tradicionales para cualquier ocasión.",
+    "image": "https://images.unsplash.com/photo-1564758866811-3a7a1a7a7a7a?auto=format&fit=crop&w=600&q=80",
+    "category": "Cócteles"
+  },
+  {
+    "title": "Cerveza Artesanal",
+    "price": 18000,
+    "description": "Cerveza elaborada con ingredientes naturales y un sabor único.",
+    "image": "https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=600&q=80",
+    "category": "Cervezas"
+  },
+  {
+    "title": "Whisky Premium",
+    "price": 150000,
+    "description": "Whisky de alta calidad con notas ahumadas y un acabado suave.",
+    "image": "https://images.unsplash.com/photo-1549924231-f129b911e442?auto=format&fit=crop&w=600&q=80",
+    "category": "Licores"
+  }
+]

@@ -1,0 +1,162 @@
+<div class="dashboard-container">
+
+  <div class="main-content">
+
+    <!-- MAPA -->
+    <div class="map-card premium-card">
+
+      <div class="card-header refined">
+
+        <div class="header-info">
+          <h2>
+            <i class="fas fa-map-marked-alt"></i>
+            Mapa en Tiempo Real
+          </h2>
+          <small>Actualización en vivo</small>
+        </div>
+
+        <div class="badge-online refined-badge">
+          <i class="pi pi-truck"></i>
+          {{ vehiculos.length }} activos
+        </div>
+
+      </div>
+
+      <div class="map-body">
+        <div id="map" class="mapa-full"></div>
+      </div>
+
+    </div>
+
+    <!-- VEHICULOS -->
+    <div class="table-card premium-card">
+
+      <div class="card-header refined">
+
+        <div>
+          <h3>
+            <i class="fas fa-truck-moving"></i>
+            Vehículos
+          </h3>
+          <small>Monitoreo inteligente</small>
+        </div>
+
+        <div class="vehicles-counter refined-counter">
+          {{ vehiculos.length }}
+        </div>
+
+      </div>
+
+      <!-- SEARCH -->
+      <div class="vehicles-search">
+        <div class="search-box refined-search">
+
+          <i class="pi pi-search"></i>
+
+          <input
+            type="text"
+            placeholder="Buscar vehículo, ciudad o dirección..."
+            [(ngModel)]="searchTerm"
+          >
+
+          <button *ngIf="searchTerm"
+            class="clear-btn"
+            (click)="searchTerm = ''">✕</button>
+
+        </div>
+      </div>
+
+      <!-- LIST -->
+      <div class="vehicles-list">
+
+        <div class="vehicle-row refined-row"
+          *ngFor="let v of vehiculosFiltrados; trackBy: trackByGps"
+          (click)="irAVehiculo(v.gps_id)"
+          [class.selected]="v.gps_id === selectedGps">
+
+          <div class="vehicle-main">
+
+            <div class="vehicle-icon"
+              [ngClass]="getEstado(v.ignition) === 'Encendido' ? 'active' : 'inactive'">
+
+              <i class="fas fa-truck"></i>
+              <span class="pulse-dot"
+                *ngIf="getEstado(v.ignition) === 'Encendido'"></span>
+
+            </div>
+
+            <div class="vehicle-info">
+
+              <div class="vehicle-top">
+                <strong>{{ v.gps_id }}</strong>
+
+                <span class="status-pill"
+                  [ngClass]="getEstado(v.ignition) === 'Encendido' ? 'on' : 'off'">
+                  {{ getEstado(v.ignition) }}
+                </span>
+              </div>
+
+              <div class="vehicle-location">
+                {{ v.ciudad }} - {{ v.direccion_texto }}
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="vehicle-stats">
+
+            <div class="speed-box"
+              [ngClass]="v.speed > 80 ? 'danger' : 'normal'">
+
+              <span>{{ v.speed }}</span>
+              <small>km/h</small>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- SIDEBAR -->
+  <aside class="alerts-sidebar refined-sidebar">
+
+    <div class="sidebar-header refined">
+      <h3>Monitor de Alertas</h3>
+    </div>
+
+    <div class="alerts-list">
+
+      <div class="alert-item refined-alert"
+        *ngFor="let a of alertas"
+        [ngClass]="getClaseAlerta(a.prioridad)">
+
+        <div class="alert-tag">
+          {{ a.prioridad }}
+        </div>
+
+        <div class="alert-content">
+          <strong>{{ a.vehiculo?.placa }}</strong>
+          {{ a.mensaje }}
+        </div>
+
+        <div class="alert-time">
+          {{ a.created_at | date:'HH:mm' }}
+        </div>
+
+      </div>
+
+    </div>
+
+  </aside>
+
+</div>
+
+<app-verificacion-km-modal *ngIf="mostrarModalKm" [total]="totalKmPendientes" (cerrar)="mostrarModalKm = false">
+</app-verificacion-km-modal>

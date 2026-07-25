@@ -1,0 +1,379 @@
+<main class="content-view">
+
+    <div>
+
+        <header class="mb-6">
+
+            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+
+                <div>
+
+                    <h2 class="text-3xl font-black text-slate-800 tracking-tight">
+                        Inspecciones mensuales
+                    </h2>
+
+                    <p class="text-slate-500 italic font-medium">
+                        Gestión documental de inspecciones del equipo.
+                    </p>
+
+                </div>
+
+                <div class="flex gap-3">
+
+                    <button (click)="volver()"
+                        class="bg-slate-200 hover:bg-slate-300 transition rounded-xl px-5 py-3 font-bold text-slate-700">
+
+                        <i class="fas fa-arrow-left mr-2"></i>
+                        Volver
+
+                    </button>
+
+                    <button (click)="abrirModal()"
+                        class="bg-red-600 hover:bg-red-700 transition rounded-xl px-5 py-3 font-bold text-white">
+
+                        <i class="fas fa-upload mr-2"></i>
+                        Nueva inspección
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </header>
+
+        <!-- ========================= -->
+        <!-- INFORMACIÓN DEL EQUIPO -->
+        <!-- ========================= -->
+
+        <div *ngIf="equipo" class="bg-white rounded-[2rem] shadow-xl border border-slate-100 p-6 mb-6">
+
+            <div class="flex justify-between items-center">
+
+                <div>
+
+                    <p class="text-xs uppercase tracking-widest text-slate-400 font-black">
+
+                        {{ tipo == 'vehiculo' ? 'Vehículo' : 'Maquinaria' }}
+
+                    </p>
+
+                    <h3 class="text-2xl font-black text-slate-800 mt-2">
+
+                        {{ equipo.placa || equipo.codigo }}
+
+                    </h3>
+
+                    <p class="text-slate-500">
+
+                        {{ equipo.marca || equipo.tipo }}
+
+                    </p>
+
+                </div>
+
+                <div class="text-right">
+
+                    <p class="text-xs uppercase tracking-widest text-slate-400 font-black">
+
+                        Inspecciones
+
+                    </p>
+
+                    <p class="text-4xl font-black text-red-600">
+
+                        {{ inspecciones.length }}
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+        <!-- ========================= -->
+        <!-- TABLA -->
+        <!-- ========================= -->
+
+        <div class="bg-white rounded-[2rem] shadow-2xl border border-slate-100 overflow-hidden">
+
+            <!-- HEADER CARD -->
+            <div class="p-6 border-b bg-slate-50/50">
+
+                <h3 class="font-bold text-slate-400 text-xs uppercase tracking-widest">
+
+                    Historial de inspecciones
+
+                </h3>
+
+            </div>
+
+            <!-- TABLA -->
+            <div class="overflow-x-auto">
+
+                <table class="w-full text-left" *ngIf="!loading && inspecciones.length > 0">
+
+                    <thead>
+
+                        <tr class="text-[11px] font-black uppercase text-slate-400 border-b">
+
+                            <th class="p-6">
+
+                                Fecha
+
+                            </th>
+
+                            <th class="p-6">
+
+                                Archivo
+
+                            </th>
+
+                            <th class="p-6">
+
+                                Observaciones
+
+                            </th>
+
+                            <th class="p-6 text-center">
+
+                                Acciones
+
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody class="divide-y divide-slate-100">
+
+                        <tr *ngFor="let item of inspecciones" class="hover:bg-slate-50 transition">
+
+                            <!-- FECHA -->
+
+                            <td class="p-6 font-semibold text-slate-700">
+
+                                {{ item.fecha | date:'dd/MM/yyyy' }}
+
+                            </td>
+
+                            <!-- ARCHIVO -->
+
+                            <td class="p-6">
+
+                                <div class="flex items-center gap-3">
+
+                                    <i class="fas fa-file-pdf text-red-600 text-xl"></i>
+
+                                    <div>
+
+                                        <div class="font-bold text-slate-700">
+
+                                            {{ item.archivo }}
+
+                                        </div>
+
+                                        <div class="text-xs text-slate-400">
+
+                                            Documento cargado
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+                            <!-- OBSERVACIONES -->
+
+                            <td class="p-6 text-slate-600">
+
+                                {{ item.observaciones || '-' }}
+
+                            </td>
+
+                            <!-- ACCIONES -->
+
+                            <td class="p-6">
+
+                                <div class="flex justify-center gap-2">
+
+                                    <button (click)="abrir(item)"
+                                        class="bg-green-600 hover:bg-green-700 transition text-white px-3 py-2 rounded-lg">
+
+                                        <i class="fas fa-eye"></i>
+
+                                    </button>
+
+
+                                    
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+                <!-- LOADING -->
+
+                <div *ngIf="loading" class="p-10 flex flex-col justify-center items-center gap-4">
+
+                    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-red-600">
+
+                    </div>
+
+                    <span class="font-semibold text-slate-500">
+
+                        Cargando inspecciones...
+
+                    </span>
+
+                </div>
+
+                <!-- EMPTY -->
+
+                <div *ngIf="!loading && inspecciones.length === 0" class="p-14 text-center">
+
+                    <i class="fas fa-folder-open text-5xl text-slate-300 mb-4"></i>
+
+                    <h3 class="text-xl font-black text-slate-700 mb-2">
+
+                        No existen inspecciones
+
+                    </h3>
+
+                    <p class="text-slate-500 mb-6">
+
+                        Todavía no se ha cargado ninguna inspección para este equipo.
+
+                    </p>
+
+                    <button (click)="abrirModal()"
+                        class="bg-red-600 hover:bg-red-700 transition text-white px-6 py-3 rounded-xl font-bold">
+
+                        <i class="fas fa-upload mr-2"></i>
+
+                        Nueva inspección
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ========================= -->
+        <!-- MODAL -->
+        <!-- ========================= -->
+
+        <div *ngIf="showModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+            (click)="cerrarModal()">
+
+            <div class="bg-white rounded-[2rem] shadow-2xl w-full max-w-xl overflow-hidden"
+                (click)="$event.stopPropagation()">
+
+                <!-- HEADER -->
+
+                <div class="px-8 py-6 border-b flex justify-between items-center">
+
+                    <h2 class="text-xl font-black text-slate-800">
+
+                        <i class="fas fa-file-upload text-red-600 mr-2"></i>
+
+                        Nueva inspección
+
+                    </h2>
+
+                    <button (click)="cerrarModal()" class="text-slate-400 hover:text-red-600 transition">
+
+                        <i class="fas fa-times text-xl"></i>
+
+                    </button>
+
+                </div>
+
+                <!-- BODY -->
+
+                <div class="p-8 space-y-5">
+
+                    <div>
+
+                        <label class="block text-sm font-bold text-slate-700 mb-2">
+
+                            Fecha de inspección
+
+                        </label>
+
+                        <input type="date" [(ngModel)]="fecha"
+                            class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-red-500 focus:outline-none">
+
+                    </div>
+
+                    <div>
+
+                        <label class="block text-sm font-bold text-slate-700 mb-2">
+
+                            Archivo
+
+                        </label>
+
+                        <input type="file" accept=".pdf,.jpg,.jpeg,.png" (change)="seleccionarArchivo($event)"
+                            class="w-full px-4 py-3 rounded-xl border border-slate-200">
+
+                        <small class="text-slate-400">
+
+                            PDF, JPG, JPEG o PNG
+
+                        </small>
+
+                    </div>
+
+                    <div>
+
+                        <label class="block text-sm font-bold text-slate-700 mb-2">
+
+                            Observaciones
+
+                        </label>
+
+                        <textarea rows="4" [(ngModel)]="observaciones"
+                            class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-red-500 focus:outline-none"
+                            placeholder="Escriba una observación...">
+
+                </textarea>
+
+                    </div>
+
+                </div>
+
+                <!-- FOOTER -->
+
+                <div class="px-8 py-5 border-t flex justify-end gap-3">
+
+                    <button (click)="cerrarModal()"
+                        class="bg-slate-200 hover:bg-slate-300 transition px-5 py-3 rounded-xl font-bold">
+
+                        Cancelar
+
+                    </button>
+
+                    <button (click)="guardar()"
+                        class="bg-red-600 hover:bg-red-700 transition text-white px-6 py-3 rounded-xl font-bold">
+
+                        <i class="fas fa-save mr-2"></i>
+
+                        Guardar inspección
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>

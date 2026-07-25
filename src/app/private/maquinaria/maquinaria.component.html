@@ -1,0 +1,299 @@
+<div class="content">
+
+  <section class="vehiculos-page">
+
+    <!-- HEADER -->
+    <div class="page-header">
+      <div>
+        <h2 class="page-title">Maquinaria</h2>
+        <p class="page-subtitle">Gestión de maquinaria pesada</p>
+      </div>
+
+      <button class="btn-primary" (click)="abrirCrear()">
+        <i class="fas fa-plus"></i> Nueva Maquinaria
+      </button>
+    </div>
+
+    <!-- STATS (MISMO DISEÑO VEHICULO) -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-value">{{ stats.total }}</div>
+        <div class="stat-label">Total Unidades</div>
+      </div>
+
+      <div class="stat-card stat-card--green">
+        <div class="stat-value">{{ stats.operativos }}</div>
+        <div class="stat-label">Operativas</div>
+      </div>
+
+      <div class="stat-card stat-card--orange">
+        <div class="stat-value">{{ stats.en_taller }}</div>
+        <div class="stat-label">En Taller</div>
+      </div>
+
+      <div class="stat-card stat-card--red">
+        <div class="stat-value">{{ stats.inactivos }}</div>
+        <div class="stat-label">Inactivas</div>
+      </div>
+    </div>
+
+    <!-- FILTROS (MISMO VEHICULO) -->
+    <div class="filters-bar">
+
+      <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="Buscar código, marca…" [(ngModel)]="searchTerm" (input)="cargarDatos()">
+      </div>
+
+      <select [(ngModel)]="filtroEstado" (change)="cargarDatos()" class="filter-select">
+
+        <option value="">Todos los estados</option>
+        <option value="OPERATIVO">Operativo</option>
+        <option value="TALLER">En Taller</option>
+        <option value="INACTIVO">Inactivo</option>
+      </select>
+
+    </div>
+
+    <!-- ERROR -->
+    <div *ngIf="error" class="alert-error">
+      <i class="fas fa-exclamation-triangle"></i> {{ error }}
+      <button (click)="error=''">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <!-- TABLA -->
+    <div class="table-card">
+      <div class="table-wrapper">
+
+        <table>
+
+          <thead>
+            <tr>
+              <th>Código</th>
+              <th>Tipo / Marca</th>
+              <th>Modelo</th>
+              <th>Operador</th>
+              <th>Horómetro</th>
+              <th>Estado</th>
+              <th class="text-center">Acciones</th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            <tr *ngIf="loading">
+              <td colspan="7" class="loading-row">
+                <div class="spinner"></div>
+                Cargando maquinaria...
+              </td>
+            </tr>
+
+            <tr *ngIf="!loading && maquinaria.length === 0">
+              <td colspan="7" class="empty-row">
+                <i class="fas fa-tools"></i><br>
+                No hay maquinaria registrada
+              </td>
+            </tr>
+
+            <tr *ngFor="let m of maquinaria" class="table-row">
+
+              <!-- Código -->
+              <td>
+                <div class="placa">{{ m.codigo }}</div>
+              </td>
+
+              <!-- Tipo / Marca -->
+              <td>
+                <div class="tipo">{{ m.tipo }}</div>
+                <div class="marca">{{ m.marca }}</div>
+              </td>
+
+              <!-- Modelo -->
+              <td>{{ m.modelo }}</td>
+
+              <!-- Operador -->
+              <td class="conductor">
+                {{ m.operador || 'Sin operador asignado' }}
+              </td>
+
+              <!-- Horómetro -->
+              <td class="km">
+                {{ m.horometro_actual | number:'1.0-0' }} h
+              </td>
+
+              <!-- Estado -->
+              <td>
+                <span class="badge" [ngClass]="estadoClass(m.estado)">
+                  {{ m.estado }}
+                </span>
+              </td>
+
+              <!-- Acciones -->
+              <td class="actions">
+
+                <button class="action-btn action-btn--view" (click)="abrirVer(m)" title="Ver">
+                  <i class="fas fa-eye"></i>
+                </button>
+
+                <button class="action-btn action-btn--edit" (click)="abrirEditar(m)" title="Editar">
+                  <i class="fas fa-edit"></i>
+                </button>
+
+                <button class="action-btn action-btn--delete" (click)="confirmarEliminar(m.id)" title="Eliminar">
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+
+              </td>
+
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+    </div>
+  </section>
+
+</div>
+
+
+
+
+
+<!-- ═══════════════════════════════════════
+     MODAL MAQUINARIA
+═══════════════════════════════════════ -->
+<div *ngIf="showModal" class="modal-backdrop" (click)="cerrarModal()">
+
+  <div class="modal-panel" (click)="$event.stopPropagation()">
+
+    <!-- HEADER -->
+    <div class="modal-header">
+      <div>
+        <h3>{{ titulo }}</h3>
+        <p>{{ maquinariaSeleccionada?.codigo ?? 'Nueva maquinaria' }} · Transmena Smart</p>
+      </div>
+
+      <button class="modal-close" (click)="cerrarModal()">
+        <i class="fas fa-times-circle"></i>
+      </button>
+    </div>
+
+    <!-- FORM -->
+    <form [formGroup]="form" (ngSubmit)="guardar()" class="modal-form">
+
+      <!-- ───────── IDENTIFICACIÓN ───────── -->
+      <div class="form-section">
+        <div class="form-section-title">
+          <i class="fas fa-industry"></i> Identificación
+        </div>
+
+        <div class="form-grid">
+
+          <div class="form-field">
+            <label>Código *</label>
+            <input formControlName="codigo" placeholder="Ej: CAT-320D-01">
+          </div>
+
+          <div class="form-field">
+            <label>Tipo de Maquinaria *</label>
+            <select formControlName="tipo_maquinaria_id">
+              <option *ngFor="let t of tipos" [value]="t.id">
+                {{ t.nombre }}
+              </option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label>Marca</label>
+            <input formControlName="marca">
+          </div>
+
+          <div class="form-field">
+            <label>Modelo</label>
+            <input formControlName="modelo">
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ───────── OPERACIÓN ───────── -->
+      <div class="form-section">
+        <div class="form-section-title">
+          <i class="fas fa-clock"></i> Operación
+        </div>
+
+        <div class="form-grid">
+
+          <div class="form-field">
+            <label>Horómetro Actual *</label>
+            <input type="number" formControlName="horometro_actual">
+          </div>
+
+          <div class="form-field">
+            <label>Estado</label>
+            <select formControlName="estado">
+              <option value="OPERATIVA">Operativa</option>
+              <option value="TALLER">En Taller</option>
+              <option value="INACTIVA">Inactiva</option>
+            </select>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ───────── IMAGEN ───────── -->
+      <div class="form-section">
+        <div class="form-section-title">
+          <i class="fas fa-image"></i> Imagen
+        </div>
+
+        <input type="file" accept="image/*" (change)="onFileSelected($event)">
+
+        <div *ngIf="previewUrl" class="image-preview">
+          <img [src]="previewUrl" class="preview-img">
+        </div>
+      </div>
+
+      <!-- ───────── NOTAS ───────── -->
+      <div class="form-section">
+        <div class="form-section-title">
+          <i class="fas fa-sticky-note"></i> Notas
+        </div>
+
+        <textarea formControlName="notas" class="textarea"></textarea>
+      </div>
+
+      <!-- ───────── ACCIONES ───────── -->
+      <div class="modal-actions" *ngIf="modalMode !== 'ver'">
+
+        <button type="button" class="btn-cancel" (click)="cerrarModal()">
+          Cancelar
+        </button>
+
+        <button type="submit" class="btn-save" [disabled]="saving">
+          <span *ngIf="!saving">Guardar</span>
+          <span *ngIf="saving">Guardando...</span>
+        </button>
+
+      </div>
+
+      <!-- VER -->
+      <div class="modal-actions" *ngIf="modalMode === 'ver'">
+
+        <button type="button" class="btn-cancel" (click)="cerrarModal()">
+          Cerrar
+        </button>
+
+        <button type="button" class="btn-primary" (click)="abrirEditar(maquinariaSeleccionada!)">
+          Editar
+        </button>
+
+      </div>
+
+    </form>
+  </div>
+</div>

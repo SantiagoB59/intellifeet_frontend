@@ -1,0 +1,509 @@
+<div class="p-4 lg:p-6 bg-gray-100 min-h-screen">
+
+
+  <div class="content">
+
+    <section class="viajes-page">
+
+      <!-- =========================
+         HEADER
+    ========================== -->
+      <div class="page-header">
+
+        <div>
+          <h2 class="page-title">Viajes Activos</h2>
+          <p class="page-subtitle">
+            Gestión de rutas, estados y control operativo
+          </p>
+        </div>
+
+        <button class="btn-primary" (click)="abrirModal()">
+          <i class="fas fa-plus"></i> Nuevo Viaje
+        </button>
+
+      </div>
+
+      <!-- =========================
+         FILTROS
+    ========================== -->
+      <div class="filters-bar">
+
+        <!-- FILTRO ESTADO -->
+        <div class="search-box">
+
+          <i class="fas fa-filter"></i>
+
+          <select #estadoSelect (change)="onEstadoFilterChange(estadoSelect.value)">
+
+            <option value="">Todos los estados</option>
+            <option value="PROGRAMADO">Programado</option>
+            <option value="EN_RUTA">En curso</option>
+            <option value="FINALIZADO">Finalizado</option>
+
+          </select>
+
+        </div>
+
+        <!-- FILTRO VEHÍCULO -->
+        <select #vehiculoSelect (change)="onVehiculoFilterChange(vehiculoSelect.value)">
+
+          <option value="">Todos los vehículos</option>
+
+          <option *ngFor="let v of vehiculos" [value]="v.id">
+            {{ v.placa }} - {{ v.tipo_vehiculo }}
+          </option>
+
+        </select>
+
+        <button class="btn-secondary" (click)="limpiarFiltros()">
+          Limpiar
+        </button>
+
+      </div>
+
+      <!-- =========================
+         CARDS DE VIAJES
+    ========================== -->
+      <div class="viajes-grid">
+
+        <!-- EMPTY -->
+        <div class="empty-state" *ngIf="viajes.length === 0">
+          <i class="fas fa-route"></i>
+          <p>No hay viajes registrados</p>
+        </div>
+
+        <!-- LISTA -->
+        <div class="viaje-card" *ngFor="let v of viajes">
+
+          <!-- HEADER CARD -->
+          <div class="viaje-header">
+
+            <span class="viaje-id">
+              VIAJE-{{ v.id }}
+            </span>
+
+            <span class="badge" [ngClass]="getEstadoClass(v.estado)">
+              {{ v.estado }}
+            </span>
+
+          </div>
+
+          <!-- INFO -->
+          <div class="viaje-body">
+
+            <div class="info">
+              <i class="fas fa-truck"></i>
+              Vehículo: {{ v.vehiculo_id }}
+            </div>
+
+            <div class="info">
+              <i class="fas fa-user"></i>
+              {{ v.conductor }} ({{ v.cc_conductor }})
+            </div>
+
+            <div class="info">
+              <i class="fas fa-map-marker-alt"></i>
+              {{ v.origen }} → {{ v.destino }}
+            </div>
+
+            <div class="info">
+              <i class="fas fa-road"></i>
+              {{ v.km_inicio | number:'1.0-0' }}
+              →
+              {{ v.km_fin | number:'1.0-0' }} km
+            </div>
+
+          </div>
+
+          <!-- ACTIONS -->
+          <div class="actions">
+
+            <button class="btn-play" *ngIf="v.estado === 'PROGRAMADO'" (click)="iniciar(v.id!)">
+              <i class="fas fa-play"></i>
+            </button>
+
+            <button class="btn-stop" *ngIf="v.estado === 'EN_RUTA'" (click)="finalizar(v.id!)">
+              <i class="fas fa-flag-checkered"></i>
+            </button>
+
+            <button class="btn-delete" (click)="eliminar(v.id!)">
+              <i class="fas fa-trash"></i>
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =========================================
+     MODAL NUEVO VIAJE
+========================================= -->
+    <div *ngIf="showModal" class="modal-backdrop">
+
+      <div class="modal modern-modal" (click)="$event.stopPropagation()">
+
+        <!-- HEADER -->
+        <div class="modal-header modern-header">
+
+          <div>
+            <h3>Nuevo Viaje</h3>
+            <p class="modal-subtitle">
+              Registra un nuevo recorrido operativo
+            </p>
+          </div>
+
+          <button class="close-btn" (click)="showModal=false">
+            <i class="fas fa-times"></i>
+          </button>
+
+        </div>
+
+        <!-- FORM -->
+        <form [formGroup]="form" (ngSubmit)="crear()" class="modal-body modern-form">
+
+          <!-- FILA 1 -->
+          <div class="form-row">
+
+            <!-- VEHÍCULO -->
+            <div class="form-card">
+              <label>Vehículo</label>
+
+              <select formControlName="vehiculo_id">
+
+                <option [value]="0">
+                  Selecciona un vehículo
+                </option>
+
+                <option *ngFor="let v of vehiculos" [value]="v.id">
+
+                  {{ v.placa }} - {{ v.tipo_vehiculo }}
+
+                </option>
+
+              </select>
+            </div>
+
+            <!-- REMOLQUE -->
+            <div class="form-card">
+              <label>Remolque</label>
+
+              <select formControlName="remolque_id" (change)="onRemolqueChange($event)">
+
+                <option [value]="null">
+                  Sin remolque
+                </option>
+
+                <option *ngFor="let r of remolques" [value]="r.id">
+
+                  {{ r.placa }} - {{ r.tipo_vehiculo }}
+
+                </option>
+
+              </select>
+            </div>
+
+          </div>
+
+          <!-- FILA 2 -->
+          <div class="form-row">
+
+            <!-- CONDUCTOR -->
+            <div class="form-card">
+              <label>Nombre del conductor</label>
+
+              <input formControlName="conductor" placeholder="Ej: Santiago Bonilla">
+            </div>
+
+            <!-- CÉDULA -->
+            <div class="form-card">
+              <label>Cédula</label>
+
+              <input formControlName="cc_conductor" placeholder="Ej: 1002559108">
+            </div>
+
+          </div>
+
+          <!-- FILA 3 -->
+          <div class="form-row">
+
+            <!-- ORIGEN -->
+            <div class="form-card">
+              <label>Origen</label>
+
+              <input formControlName="origen" placeholder="Ciudad origen">
+            </div>
+            <!-- FILA 4 -->
+            <div class="form-row">
+
+              <div class="form-card">
+
+                <label>
+                  <i class="fas fa-road"></i>
+                  Kilometraje inicial del remolque
+                </label>
+
+                <div class="input-icon">
+
+                  <input type="number" formControlName="km_inicio" placeholder="Ej: 254890">
+
+                  <span>KM</span>
+
+                </div>
+
+                <small *ngIf="remolqueSeleccionado" class="text-muted">
+
+                  Último registrado:
+                  {{ remolqueSeleccionado.km_actual | number:'1.0-0' }} km
+
+                </small>
+
+              </div>
+
+            </div>
+            <!-- DESTINO -->
+            <div class="form-card">
+              <label>Destino</label>
+
+              <input formControlName="destino" placeholder="Ciudad destino">
+            </div>
+
+          </div>
+
+          <!-- ACTIONS -->
+          <div class="modal-actions modern-actions">
+
+            <button type="button" class="btn-cancel" (click)="reset()">
+
+              Cancelar
+
+            </button>
+
+            <button type="submit" class="btn-save" [disabled]="form.invalid">
+
+              <i class="fas fa-save"></i>
+              Crear viaje
+
+            </button>
+
+          </div>
+
+        </form>
+
+      </div>
+
+    </div>
+
+    <!-- =========================================
+     MODAL FINALIZAR VIAJE
+========================================= -->
+    <div *ngIf="showFinalizarModal" class="modal-backdrop">
+
+      <div class="finalizar-modal">
+
+        <!-- HEADER -->
+        <div class="finalizar-header">
+
+          <div>
+
+            <h3>
+              <i class="fas fa-flag-checkered"></i>
+              Finalizar Viaje
+            </h3>
+
+            <p>
+              Registra el kilometraje final y observaciones operativas
+            </p>
+
+          </div>
+
+          <button class="close-btn" (click)="showFinalizarModal = false">
+
+            <i class="fas fa-times"></i>
+
+          </button>
+
+        </div>
+
+        <!-- BODY -->
+        <div class="finalizar-body">
+
+          <!-- ALERT -->
+          <div class="info-alert">
+
+            <i class="fas fa-info-circle"></i>
+
+            <span>
+              Verifica el kilometraje antes de finalizar el recorrido.
+            </span>
+
+          </div>
+
+          <!-- KM -->
+          <div class="form-card">
+
+            <label>
+              <i class="fas fa-road"></i>
+              Kilometraje Final
+            </label>
+
+            <div class="input-icon">
+
+              <input type="number" [(ngModel)]="kmFin" placeholder="Ej: 254890">
+
+              <span>KM</span>
+
+            </div>
+
+          </div>
+
+          <!-- OBS -->
+          <div class="form-card">
+
+            <label>
+              <i class="fas fa-sticky-note"></i>
+              Observaciones Operativas
+            </label>
+
+            <textarea rows="5" [(ngModel)]="observaciones" placeholder="• Retraso por tráfico
+• Novedades mecánicas
+• Estado de entrega
+• Observaciones del conductor">
+        </textarea>
+
+          </div>
+
+          <!-- RESUMEN -->
+          <div class="resumen-viaje">
+
+            <div class="resumen-item">
+
+              <span>Estado Final</span>
+
+              <strong>FINALIZADO</strong>
+
+            </div>
+
+            <div class="resumen-item">
+
+              <span>Kilometraje registrado</span>
+
+              <strong>{{ kmFin || 0 }} km</strong>
+
+            </div>
+
+          </div>
+
+          <!-- ACTIONS -->
+          <div class="finalizar-actions">
+
+            <button class="btn-cancel" (click)="showFinalizarModal = false">
+
+              Cancelar
+
+            </button>
+
+            <button class="btn-finalizar" (click)="confirmarFinalizacion()">
+
+              <i class="fas fa-flag-checkered"></i>
+              Finalizar Viaje
+
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- =========================================
+     MODAL DESACTIVAR VIAJE
+========================================= -->
+    <div *ngIf="showDeleteModal" class="modal-backdrop">
+
+      <div class="delete-modal">
+
+        <!-- HEADER -->
+        <div class="delete-header">
+
+          <div>
+
+            <h3>
+              <i class="fas fa-exclamation-triangle"></i>
+              Desactivar Viaje
+            </h3>
+
+            <p>
+              Esta acción desactivará el viaje del sistema.
+            </p>
+
+          </div>
+
+          <button class="close-btn" (click)="showDeleteModal = false">
+
+            <i class="fas fa-times"></i>
+
+          </button>
+
+        </div>
+
+        <!-- BODY -->
+        <div class="delete-body">
+
+          <div class="delete-warning">
+
+            <i class="fas fa-info-circle"></i>
+
+            <span>
+              El viaje no será eliminado físicamente,
+              únicamente quedará inactivo.
+            </span>
+
+          </div>
+
+          <div class="delete-info">
+
+            <div class="info-row">
+              <span>Estado:</span>
+              <strong>INACTIVO</strong>
+            </div>
+
+            <div class="info-row">
+              <span>Acción:</span>
+              <strong>Desactivar registro</strong>
+            </div>
+
+          </div>
+
+          <!-- ACTIONS -->
+          <div class="delete-actions">
+
+            <button class="btn-cancel" (click)="showDeleteModal = false">
+
+              Cancelar
+
+            </button>
+
+            <button class="btn-delete-confirm" (click)="confirmarEliminar()">
+
+              <i class="fas fa-ban"></i>
+              Desactivar
+
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>

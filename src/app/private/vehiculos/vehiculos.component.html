@@ -1,0 +1,569 @@
+<div class="content">
+
+    <section class="vehiculos-page">
+
+        <!-- Header -->
+        <div class="page-header">
+            <div>
+                <h2 class="page-title">Vehículos automotores y no automotores</h2>
+                <p class="page-subtitle">Administración de cabezotes, Camionetas, Cama alta, Cama alta, tanques y otros
+                </p>
+            </div>
+            <button class="btn-primary" (click)="abrirCrear()">
+                <i class="fas fa-plus"></i> Nuevo Vehículo
+            </button>
+        </div>
+
+        <!-- Stats cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value">{{ stats.total }}</div>
+                <div class="stat-label">Total Unidades</div>
+            </div>
+            <div class="stat-card stat-card--green">
+                <div class="stat-value">{{ stats.operativos }}</div>
+                <div class="stat-label">Operativos</div>
+            </div>
+            <div class="stat-card stat-card--orange">
+                <div class="stat-value">{{ stats.en_taller }}</div>
+                <div class="stat-label">En Taller</div>
+            </div>
+            <div class="stat-card stat-card--red">
+                <div class="stat-value">{{ stats.inactivos }}</div>
+                <div class="stat-label">Inactivos</div>
+            </div>
+        </div>
+
+        <!-- Filtros -->
+        <div class="filters-bar">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Buscar placa, marca, conductor…" [(ngModel)]="searchTerm"
+                    [ngModelOptions]="{standalone: true}" (input)="cargarDatos()">
+            </div>
+
+            <select [(ngModel)]="filtroEstado" [ngModelOptions]="{standalone: true}" (change)="cargarDatos()"
+                class="filter-select">
+                <option value="">Todos los estados</option>
+                <option value="OPERATIVO">Operativo</option>
+                <option value="TALLER">En Taller</option>
+                <option value="INACTIVO">Inactivo</option>
+            </select>
+
+            <!-- 🔥 FILTRO AHORA POR ID -->
+            <select [(ngModel)]="filtroTipo" [ngModelOptions]="{standalone: true}" (change)="cargarDatos()"
+                class="filter-select">
+                <option value="">Todos los tipos</option>
+                <option *ngFor="let t of tipos" [value]="t.id">
+                    {{ t.nombre }}
+                </option>
+            </select>
+        </div>
+
+        <!-- Error -->
+        <div *ngIf="error" class="alert-error">
+            <i class="fas fa-exclamation-triangle"></i> {{ error }}
+            <button (click)="error=''"><i class="fas fa-times"></i></button>
+        </div>
+        <!-- ========================================================= -->
+        <!-- TABLA VEHÍCULOS -->
+        <!-- ========================================================= -->
+
+        <div class="table-card">
+
+            <!-- HEADER TABLA -->
+
+            <div class="px-6 py-5 border-b bg-gradient-to-r from-red-50 to-white">
+
+                <div class="flex items-center justify-between flex-wrap gap-3">
+
+                    <div>
+
+                        <h2 class="text-xl font-bold text-gray-800 flex items-center gap-2">
+                            Flota de vehículos
+                        </h2>
+
+                        <p class="text-sm text-gray-500 mt-1">
+                            Administración de la flota registrada en el sistema.
+                        </p>
+
+                    </div>
+
+                    <div class="bg-red-100 text-red-700 px-4 py-2 rounded-xl font-semibold text-sm">
+                        {{ vehiculos.length }} registros
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- TABLA -->
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <!-- CABECERA -->
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Vehículo</th>
+
+                            <th>Información</th>
+
+                            <th>Conductor</th>
+
+                            <th>Kilometraje</th>
+
+                            <th>Estado</th>
+
+                            <th>GPS</th>
+
+                            <th class="text-center">
+                                Acciones
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <!-- CUERPO -->
+
+                    <tbody>
+
+                        <!-- LOADING -->
+
+                        <tr *ngIf="loading">
+
+                            <td colspan="7" class="loading-row">
+
+                                <div class="spinner"></div>
+
+                                Cargando flota...
+
+                            </td>
+
+                        </tr>
+
+                        <!-- EMPTY -->
+
+                        <tr *ngIf="!loading && vehiculos.length==0">
+
+                            <td colspan="7" class="empty-row">
+
+                                <h3 class="text-xl font-bold text-gray-700 mt-4">
+
+                                    No existen vehículos registrados
+
+                                </h3>
+
+                                <p class="text-gray-500 mt-2">
+
+                                    No hay vehículos registrados en el sistema.
+
+                                </p>
+
+                            </td>
+
+                        </tr>
+
+                        <!-- FILAS -->
+
+                        <tr *ngFor="let v of vehiculos; let i=index; trackBy: trackByPlaca" class="table-row" [ngClass]="{
+            'bg-white': i%2==0,
+            'bg-gray-50': i%2!=0
+          }">
+
+                            <!-- VEHÍCULO -->
+
+                            <td>
+
+                                <div class="flex items-center gap-3">
+
+                                    <img *ngIf="v.foto_url" [src]="'https://transmenasmart.com'+v.foto_url"
+                                        class="vehiculo-img">
+
+                                    <div *ngIf="!v.foto_url"
+                                        class="w-11 h-11 rounded-full bg-blue-100 flex items-center justify-center text-xl">
+
+                                        🚛
+
+                                    </div>
+
+                                    <div>
+
+                                        <div class="placa">
+
+                                            {{v.placa}}
+
+                                        </div>
+
+
+
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+                            <!-- INFORMACIÓN -->
+
+                            <td>
+
+
+                                <div class="text-muted">
+
+                                    {{v.marca}}
+
+                                </div>
+
+                            </td>
+
+                            <!-- CONDUCTOR -->
+
+                            <td>
+
+                                {{v.conductor || 'Sin asignar'}}
+
+                            </td>
+
+                            <!-- KM -->
+
+                            <td>
+
+                                <div class="font-semibold text-gray-800">
+
+                                    {{v.km_actual | number}}
+
+                                </div>
+
+                                <div class="text-xs text-gray-500">
+
+                                    Kilómetros
+
+                                </div>
+
+                            </td>
+
+                            <!-- ESTADO -->
+
+                            <td>
+
+                                <span class="badge" [ngClass]="estadoClass(v.estado || 'OPERATIVO')">
+
+                                    {{v.estado || 'OPERATIVO'}}
+
+                                </span>
+
+                            </td>
+
+                            <!-- GPS -->
+
+                            <td>
+
+                                <span *ngIf="v.gps_id" class="gps-pill">
+
+                                    <i class="fas fa-satellite-dish"></i>
+
+                                    {{v.gps_id}}
+
+                                </span>
+
+                                <span *ngIf="!v.gps_id" class="text-muted">
+
+                                    Sin GPS
+
+                                </span>
+
+                            </td>
+
+                            <!-- ACCIONES -->
+
+                            <td class="actions">
+
+                                <button class="action-btn action-btn--view" (click)="abrirVer(v)">
+
+                                    <i class="fas fa-eye"></i>
+
+                                </button>
+
+                                <button class="action-btn action-btn--edit" (click)="abrirEditar(v)">
+
+                                    <i class="fas fa-edit"></i>
+
+                                </button>
+
+                                <button class="action-btn action-btn--delete" (click)="confirmarEliminar(v.placa)">
+
+                                    <i class="fas fa-trash-alt"></i>
+
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════ MODAL CREAR / EDITAR -->
+    <div *ngIf="showModal" class="modal-backdrop" (click)="cerrarModal()">
+        <div class="modal-panel" (click)="$event.stopPropagation()">
+
+            <!-- HEADER -->
+            <div class="modal-header">
+                <div>
+                    <h3>{{ titulo }}</h3>
+                    <p>{{ vehiculoSeleccionado?.placa ?? 'Nueva unidad' }} · Transmena Smart</p>
+                </div>
+                <button class="modal-close" (click)="cerrarModal()">
+                    <i class="fas fa-times-circle"></i>
+                </button>
+            </div>
+
+            <!-- FORM -->
+            <form [formGroup]="form" (ngSubmit)="guardar()" class="modal-form">
+
+                <!-- ───────── IDENTIFICACIÓN ───────── -->
+                <div class="form-section">
+                    <div class="form-section-title">
+                        <i class="fas fa-id-card"></i> Identificación
+                    </div>
+
+                    <div class="form-grid">
+
+                        <div class="form-field">
+                            <label>
+                                Placa
+                                <span *ngIf="isRequired('placa')" class="required">*</span>
+                            </label>
+
+                            <input formControlName="placa">
+                        </div>
+
+                        <div class="form-field">
+                            <label>Tipo de Vehículo *</label>
+                            <select formControlName="tipo_vehiculo_id">
+                                <option *ngFor="let t of tipos" [value]="t.id">
+                                    {{ t.nombre }}
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="form-field">
+                            <label>Marca</label>
+                            <input formControlName="marca">
+                        </div>
+
+                        <div class="form-field">
+                            <label>Modelo</label>
+                            <input formControlName="modelo">
+                        </div>
+
+                        <div class="form-field">
+                            <label>Color</label>
+                            <input formControlName="color">
+                        </div>
+
+                        <div class="form-field">
+                            <label>Servicio</label>
+                            <select formControlName="servicio">
+                                <option value="PUBLICO">Público</option>
+                                <option value="PRIVADO">Privado</option>
+                            </select>
+                        </div>
+
+                    </div>
+                </div>
+
+
+
+                <!-- ───────── DATOS TÉCNICOS ───────── -->
+                <div class="form-section">
+                    <div class="form-section-title">
+                        <i class="fas fa-cogs"></i> Datos Técnicos
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-field">
+                            <label>GPS</label>
+                            <input formControlName="gps_id">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ───────── PROPIETARIO / CONDUCTOR ───────── -->
+                <div class="form-section">
+                    <div class="form-section-title">
+                        <i class="fas fa-user-tie"></i> Propietario & Conductor
+                    </div>
+
+                    <div class="form-grid">
+
+                        <div class="form-field form-field--wide">
+                            <label>Propietario</label>
+                            <input formControlName="propietario">
+                        </div>
+
+                        <div class="form-field">
+                            <label>C.C. Propietario</label>
+                            <input formControlName="cc_propietario">
+                        </div>
+
+                        <div class="form-field form-field--wide">
+                            <label>Conductor</label>
+                            <input formControlName="conductor">
+                        </div>
+
+                        <div class="form-field">
+                            <label>C.C. Conductor</label>
+                            <input formControlName="cc_conductor">
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- ───────── KILOMETRAJE ───────── -->
+                <div class="form-section">
+                    <div class="form-section-title">
+                        <i class="fas fa-tachometer-alt"></i> Kilometraje
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-field">
+                            <label>KM Actual</label>
+                            <input type="number" formControlName="km_actual">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ───────── DOCUMENTOS DINÁMICOS ───────── -->
+                <div class="form-section" *ngIf="documentos.length > 0">
+
+                    <div class="form-section-title">
+                        <i class="fas fa-file-alt"></i> Documentos
+                    </div>
+
+                    <div class="form-grid form-grid--docs">
+
+                        <div *ngFor="let doc of documentos" class="form-field">
+
+                            <label>
+                                {{ doc.nombre }}
+                                <span *ngIf="doc.requiere_numero" class="required">*</span>
+                            </label>
+
+                            <!-- 🔥 SOLO si requiere número -->
+                            <input *ngIf="doc.requiere_numero" type="text" placeholder="Número de documento"
+                                [(ngModel)]="doc.numero" [ngModelOptions]="{standalone: true}">
+
+                            <!-- fecha vencimiento (siempre útil) -->
+                            <input type="date" [(ngModel)]="doc.fecha_vencimiento"
+                                [ngModelOptions]="{standalone: true}">
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- ───────── 🔥 CAMPOS DINÁMICOS ───────── -->
+                <div class="form-section" *ngIf="camposDinamicos.length > 0">
+
+                    <div class="form-section-title">
+                        <i class="fas fa-sliders-h"></i> Campos del Tipo de Vehículo
+                    </div>
+
+                    <div class="form-grid">
+
+                        <div class="form-field" *ngFor="let campo of camposDinamicos">
+
+                            <label>{{ campo.nombre_campo }}</label>
+
+                            <!-- TEXTO -->
+                            <input *ngIf="campo.tipo_dato === 'text'" [formControlName]="campo.nombre_campo">
+
+                            <!-- FECHA -->
+                            <input *ngIf="campo.tipo_dato === 'date'" type="date"
+                                [formControlName]="campo.nombre_campo">
+
+                            <!-- NÚMERO -->
+                            <input *ngIf="campo.tipo_dato === 'number'" type="number"
+                                [formControlName]="campo.nombre_campo">
+
+                            <!-- FILE -->
+                            <input *ngIf="campo.tipo_dato === 'file'" type="file">
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- ───────── IMAGEN ───────── -->
+                <div class="form-section">
+                    <div class="form-section-title">
+                        <i class="fas fa-image"></i> Imagen del Vehículo
+                    </div>
+
+                    <div class="form-field form-field--wide">
+                        <input type="file" accept="image/*" (change)="onFileSelected($event)">
+
+                        <div *ngIf="previewUrl" class="image-preview">
+                            <img [src]="previewUrl" class="preview-img">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ───────── NOTAS ───────── -->
+                <div class="form-section">
+                    <div class="form-section-title">
+                        <i class="fas fa-sticky-note"></i> Notas
+                    </div>
+
+                    <textarea formControlName="notas" class="textarea"></textarea>
+                </div>
+
+                <!-- ───────── ACCIONES ───────── -->
+                <div class="modal-actions" *ngIf="modalMode !== 'ver'">
+                    <button type="button" class="btn-cancel" (click)="cerrarModal()">Cancelar</button>
+
+                    <button type="submit" class="btn-save" [disabled]="saving">
+                        <span *ngIf="!saving">Guardar</span>
+                        <span *ngIf="saving">Guardando…</span>
+                    </button>
+                </div>
+
+                <div class="modal-actions" *ngIf="modalMode === 'ver'">
+                    <button type="button" class="btn-cancel" (click)="cerrarModal()">Cerrar</button>
+                    <button type="button" class="btn-primary" (click)="abrirEditar(vehiculoSeleccionado!)">
+                        Editar
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <!-- CONFIRM DELETE -->
+    <div *ngIf="showConfirm" class="modal-backdrop">
+        <div class="confirm-modal">
+            <div class="confirm-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h4>¿Eliminar vehículo <strong>{{ placaParaEliminar }}</strong>?</h4>
+            <div class="confirm-actions">
+                <button class="btn-cancel" (click)="showConfirm=false">Cancelar</button>
+                <button class="btn-danger" (click)="eliminar()">Sí, eliminar</button>
+            </div>
+        </div>
+    </div>
+
+</div>

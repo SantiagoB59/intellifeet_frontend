@@ -1,0 +1,148 @@
+<div class="content-view">
+
+  <div>
+    <button class="btn-back" (click)="volver()">
+  <span>←</span>
+  Volver
+</button>
+
+
+    <!-- HEADER -->
+    <header class="page-header">
+
+      <div>
+        <h2>Verificación de kilometraje</h2>
+
+        <p>
+          Registre el kilometraje real reportado por cada vehículo para mantener
+          sincronizado el sistema.
+        </p>
+      </div>
+
+    </header>
+
+    <div class="info-box">
+
+      <div class="info-icon">
+        📞
+      </div>
+
+      <div class="info-content">
+
+        <h4>Recomendación antes de actualizar el kilometraje</h4>
+
+        <p>
+          Antes de registrar un nuevo kilometraje, comuníquese con el conductor
+          responsable del vehículo para confirmar el <strong>kilometraje actual</strong>
+          indicado en el tablero. Una vez validada la información, ingrese el valor
+          real para mantener sincronizados los registros del sistema y el control de
+          mantenimiento de la flota.
+        </p>
+
+      </div>
+
+    </div>
+    <div *ngIf="mensaje" class="mensaje" [ngClass]="tipoMensaje">
+
+      <span class="icono">
+        {{ tipoMensaje === 'success' ? '✅' :
+        tipoMensaje === 'error' ? '❌' : '⚠️' }}
+      </span>
+
+      {{ mensaje }}
+
+    </div>
+
+    <!-- CARD -->
+    <div class="card">
+
+      <div class="card-header">
+
+        <div>
+          <h3>Vehículos pendientes</h3>
+          <span>{{ vehiculos.length }} registros</span>
+        </div>
+
+      </div>
+
+      <div class="overflow-x-auto">
+
+        <table *ngIf="vehiculos.length">
+
+          <thead>
+
+            <tr>
+              <th>Placa</th>
+              <th>Marca</th>
+              <th>Modelo</th>
+              <th>Km Sistema</th>
+              <th>Nuevo Km</th>
+              <th>Acción</th>
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+            <tr *ngFor="let v of vehiculos">
+
+              <td class="placa">
+                {{ v.placa }}
+              </td>
+
+              <td>{{ v.marca }}</td>
+
+              <td>{{ v.modelo }}</td>
+
+
+              <td>
+
+                <span class="badge badge-warning">
+                  {{ v.km_estimado | number }}
+                </span>
+
+              </td>
+
+              <td>
+
+                <input type="number" [(ngModel)]="v.nuevoKm" placeholder="Ingrese km">
+
+              </td>
+
+              <td>
+
+                <button class="btn-save" (click)="guardar(v)">
+
+                  Guardar
+
+                </button>
+
+              </td>
+
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+      <div class="empty-state" *ngIf="!loading && vehiculos.length === 0">
+
+        <div class="emoji">
+          ✅
+        </div>
+
+        <h3>No existen verificaciones pendientes</h3>
+
+        <p>
+          Todos los vehículos tienen su kilometraje actualizado.
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

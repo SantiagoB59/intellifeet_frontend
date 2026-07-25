@@ -1,0 +1,469 @@
+/* ===========================
+   HEADER
+=========================== */
+
+.page-header{
+  margin-bottom:2rem;
+}
+
+.page-header h2{
+  font-size:2rem;
+  font-weight:700;
+  color:#0f172a;
+}
+
+.page-header p{
+  margin-top:.5rem;
+  color:#64748b;
+  font-size:.95rem;
+}
+
+
+/* ===========================
+   CARD
+=========================== */
+
+.card{
+  background:#fff;
+  border-radius:24px;
+  box-shadow:0 10px 35px rgba(15,23,42,.06);
+  border:1px solid #e2e8f0;
+  overflow:hidden;
+}
+
+.card-header{
+  padding:1.5rem 2rem;
+  border-bottom:1px solid #e2e8f0;
+}
+
+.card-header h3{
+  margin:0;
+  font-size:1.2rem;
+  font-weight:600;
+}
+
+.card-header span{
+  color:#64748b;
+  font-size:.85rem;
+}
+
+/* ===========================
+   TABLA
+=========================== */
+
+table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+th{
+
+  background:#f8fafc;
+  color:#475569;
+  font-weight:700;
+  padding:1rem;
+
+  text-align:center;
+  vertical-align:middle;
+
+}
+
+td{
+
+  padding:1rem;
+  vertical-align:middle;
+  text-align:center;
+
+}
+
+tbody tr{
+  transition:.25s;
+}
+
+tbody tr:hover{
+  background:#f8fafc;
+}
+
+/* Primera columna (placa) alineada a la izquierda */
+th:first-child,
+td:first-child{
+  text-align:left;
+}
+
+/* Última columna (acción) centrada */
+th:last-child,
+td:last-child{
+  text-align:center;
+}
+
+/* Input centrado */
+td input{
+
+  display:block;
+  margin:auto;
+
+}
+
+/* Botón centrado */
+td .btn-save{
+
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+
+}
+
+/* ===========================
+   PLACA
+=========================== */
+
+.placa{
+  font-weight:700;
+  color:#1e293b;
+}
+
+
+/* ===========================
+   BADGES
+=========================== */
+
+.badge{
+  display:inline-block;
+  padding:.45rem .8rem;
+  border-radius:999px;
+  font-size:.82rem;
+  font-weight:600;
+}
+
+.badge-gray{
+  background:#eef2f7;
+  color:#334155;
+}
+
+.badge-warning{
+  background:#fff7ed;
+  color:#ea580c;
+}
+
+
+/* ===========================
+   INPUT
+=========================== */
+
+input{
+  width:140px;
+  padding:.75rem;
+  border:1px solid #cbd5e1;
+  border-radius:12px;
+  outline:none;
+  transition:.2s;
+  font-size:.92rem;
+}
+
+input:focus{
+  border-color:#2563eb;
+  box-shadow:0 0 0 4px rgba(37,99,235,.12);
+}
+
+
+/* ===========================
+   BOTÓN
+=========================== */
+
+.btn-save{
+
+  border:none;
+
+  background:#dc2626;
+
+  color:#fff;
+
+  padding:.75rem 1.2rem;
+
+  border-radius:12px;
+
+  cursor:pointer;
+
+  font-weight:600;
+
+  transition:.2s;
+
+}
+
+.btn-save:hover{
+
+  background:#1d4ed8;
+
+  transform:translateY(-2px);
+
+}
+
+
+/* ===========================
+   EMPTY
+=========================== */
+
+.empty-state{
+
+  padding:5rem 2rem;
+
+  text-align:center;
+
+}
+
+.empty-state .emoji{
+
+  font-size:3.5rem;
+
+  margin-bottom:1rem;
+
+}
+
+.empty-state h3{
+
+  color:#0f172a;
+
+  margin-bottom:.5rem;
+
+}
+
+.empty-state p{
+
+  color:#64748b;
+
+}
+
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+
+@media(max-width:768px){
+
+  .card{
+    border-radius:18px;
+  }
+
+  .page-header h2{
+    font-size:1.6rem;
+  }
+
+  input{
+    width:120px;
+  }
+
+}
+
+/* ===========================
+   RECOMENDACIÓN
+=========================== */
+
+.info-box{
+
+  display:flex;
+  align-items:flex-start;
+  gap:1rem;
+
+  margin-bottom:2rem;
+
+  padding:1.25rem 1.5rem;
+
+  background:#eff6ff;
+
+  border:1px solid #bfdbfe;
+
+  border-left:5px solid #2563eb;
+
+  border-radius:18px;
+
+}
+
+.info-icon{
+
+  width:52px;
+  height:52px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  border-radius:50%;
+
+  background:#dbeafe;
+
+  font-size:1.5rem;
+
+  flex-shrink:0;
+
+}
+
+.info-content h4{
+
+  margin:0 0 .5rem;
+
+  color:#1e3a8a;
+
+  font-size:1rem;
+
+  font-weight:700;
+
+}
+
+.info-content p{
+
+  margin:0;
+
+  color:#475569;
+
+  line-height:1.6;
+
+  font-size:.93rem;
+
+}
+
+.info-content strong{
+
+  color:#0f172a;
+
+}
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+
+@media(max-width:768px){
+
+  .info-box{
+
+    flex-direction:column;
+    align-items:flex-start;
+
+  }
+
+  .info-icon{
+
+    width:45px;
+    height:45px;
+
+  }
+
+}
+
+.mensaje{
+
+  display:flex;
+  align-items:center;
+  gap:.8rem;
+
+  margin-bottom:1.5rem;
+  padding:1rem 1.25rem;
+
+  border-radius:16px;
+
+  font-weight:500;
+
+  animation:fadeIn .25s ease;
+
+}
+
+.mensaje .icono{
+
+  font-size:1.2rem;
+
+}
+
+.success{
+
+  background:#ecfdf5;
+  border:1px solid #86efac;
+  color:#166534;
+
+}
+
+.error{
+
+  background:#fef2f2;
+  border:1px solid #fca5a5;
+  color:#991b1b;
+
+}
+
+.warning{
+
+  background:#fff7ed;
+  border:1px solid #fdba74;
+  color:#9a3412;
+
+}
+
+@keyframes fadeIn{
+
+  from{
+    opacity:0;
+    transform:translateY(-10px);
+  }
+
+  to{
+    opacity:1;
+    transform:none;
+  }
+
+}
+
+/* ===========================
+   BOTÓN VOLVER
+=========================== */
+
+.btn-back{
+
+  display:inline-flex;
+  align-items:center;
+  gap:.6rem;
+
+  margin-bottom:1.25rem;
+
+  padding:.7rem 1.2rem;
+
+  border:none;
+  border-radius:12px;
+
+  background:#fff;
+
+  color:#334155;
+
+  font-weight:600;
+  font-size:.92rem;
+
+  cursor:pointer;
+
+  border:1px solid #e2e8f0;
+
+  box-shadow:0 4px 12px rgba(15,23,42,.05);
+
+  transition:.25s;
+
+}
+
+.btn-back span{
+
+  font-size:1.1rem;
+
+}
+
+.btn-back:hover{
+
+  background:#dc2626;
+
+  color:#fff;
+
+  border-color:#dc2626;
+
+  transform:translateX(-3px);
+
+}
+
+.btn-back:active{
+
+  transform:translateX(-1px);
+
+}

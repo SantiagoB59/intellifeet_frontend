@@ -1,0 +1,285 @@
+<div class="topbar">
+
+  <div class="topbar-container">
+
+    <!-- ========================================= -->
+    <!-- IZQUIERDA -->
+    <!-- ========================================= -->
+
+    <div class="topbar-left">
+
+      <div class="logo-box">
+
+        <img
+          src="assets/img/logo_transmena.jpg"
+          alt="Transmena Logo"
+        />
+
+      </div>
+
+      <div class="brand-info">
+
+        <h1 class="brand-title">
+
+          INTELLI
+          <span>FEET</span>
+
+        </h1>
+
+        <p class="brand-status">
+
+          <i class="fas fa-circle animate-pulse"></i>
+
+          ONLINE -
+          {{ stats.total + maquinariaTotal }}
+          equipos registrados
+
+        </p>
+
+      </div>
+
+    </div>
+
+    <!-- ========================================= -->
+    <!-- STATS -->
+    <!-- ========================================= -->
+
+    <div class="topbar-stats">
+
+      <div class="stat-box">
+
+        <div class="stat-value text-red-600">
+          {{ estadisticasAlertas.criticas }}
+        </div>
+
+        <div class="stat-label">
+          Críticas
+        </div>
+
+      </div>
+
+      <div class="stat-box">
+
+        <div class="stat-value text-amber-600">
+          {{ estadisticasAlertas.activas }}
+        </div>
+
+        <div class="stat-label">
+          Activas
+        </div>
+
+      </div>
+
+      <div class="stat-box">
+
+        <div class="stat-value text-emerald-600">
+          {{ estadisticasAlertas.resueltas }}
+        </div>
+
+        <div class="stat-label">
+          Resueltas
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ========================================= -->
+    <!-- DERECHA -->
+    <!-- ========================================= -->
+
+    <div class="topbar-right">
+
+      <!-- 🔔 -->
+      <div class="relative">
+
+        <button
+          (click)="toggleNotifications()"
+          class="notification-btn"
+        >
+
+          <i class="fas fa-bell text-lg"></i>
+
+          <span
+            *ngIf="notificacionesNoLeidas > 0"
+            class="notification-badge"
+          >
+
+            {{ notificacionesNoLeidas }}
+
+          </span>
+
+        </button>
+
+        <!-- DROPDOWN -->
+
+        <div
+          *ngIf="showNotifications"
+          class="notifications-dropdown"
+        >
+
+          <!-- HEADER -->
+
+          <div class="dropdown-header">
+
+            <div>
+
+              <h3 class="font-black text-gray-800">
+                Notificaciones
+              </h3>
+
+              <p class="text-xs text-gray-500">
+                Alertas del sistema
+              </p>
+
+            </div>
+
+            <button
+              (click)="marcarTodas()"
+              class="text-xs text-blue-500 hover:underline font-semibold"
+            >
+
+              Marcar todas
+
+            </button>
+
+          </div>
+
+          <!-- LISTA -->
+
+
+                    <!-- LISTA -->
+          <div
+            class="max-h-[450px] overflow-y-auto"
+          >
+
+            <div
+              *ngFor="let n of notificaciones"
+              (click)="marcarComoLeida(n)"
+              class="p-4 border-b cursor-pointer hover:bg-slate-50 transition"
+              [class.opacity-60]="n.leida"
+            >
+
+              <!-- TOP -->
+              <div
+                class="flex items-start justify-between gap-3 mb-2"
+              >
+
+                <!-- BADGE -->
+                <span
+                  class="px-2 py-1 rounded-full text-[10px] font-bold"
+                  [ngClass]="
+                    getClasePrioridad(n.prioridad)
+                  "
+                >
+
+                  {{ n.prioridad || 'INFO' }}
+
+                </span>
+
+                <!-- FECHA -->
+                <span
+                  class="text-[11px] text-gray-400 whitespace-nowrap"
+                >
+
+                  {{ n.fecha | date:'shortTime' }}
+
+                </span>
+
+              </div>
+
+              <!-- MENSAJE -->
+              <div
+                class="text-sm font-semibold text-gray-800 leading-relaxed"
+              >
+
+                {{ n.mensaje }}
+
+              </div>
+
+              <!-- FOOT -->
+              <div
+                class="flex items-center justify-between mt-3 text-xs text-gray-500"
+              >
+
+                <span>
+
+                  🚛 {{ n.vehiculo }}
+
+                </span>
+
+                <span>
+
+                  {{ n.tipo }}
+
+                </span>
+
+              </div>
+
+            </div>
+
+            <!-- VACÍO -->
+            <div
+              *ngIf="notificaciones.length === 0"
+              class="p-10 text-center text-gray-500"
+            >
+
+              <div class="text-5xl mb-3">
+                🔕
+              </div>
+
+              <p class="font-semibold">
+                Sin notificaciones
+              </p>
+
+            </div>
+
+          </div>
+
+
+        </div>
+
+      </div>
+
+      <!-- 👤 -->
+
+      <div class="user-section">
+
+        <div class="user-info">
+
+          <div class="user-name">
+            {{ usuarioNombre }}
+          </div>
+
+          <div class="user-role">
+            Usuario activo
+          </div>
+
+        </div>
+
+        <div class="avatar">
+
+          {{ usuarioNombre.charAt(0) }}
+
+        </div>
+
+        <button
+          (click)="logout()"
+          class="logout-btn"
+        >
+
+          <i class="fas fa-sign-out-alt"></i>
+
+          <span>
+            Salir
+          </span>
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Puedes dejar estilos globales */
+body {
+  font-family: 'Inter', sans-serif;
+}
+
+/* Importar estilos de Leaflet para que las capas se posicionen bien */
+@import "leaflet/dist/leaflet.css";
+
+/* Asegurar que el contenedor del mapa ocupe todo su padre */
+.leaflet-container {
+  height: 100%;
+  width: 100%;
+}
+
+
+:root {
+  --bg: #ffffff;
+  --text: #0f172a;
+  --card: #f8fafc;
+  --border: #e2e8f0;
+}
+
+/* 🌙 DARK MODE */
+.dark {
+  --bg: #0f172a;
+  --text: #e2e8f0;
+  --card: #1e293b;
+  --border: #334155;
+}
+
+/* aplicar global */
+body {
+  background: var(--bg);
+  color: var(--text);
+  transition: all 0.3s ease;
+}

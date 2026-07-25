@@ -1,0 +1,262 @@
+<main class="content-view">
+
+  <div class="">
+
+    <!-- HEADER -->
+    <header class="mb-6">
+
+      <h2 class="text-3xl font-black text-slate-800 tracking-tight">
+        Gestión de mantenimientos
+      </h2>
+
+      <p class="text-slate-500 italic font-medium">
+        Control operativo de vehículos y maquinaria.
+      </p>
+
+    </header>
+
+    <!-- FILTROS -->
+    <div class="bg-white rounded-[2rem] shadow-xl border border-slate-100 p-5 mb-6">
+
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+
+        <!-- SEARCH -->
+        <div class="relative">
+
+          <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+
+          <input type="text" [(ngModel)]="searchTerm" (input)="aplicarFiltros()"
+            placeholder="Buscar placa, código, marca..."
+            class="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-red-500">
+
+        </div>
+
+        <!-- TIPO -->
+        <select [(ngModel)]="filtroTipo" (change)="aplicarFiltros()"
+          class="px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-red-500">
+
+          <option value="">
+            Todos los equipos
+          </option>
+
+          <option value="VEHICULO">
+            Vehículos
+          </option>
+
+          <option value="MAQUINARIA">
+            Maquinaria
+          </option>
+
+        </select>
+
+        <!-- ESTADO -->
+        <select [(ngModel)]="filtroEstado" (change)="aplicarFiltros()"
+          class="px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-red-500">
+
+          <option value="">
+            Todos los estados
+          </option>
+
+          <option value="OPERATIVO">
+            Operativo
+          </option>
+
+          <option value="OPERATIVA">
+            Operativa
+          </option>
+
+          <option value="TALLER">
+            Taller
+          </option>
+
+          <option value="INACTIVO">
+            Inactivo
+          </option>
+
+          <option value="INACTIVA">
+            Inactiva
+          </option>
+
+        </select>
+
+        <!-- LIMPIAR -->
+        <button (click)="limpiarFiltros()"
+          class="bg-slate-100 hover:bg-slate-200 transition rounded-xl font-bold text-slate-700">
+
+          <i class="fas fa-eraser mr-2"></i>
+          Limpiar filtros
+
+        </button>
+
+      </div>
+
+      <!-- INFO -->
+      <div class="mt-4 text-sm text-slate-500 font-medium">
+
+        Mostrando
+        <span class="font-black text-slate-700">
+          {{ flotaFiltrada.length }}
+        </span>
+        registros
+
+      </div>
+
+    </div>
+
+    <!-- CARD -->
+    <div class="bg-white rounded-[2rem] shadow-2xl border border-slate-100 overflow-hidden">
+
+      <!-- TITLE -->
+      <div class="p-6 border-b bg-slate-50/50">
+
+        <h3 class="font-bold text-slate-400 text-xs uppercase tracking-widest">
+          Flota operativa
+        </h3>
+
+      </div>
+
+      <!-- TABLE -->
+      <div class="overflow-x-auto">
+
+        <table class="w-full text-left">
+
+          <thead>
+
+            <tr class="text-[11px] font-black text-slate-400 uppercase border-b">
+
+              <th class="p-6">Equipo</th>
+
+              <th class="p-6">Tipo</th>
+
+              <th class="p-6">Control</th>
+
+              <th class="p-6">Estado</th>
+
+              <th class="p-6 text-center">Acción</th>
+
+            </tr>
+
+          </thead>
+
+          <tbody class="divide-y divide-slate-100">
+
+            <!-- LOADING -->
+            <tr *ngIf="loading">
+
+              <td colspan="5" class="p-10 text-center">
+
+                <div class="flex justify-center items-center gap-3">
+
+                  <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-red-600"></div>
+
+                  <span class="font-semibold text-slate-500">
+                    Cargando flota...
+                  </span>
+
+                </div>
+
+              </td>
+
+            </tr>
+
+            <!-- EMPTY -->
+            <tr *ngIf="!loading && flotaFiltrada.length === 0">
+
+              <td colspan="5" class="p-10 text-center text-slate-400">
+
+                <i class="fas fa-truck text-4xl mb-3"></i>
+
+                <p class="font-bold">
+                  No se encontraron registros
+                </p>
+
+              </td>
+
+            </tr>
+
+            <!-- DATA -->
+            <tr *ngFor="let item of flotaFiltrada; trackBy: trackById" class="hover:bg-slate-50 transition">
+
+              <!-- IDENTIFICADOR -->
+              <td class="p-6">
+
+                <div class="flex flex-col">
+
+                  <span class="font-black text-slate-800">
+                    {{ item.identificador }}
+                  </span>
+
+                  <span class="text-xs text-slate-400 font-semibold">
+                    {{ item.tipo_equipo }}
+                  </span>
+
+                </div>
+
+              </td>
+
+              <!-- TIPO -->
+              <td class="p-6 text-slate-600 font-semibold">
+                {{ item.tipo_nombre }}
+              </td>
+
+              <!-- CONTROL -->
+              <td class="p-6 font-bold text-slate-700">
+
+                {{ item.valor_control | number }}
+
+                {{ item.unidad }}
+
+              </td>
+
+              <!-- ESTADO -->
+              <td class="p-6">
+
+                <span class="px-3 py-1 rounded-full text-[10px] font-black uppercase"
+                  [ngClass]="estadoClass(item.estado)">
+
+                  {{ item.estado }}
+
+                </span>
+
+              </td>
+
+              <!-- ACCIÓN -->
+              <td class="p-6 text-center">
+
+                <div class="flex justify-center gap-2">
+
+                  <button type="button" (click)="verPlan(
+      item.id,
+      item.tipo_equipo === 'VEHICULO'
+        ? 'vehiculo'
+        : 'maquinaria'
+    )" class="bg-red-600 hover:bg-red-700 transition text-white px-5 py-2 rounded-xl font-bold">
+                    Ver plan
+                  </button>
+
+                  <button type="button" (click)="verInspecciones(
+      item.id,
+      item.tipo_equipo === 'VEHICULO'
+        ? 'vehiculo'
+        : 'maquinaria'
+    )" class="bg-blue-600 hover:bg-blue-700 transition text-white px-5 py-2 rounded-xl font-bold">
+                    Inspecciones
+                  </button>
+
+                </div>
+
+              </td>
+
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</main>

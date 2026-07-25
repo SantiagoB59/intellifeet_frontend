@@ -1,0 +1,17 @@
+<nav class="navbar">
+  <div class="logo">
+    <img src="assets/img/amaretto.png" alt="Don Amaretto Logo" [routerLink]="'/'">
+  </div>
+  <ul class="nav-links">
+    <li><a routerLink="/">Inicio</a></li>
+    <li><a routerLink="/about">Acerca de</a></li>
+    <li><a routerLink="/productos">Productos</a></li>
+    <li><a routerLink="/reservations">Reservas</a></li>
+    <li><a routerLink="/contact">Contacto</a></li>
+  </ul>
+<div class="btn-container">
+  <button class="btn-book" [routerLink]="'/login'">Iniciar sesión</button>
+  <button class="btn-book">Hacer pedido</button>
+</div>
+
+</nav>

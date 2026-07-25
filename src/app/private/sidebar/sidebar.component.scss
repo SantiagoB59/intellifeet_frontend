@@ -1,0 +1,467 @@
+:host {
+  display: flex;
+  height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* =========================
+   SIDEBAR BASE
+========================= */
+.sidebar-container {
+  background: linear-gradient(
+    180deg,
+    #172033 0%,
+    #111827 100%
+  );
+
+  border-right: 1px solid rgba(255,255,255,.06);
+
+  box-shadow:
+    8px 0 35px rgba(0,0,0,.22);
+
+  transition: all .35s ease;
+  overflow: hidden;
+  z-index: 100;
+}
+
+/* =========================
+   HEADER
+========================= */
+.header-section {
+  position: relative;
+  z-index: 20;
+
+  padding: 1.25rem 1.5rem !important;
+
+  border-bottom: 1px solid rgba(255,255,255,.08);
+
+  .logo-expanded {
+    transition: all .3s ease;
+    min-width: 0;
+
+    span {
+      color: #ffffff;
+      font-weight: 700;
+    }
+  }
+
+  .toggle-btn {
+
+    padding: .875rem !important;
+
+    min-width: 46px;
+    height: 46px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: rgba(255,255,255,.05);
+
+    color: #ffffff;
+
+    border: 1px solid rgba(255,255,255,.08);
+
+    transition: all .2s ease;
+
+    cursor: pointer;
+
+    &:hover {
+
+      background: rgba(255,255,255,.12);
+
+      transform: scale(1.05);
+
+      box-shadow: 0 8px 18px rgba(0,0,0,.25);
+
+    }
+
+    &:active {
+
+      transform: scale(.97);
+
+    }
+
+    i {
+      font-size: 15px !important;
+    }
+
+  }
+
+}
+
+/* =========================
+   CONTENT
+========================= */
+
+.content-section {
+
+  flex: 1;
+
+  overflow-y: auto;
+
+  overflow-x: hidden;
+
+}
+
+/* =========================
+   COLLAPSED
+========================= */
+
+.sidebar-container.collapsed {
+
+  .header-section {
+
+    padding: 1.5rem 1rem !important;
+
+    justify-content: center;
+
+    .logo-expanded {
+
+      opacity: 0;
+
+      transform: translateX(-15px) scale(.9);
+
+      width: 0;
+
+      overflow: hidden;
+
+    }
+
+    .toggle-btn {
+
+      position: absolute;
+
+      right: 1rem;
+
+      top: 50%;
+
+      transform: translateY(-50%);
+
+    }
+
+  }
+
+  .content-section {
+
+    padding: 1.5rem .75rem !important;
+
+    .menu-label,
+    .logout-label {
+
+      opacity: 0 !important;
+
+      width: 0 !important;
+
+      overflow: hidden;
+
+      margin-left: 0 !important;
+
+      transform: translateX(-12px);
+
+    }
+
+  }
+
+  .menu-btn,
+  .logout-btn {
+
+    justify-content: center;
+
+  }
+
+}
+
+/* =========================
+   MENU BUTTONS
+========================= */
+
+.menu-btn,
+.logout-btn {
+
+  height: 3.5rem;
+
+  display: flex;
+
+  align-items: center;
+
+  padding: 0 1rem;
+
+  border-radius: 14px;
+
+  border: none;
+
+  color: #d1d5db;
+
+  background: transparent;
+
+  cursor: pointer;
+
+  transition: all .22s ease;
+
+  &:hover {
+
+    background: rgba(255,255,255,.07);
+
+    color: #ffffff;
+
+    transform: translateY(-2px);
+
+  }
+
+  &:active {
+
+    transform: scale(.98);
+
+  }
+
+}
+
+/* =========================
+   ICONOS
+========================= */
+
+.menu-btn i,
+.logout-btn i {
+
+  opacity: .9;
+
+  transition: all .2s ease;
+
+}
+
+.menu-btn:hover i,
+.logout-btn:hover i {
+
+  transform: scale(1.08);
+
+  opacity: 1;
+
+}
+
+/* =========================
+   ITEMS ACTIVOS
+========================= */
+
+.menu-btn.bg-red-50 {
+
+  background: linear-gradient(
+      90deg,
+      #dc2626,
+      #ef4444
+  ) !important;
+
+  color: white !important;
+
+  box-shadow:
+      0 10px 25px rgba(220,38,38,.35);
+
+}
+
+.menu-btn.bg-orange-50 {
+
+  background: linear-gradient(
+      90deg,
+      #ea580c,
+      #fb923c
+  ) !important;
+
+  color: white !important;
+
+}
+
+.menu-btn.bg-blue-50 {
+
+  background: linear-gradient(
+      90deg,
+      #2563eb,
+      #3b82f6
+  ) !important;
+
+  color: white !important;
+
+}
+
+.menu-btn.bg-green-50 {
+
+  background: linear-gradient(
+      90deg,
+      #16a34a,
+      #22c55e
+  ) !important;
+
+  color: white !important;
+
+}
+
+.menu-btn.bg-purple-50 {
+
+  background: linear-gradient(
+      90deg,
+      #7c3aed,
+      #8b5cf6
+  ) !important;
+
+  color: white !important;
+
+}
+
+.menu-btn.bg-cyan-50 {
+
+  background: linear-gradient(
+      90deg,
+      #0891b2,
+      #06b6d4
+  ) !important;
+
+  color: white !important;
+
+}
+
+.menu-btn.bg-amber-50 {
+
+  background: linear-gradient(
+      90deg,
+      #d97706,
+      #f59e0b
+  ) !important;
+
+  color: white !important;
+
+}
+
+.menu-btn.bg-yellow-50 {
+
+  background: linear-gradient(
+      90deg,
+      #ca8a04,
+      #eab308
+  ) !important;
+
+  color: white !important;
+
+}
+
+/* =========================
+   LABELS
+========================= */
+
+.menu-label,
+.logout-label {
+
+  color: inherit;
+
+  font-weight: 600;
+
+  white-space: nowrap;
+
+  transition: all .3s ease;
+
+}
+
+/* =========================
+   SUBMENU
+========================= */
+
+.submenu {
+
+  overflow: hidden;
+
+  animation: fadeSlide .18s ease;
+
+}
+
+@keyframes fadeSlide {
+
+  from {
+
+    opacity: 0;
+
+    transform: translateY(-6px);
+
+  }
+
+  to {
+
+    opacity: 1;
+
+    transform: translateY(0);
+
+  }
+
+}
+
+/* =========================
+   DIVIDER
+========================= */
+
+.border-t {
+
+  height: 1px;
+
+  background: rgba(255,255,255,.08);
+
+}
+
+/* =========================
+   SCROLLBAR
+========================= */
+
+::-webkit-scrollbar {
+
+  width: 7px;
+
+}
+
+::-webkit-scrollbar-thumb {
+
+  background: rgba(255,255,255,.18);
+
+  border-radius: 999px;
+
+}
+
+::-webkit-scrollbar-thumb:hover {
+
+  background: rgba(255,255,255,.28);
+
+}
+
+::-webkit-scrollbar-track {
+
+  background: transparent;
+
+}
+
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width:1024px){
+
+  .sidebar-container.expanded{
+
+    width:260px !important;
+
+  }
+
+  .menu-btn,
+  .logout-btn{
+
+    height:3.25rem;
+
+  }
+
+}
+
+/* =========================
+   MOBILE NAV
+========================= */
+
+.mobile-bottom-nav{
+
+  display:none;
+
+}

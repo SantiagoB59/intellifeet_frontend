@@ -1,0 +1,878 @@
+/* =========================================================
+   PAGE
+========================================================= */
+.viajes-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0;
+}
+
+.page-subtitle {
+  color: #64748b;
+  margin-top: .3rem;
+}
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+.btn-primary,
+.btn-secondary,
+.btn-play,
+.btn-stop,
+.btn-delete {
+  border: none;
+  cursor: pointer;
+  transition: .25s ease;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: white;
+
+  padding: .95rem 1.4rem;
+  border-radius: 16px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .7rem;
+
+  font-weight: 700;
+  box-shadow: 0 10px 25px rgba(37, 99, 235, .18);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 35px rgba(37, 99, 235, .28);
+}
+
+.btn-secondary {
+  background: #e2e8f0;
+  color: #0f172a;
+
+  padding: .9rem 1.2rem;
+  border-radius: 14px;
+
+  font-weight: 700;
+}
+
+.btn-secondary:hover {
+  background: #cbd5e1;
+}
+
+/* =========================================================
+   FILTERS
+========================================================= */
+.filters-bar {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.search-box {
+  position: relative;
+}
+
+.search-box i {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+}
+
+.filters-bar select {
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+
+  padding: .95rem 1rem .95rem 2.6rem;
+  min-width: 220px;
+
+  background: white;
+  font-size: .95rem;
+}
+
+/* =========================================================
+   GRID
+========================================================= */
+.viajes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 1.5rem;
+}
+
+/* =========================================================
+   CARD
+========================================================= */
+.viaje-card {
+  background: white;
+  border-radius: 24px;
+  padding: 1.5rem;
+
+  border: 1px solid #e2e8f0;
+
+  box-shadow: 0 8px 25px rgba(15, 23, 42, .05);
+
+  transition: .25s ease;
+}
+
+.viaje-card:hover {
+  transform: translateY(-4px);
+
+  box-shadow: 0 18px 35px rgba(15, 23, 42, .08);
+}
+
+.viaje-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 1.2rem;
+}
+
+.viaje-id {
+  font-weight: 800;
+  color: #0f172a;
+}
+
+/* =========================================================
+   BADGES
+========================================================= */
+.badge {
+  padding: .45rem .85rem;
+  border-radius: 999px;
+
+  font-size: .76rem;
+  font-weight: 700;
+}
+
+.estado-programado {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.estado-curso {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.estado-finalizado {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+/* =========================================================
+   BODY
+========================================================= */
+.viaje-body {
+  display: flex;
+  flex-direction: column;
+  gap: .95rem;
+}
+
+.info {
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+
+  color: #334155;
+  font-size: .95rem;
+}
+
+.info i {
+  width: 20px;
+  color: #2563eb;
+}
+
+/* =========================================================
+   ACTIONS
+========================================================= */
+.actions {
+  margin-top: 1.5rem;
+
+  display: flex;
+  justify-content: flex-end;
+  gap: .7rem;
+}
+
+.btn-play,
+.btn-stop,
+.btn-delete {
+  width: 46px;
+  height: 46px;
+
+  border-radius: 14px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: white;
+}
+
+.btn-play {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+}
+
+.btn-stop {
+  background: linear-gradient(135deg, #16a34a, #15803d);
+}
+
+.btn-delete {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+.btn-play:hover,
+.btn-stop:hover,
+.btn-delete:hover {
+  transform: scale(1.05);
+}
+
+/* =========================================================
+   EMPTY
+========================================================= */
+.empty-state {
+  grid-column: 1/-1;
+
+  background: white;
+  border-radius: 24px;
+
+  padding: 4rem 2rem;
+  text-align: center;
+
+  border: 1px dashed #cbd5e1;
+}
+
+.empty-state i {
+  font-size: 3rem;
+  color: #94a3b8;
+}
+
+.empty-state p {
+  margin-top: 1rem;
+  color: #64748b;
+}
+
+/* =========================================================
+   MODAL BACKDROP
+========================================================= */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+
+  background: rgba(15, 23, 42, .72);
+  backdrop-filter: blur(6px);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 1.5rem;
+  z-index: 9999;
+
+  overflow-y: auto;
+}
+
+/* =========================================================
+   MODALS
+========================================================= */
+.modal,
+.finalizar-modal {
+  width: 100%;
+  max-width: 760px;
+
+  background: #fff;
+
+  border-radius: 28px;
+
+  overflow: hidden;
+
+  box-shadow:
+    0 25px 70px rgba(0,0,0,.28);
+
+  animation: modalFade .25s ease;
+
+  max-height: 92vh;
+
+  display: flex;
+  flex-direction: column;
+}
+
+/* =========================================================
+   HEADERS
+========================================================= */
+.modal-header,
+.finalizar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  padding: 1.7rem 1.8rem;
+
+  background: linear-gradient(
+    135deg,
+    #0f172a,
+    #1e293b
+  );
+
+  color: white;
+}
+
+.modal-header h3,
+.finalizar-header h3 {
+  margin: 0;
+  font-size: 1.9rem;
+  font-weight: 800;
+}
+
+.modal-subtitle,
+.finalizar-header p {
+  margin-top: .45rem;
+  opacity: .85;
+  font-size: .95rem;
+}
+
+/* =========================================================
+   CLOSE BUTTON
+========================================================= */
+.close-btn {
+  border: none;
+
+  width: 46px;
+  height: 46px;
+
+  border-radius: 14px;
+
+  background: rgba(255,255,255,.12);
+
+  color: white;
+  cursor: pointer;
+
+  transition: .2s ease;
+
+  flex-shrink: 0;
+}
+
+.close-btn:hover {
+  transform: scale(1.05);
+  background: rgba(255,255,255,.18);
+}
+
+/* =========================================================
+   BODY
+========================================================= */
+.modal-body,
+.finalizar-body {
+  padding: 1.8rem;
+
+  overflow-y: auto;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* =========================================================
+   FORM GRID
+========================================================= */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.2rem;
+}
+
+.full-width {
+  grid-column: 1 / -1;
+}
+
+/* =========================================================
+   FORM CARD
+========================================================= */
+.form-card {
+  display: flex;
+  flex-direction: column;
+  gap: .6rem;
+}
+
+.form-card label {
+  font-size: .92rem;
+  font-weight: 700;
+  color: #334155;
+}
+
+.form-card input,
+.form-card textarea,
+.form-card select {
+  width: 100%;
+
+  border: 1px solid #dbe2ea;
+  border-radius: 18px;
+
+  padding: 1rem 1rem;
+
+  background: #f8fafc;
+
+  font-size: .96rem;
+  color: #0f172a;
+
+  transition: .2s ease;
+
+  resize: none;
+}
+
+.form-card input::placeholder,
+.form-card textarea::placeholder {
+  color: #94a3b8;
+}
+
+.form-card input:focus,
+.form-card textarea:focus,
+.form-card select:focus {
+  outline: none;
+
+  border-color: #2563eb;
+  background: white;
+
+  box-shadow:
+    0 0 0 4px rgba(37,99,235,.10);
+}
+
+/* =========================================================
+   INPUT ICON
+========================================================= */
+.input-icon {
+  position: relative;
+}
+
+.input-icon input {
+  padding-right: 70px;
+}
+
+.input-icon span {
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+
+  color: #64748b;
+  font-weight: 700;
+}
+
+/* =========================================================
+   ALERT
+========================================================= */
+.info-alert {
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+
+  padding: 1rem 1.1rem;
+  border-radius: 16px;
+
+  color: #1d4ed8;
+  font-size: .92rem;
+}
+
+.info-alert i {
+  font-size: 1rem;
+}
+
+/* =========================================================
+   RESUMEN
+========================================================= */
+.resumen-viaje {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+
+  border-radius: 18px;
+
+  padding: 1rem 1.2rem;
+
+  display: flex;
+  flex-direction: column;
+  gap: .8rem;
+}
+
+.resumen-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  font-size: .92rem;
+}
+
+.resumen-item strong {
+  color: #0f172a;
+}
+
+/* =========================================================
+   ACTIONS
+========================================================= */
+.modal-actions,
+.finalizar-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+
+  margin-top: .5rem;
+}
+
+.btn-cancel {
+  border: none;
+
+  background: #e2e8f0;
+  color: #0f172a;
+
+  padding: .95rem 1.4rem;
+  border-radius: 16px;
+
+  font-weight: 700;
+  cursor: pointer;
+
+  transition: .2s ease;
+}
+
+.btn-cancel:hover {
+  background: #cbd5e1;
+}
+
+.btn-save,
+.btn-finalizar {
+  border: none;
+
+  background: linear-gradient(
+    135deg,
+    #16a34a,
+    #15803d
+  );
+
+  color: white;
+
+  padding: .95rem 1.5rem;
+  border-radius: 16px;
+
+  font-weight: 700;
+  cursor: pointer;
+
+  transition: .2s ease;
+}
+
+.btn-save:hover,
+.btn-finalizar:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 10px 25px rgba(22,163,74,.25);
+}
+
+/* =========================================================
+   SCROLLBAR
+========================================================= */
+.modal-body::-webkit-scrollbar,
+.finalizar-body::-webkit-scrollbar {
+  width: 7px;
+}
+
+.modal-body::-webkit-scrollbar-thumb,
+.finalizar-body::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 20px;
+}
+
+/* =========================================================
+   ANIMATION
+========================================================= */
+@keyframes modalFade {
+
+  from {
+    opacity: 0;
+    transform: translateY(15px) scale(.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+@media (max-width: 768px) {
+
+  .page-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .btn-primary {
+    width: 100%;
+  }
+
+  .filters-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filters-bar select,
+  .search-box {
+    width: 100%;
+  }
+
+  .viajes-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .modal,
+  .finalizar-modal {
+    max-width: 100%;
+    border-radius: 22px;
+  }
+
+  .modal-header,
+  .finalizar-header {
+    padding: 1.2rem;
+  }
+
+  .modal-header h3,
+  .finalizar-header h3 {
+    font-size: 1.5rem;
+  }
+
+  .modal-body,
+  .finalizar-body {
+    padding: 1.2rem;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-actions,
+  .finalizar-actions {
+    flex-direction: column;
+  }
+
+  .btn-cancel,
+  .btn-save,
+  .btn-finalizar {
+    width: 100%;
+  }
+}
+
+/* =========================================
+   MODAL DESACTIVAR
+========================================= */
+
+.delete-modal {
+
+  width: 100%;
+  max-width: 480px;
+
+  background: #fff;
+
+  border-radius: 28px;
+
+  overflow: hidden;
+
+  animation: modalFade .25s ease;
+
+  box-shadow:
+    0 25px 60px rgba(0,0,0,.25);
+
+}
+
+/* HEADER */
+.delete-header {
+
+  background:
+    linear-gradient(
+      135deg,
+      #7f1d1d,
+      #991b1b
+    );
+
+  color: white;
+
+  padding: 28px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+}
+
+.delete-header h3 {
+
+  margin: 0;
+
+  font-size: 24px;
+  font-weight: 800;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+}
+
+.delete-header p {
+
+  margin-top: 10px;
+
+  opacity: .9;
+
+  font-size: 14px;
+
+}
+
+/* BODY */
+.delete-body {
+
+  padding: 28px;
+
+}
+
+/* ALERT */
+.delete-warning {
+
+  background: #fef2f2;
+
+  border: 1px solid #fecaca;
+
+  color: #991b1b;
+
+  padding: 16px 18px;
+
+  border-radius: 16px;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  font-size: 14px;
+
+  margin-bottom: 24px;
+
+}
+
+/* INFO */
+.delete-info {
+
+  background: #f8fafc;
+
+  border-radius: 18px;
+
+  padding: 20px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+}
+
+.info-row {
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+}
+
+.info-row span {
+
+  color: #64748b;
+  font-size: 14px;
+
+}
+
+.info-row strong {
+
+  color: #0f172a;
+  font-size: 15px;
+
+}
+
+/* ACTIONS */
+.delete-actions {
+
+  display: flex;
+  justify-content: flex-end;
+  gap: 14px;
+
+  margin-top: 28px;
+
+}
+
+/* BTN DESACTIVAR */
+.btn-delete-confirm {
+
+  border: none;
+
+  background:
+    linear-gradient(
+      135deg,
+      #dc2626,
+      #991b1b
+    );
+
+  color: white;
+
+  height: 48px;
+
+  padding: 0 24px;
+
+  border-radius: 14px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  transition: .2s ease;
+
+}
+
+.btn-delete-confirm:hover {
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 12px 25px rgba(220,38,38,.25);
+
+}
+
+/* RESPONSIVE */
+@media(max-width: 768px){
+
+  .delete-modal{
+
+    width: calc(100% - 24px);
+
+  }
+
+}

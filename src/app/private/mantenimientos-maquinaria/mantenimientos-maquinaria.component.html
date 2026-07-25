@@ -1,0 +1,514 @@
+<!-- ========================= -->
+<!-- mantenimientos-maquinaria.component.html -->
+<!-- PARTE 1 -->
+<!-- Header + Filtros + Tabla -->
+<!-- ========================= -->
+
+<div class="mantenimiento-container">
+
+  <!-- ========================= -->
+  <!-- HEADER -->
+  <!-- ========================= -->
+  <div class="page-header">
+
+    <div class="header-content">
+
+      <h1>Gestión de Mantenimientos de Maquinaria</h1>
+
+      <p class="page-subtitle">
+        Registro de mantenimientos realizados para maquinaria.
+      </p>
+
+    </div>
+
+    <button class="btn-primary" (click)="abrirModal()">
+
+      <span>＋</span>
+
+      Nuevo mantenimiento
+
+    </button>
+
+  </div>
+
+  <!-- ========================= -->
+  <!-- FILTROS -->
+  <!-- ========================= -->
+  <div class="table-card p-6 mb-6">
+
+    <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+
+      <!-- MAQUINARIA -->
+      <input type="number" [(ngModel)]="maquinaria_id" placeholder="ID Maquinaria" class="form-input">
+
+      <!-- TIPO -->
+      <select [(ngModel)]="tipo" class="form-input">
+
+        <option value="">Todos</option>
+
+        <option value="PR">
+          Preventivo
+        </option>
+
+        <option value="CR">
+          Correctivo
+        </option>
+
+        <option value="I">
+          Inspección
+        </option>
+
+        <option value="C">
+          Cambio
+        </option>
+
+      </select>
+
+      <!-- DESDE -->
+      <input type="date" [(ngModel)]="desde" class="form-input">
+
+      <!-- HASTA -->
+      <input type="date" [(ngModel)]="hasta" class="form-input">
+
+      <!-- BOTONES -->
+      <div class="flex gap-2">
+
+        <button class="btn-primary w-full" (click)="filtrar()">
+
+          Filtrar
+
+        </button>
+
+        <button class="btn-secondary w-full" (click)="limpiar()">
+
+          Limpiar
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- ========================= -->
+  <!-- LOADING -->
+  <!-- ========================= -->
+  <div *ngIf="loading" class="text-center py-10">
+
+    Cargando mantenimientos...
+
+  </div>
+
+  <!-- ========================= -->
+  <!-- TABLA -->
+  <!-- ========================= -->
+  <div class="table-card">
+
+    <div class="table-wrapper">
+
+      <table class="data-table">
+
+        <thead>
+
+          <tr>
+
+            <th>Maquinaria</th>
+
+            <th>Fecha</th>
+
+            <th>Mantenimiento</th>
+
+            <th>Horas</th>
+
+            <th>Proveedor</th>
+
+            <th>Lugar</th>
+
+            <th>Responsable</th>
+
+            <th>Costo</th>
+
+            <th>Soporte</th>
+
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+  <tr *ngFor="let m of mantenimientos" class="table-row">
+
+    <!-- MAQUINARIA -->
+    <td>
+
+      <div class="placa">
+        {{ m.maquinaria?.codigo || m.maquinaria_id }}
+      </div>
+
+      <div class="vin">
+        {{ m.maquinaria?.marca }}
+        {{ m.maquinaria?.modelo }}
+      </div>
+
+    </td>
+
+    <!-- FECHA -->
+    <td class="conductor">
+      {{ m.fecha }}
+    </td>
+
+    <!-- MANTENIMIENTO -->
+    <td>
+
+      <div class="tipo">
+        {{ m.plan_item?.nombre }}
+      </div>
+
+      <span class="badge"
+            [ngClass]="getTipoClass(m.tipo)">
+        {{ getTipoTexto(m.tipo) }}
+      </span>
+
+    </td>
+
+    <!-- HORAS -->
+    <td class="km">
+      {{ m.horas }} h
+    </td>
+
+    <!-- PROVEEDOR -->
+    <td class="conductor">
+      {{ m.proveedor || '—' }}
+    </td>
+
+    <!-- LUGAR -->
+    <td class="conductor">
+      {{ m.lugar || '—' }}
+    </td>
+
+    <!-- RESPONSABLE -->
+    <td class="conductor">
+      {{ m.responsable || '—' }}
+    </td>
+
+    <!-- COSTO -->
+    <td class="km">
+      {{ m.costo | currency:'COP':'symbol':'1.0-0' }}
+    </td>
+
+    <!-- SOPORTE -->
+    <td>
+
+      <a *ngIf="m.soporte"
+         [href]="'https://transmenasmart.com/' + m.soporte"
+         target="_blank"
+         class="action-link">
+
+        <i class="fas fa-file-alt"></i>
+        Ver archivo
+
+      </a>
+
+      <span *ngIf="!m.soporte" class="text-muted">
+        Sin archivo
+      </span>
+
+    </td>
+
+  </tr>
+
+  <tr *ngIf="mantenimientos.length === 0">
+
+    <td colspan="9" class="empty-row">
+
+      <i class="fas fa-tools"></i><br>
+
+      No hay mantenimientos registrados
+
+    </td>
+
+  </tr>
+
+</tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- ========================= -->
+<!-- PARTE 2 CONTINÚA CON -->
+<!-- EL MODAL COMPLETO -->
+<!-- ========================= -->
+
+
+<!-- ========================= -->
+<!-- MODAL -->
+<!-- PARTE 2 -->
+<!-- ========================= -->
+<div *ngIf="showModal" class="modal-backdrop">
+
+  <div class="modal-box">
+
+    <!-- ========================= -->
+    <!-- HEADER -->
+    <!-- ========================= -->
+    <div class="modal-header">
+
+      <div>
+
+        <h2 class="modal-title">
+          🔧 Nuevo mantenimiento de maquinaria
+        </h2>
+
+        <p class="text-sm text-slate-500">
+          Registra un mantenimiento realizado sobre una maquinaria.
+        </p>
+
+      </div>
+
+      <button class="modal-close" (click)="cerrarModal()">
+
+        ✕
+
+      </button>
+
+    </div>
+
+    <!-- ========================= -->
+    <!-- BODY -->
+    <!-- ========================= -->
+    <div class="modal-body">
+
+      <!-- ========================= -->
+      <!-- MAQUINARIA -->
+      <!-- ========================= -->
+      <div class="form-group">
+
+        <label>Maquinaria</label>
+
+        <input [(ngModel)]="busquedaMaquinaria" placeholder="Buscar por código..." class="form-input">
+
+        <small class="form-help">
+          Selecciona la maquinaria a la que se le realizó el mantenimiento.
+        </small>
+
+        <div *ngIf="!maquinariaSeleccionada" class="border rounded-xl mt-2 max-h-40 overflow-y-auto">
+
+          <div *ngFor="let m of maquinariasFiltradas" (click)="seleccionarMaquinaria(m)"
+            class="p-3 hover:bg-slate-100 cursor-pointer">
+
+            <strong>{{ m.codigo }}</strong>
+
+            <div class="text-sm text-slate-500">
+
+              {{ m.marca }}
+              {{ m.modelo }}
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <div *ngIf="maquinariaSeleccionada" class="mt-3 p-3 rounded-xl bg-emerald-100 flex justify-between">
+
+          <span>
+
+            🚜 {{ maquinariaSeleccionada.codigo }}
+
+          </span>
+
+          <button (click)="limpiarMaquinaria()">
+
+            ✕
+
+          </button>
+
+        </div>
+
+      </div>
+
+      <!-- ========================= -->
+      <!-- PLAN -->
+      <!-- ========================= -->
+      <div class="form-group">
+
+        <label>Plan de mantenimiento</label>
+
+        <input [(ngModel)]="busquedaPlan" placeholder="Buscar mantenimiento..." class="form-input">
+
+        <small class="form-help">
+          Selecciona el mantenimiento realizado.
+        </small>
+
+        <div *ngIf="!planSeleccionado" class="border rounded-xl mt-2 max-h-40 overflow-y-auto">
+
+          <div *ngFor="let p of planFiltrados" (click)="seleccionarPlan(p)"
+            class="p-3 hover:bg-slate-100 cursor-pointer">
+
+            <div class="font-bold">
+
+              {{ p.plan_item?.nombre }}
+
+            </div>
+
+            <div class="text-sm text-slate-500">
+
+              {{ p.plan_item?.descripcion }}
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <div *ngIf="planSeleccionado" class="mt-3 p-3 rounded-xl bg-blue-100 flex justify-between">
+
+          <span>
+
+            🔧 {{ planSeleccionado.plan_item?.nombre }}
+
+          </span>
+
+          <button (click)="limpiarPlan()">
+
+            ✕
+
+          </button>
+
+        </div>
+
+      </div>
+
+      <!-- ========================= -->
+      <!-- FECHA -->
+      <!-- ========================= -->
+      <div class="form-group">
+
+        <label>Fecha del mantenimiento</label>
+
+        <input type="date" [(ngModel)]="nuevo.fecha" class="form-input">
+
+      </div>
+
+      <!-- ========================= -->
+      <!-- HORÓMETRO -->
+      <!-- ========================= -->
+      <div class="form-group">
+
+        <label>Horómetro</label>
+
+        <input type="number" [(ngModel)]="nuevo.horas" class="form-input">
+
+        <small class="form-help">
+
+          Horas registradas al momento del mantenimiento.
+
+        </small>
+
+      </div>
+
+      <!-- ========================= -->
+      <!-- PROVEEDOR -->
+      <!-- ========================= -->
+      <div class="form-group">
+
+        <label>Taller / Proveedor</label>
+
+        <input [(ngModel)]="nuevo.proveedor" class="form-input">
+
+      </div>
+
+      <!-- ========================= -->
+      <!-- LUGAR -->
+      <!-- ========================= -->
+      <div class="form-group">
+
+        <label>Lugar</label>
+
+        <input [(ngModel)]="nuevo.lugar" class="form-input">
+
+      </div>
+
+      <!-- ========================= -->
+      <!-- RESPONSABLE -->
+      <!-- ========================= -->
+      <div class="form-group">
+
+        <label>Responsable</label>
+
+        <input [(ngModel)]="nuevo.responsable" class="form-input">
+
+      </div>
+
+      <!-- ========================= -->
+      <!-- COSTO -->
+      <!-- ========================= -->
+      <div class="form-group">
+
+        <label>Costo</label>
+
+        <input type="number" [(ngModel)]="nuevo.costo" class="form-input">
+
+      </div>
+
+      <!-- ========================= -->
+      <!-- SOPORTE -->
+      <!-- ========================= -->
+      <div class="form-group">
+
+        <label>Factura / Soporte</label>
+
+        <input type="file" (change)="onFileSelected($event)" class="form-input">
+
+        <small class="form-help">
+
+          Adjunta una factura, orden de trabajo o evidencia del mantenimiento.
+
+        </small>
+
+      </div>
+
+      <!-- ========================= -->
+      <!-- OBSERVACIONES -->
+      <!-- ========================= -->
+      <div class="form-group">
+
+        <label>Observaciones</label>
+
+        <textarea rows="4" [(ngModel)]="nuevo.observaciones" class="form-input"
+          placeholder="Observaciones del mantenimiento...">
+
+        </textarea>
+
+      </div>
+
+    </div>
+
+    <!-- ========================= -->
+    <!-- FOOTER -->
+    <!-- ========================= -->
+    <div class="modal-footer">
+
+      <button class="btn-secondary" (click)="cerrarModal()">
+
+        Cancelar
+
+      </button>
+
+      <button class="btn-primary" (click)="guardar()">
+
+        Guardar mantenimiento
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>

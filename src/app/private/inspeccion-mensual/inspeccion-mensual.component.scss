@@ -1,0 +1,229 @@
+/* =========================
+   CONTENT VIEW
+========================= */
+.content-view {
+  width: 100%;
+  min-height: 100vh;
+  background: #f8fafc;
+  overflow-x: hidden;
+  padding-bottom: 90px;
+}
+
+/* =========================
+   CONTENEDOR PRINCIPAL
+========================= */
+.content-view > div {
+  padding: 2rem;
+}
+
+/* =========================
+   TABLA
+========================= */
+table {
+  width: 100%;
+  min-width: 850px;
+  border-collapse: collapse;
+}
+
+/* =========================
+   HEADERS
+========================= */
+thead tr {
+  border-bottom: 1px solid #e2e8f0;
+}
+
+th {
+  white-space: nowrap;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+}
+
+/* =========================
+   CELDAS
+========================= */
+td {
+  white-space: nowrap;
+}
+
+/* =========================
+   HOVER
+========================= */
+tbody tr {
+  transition: all 0.2s ease;
+}
+
+tbody tr:hover {
+  background: #f8fafc;
+}
+
+/* =========================
+   BOTÓN TABLA
+========================= */
+td button {
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+td button:hover {
+  transform: translateY(-1px);
+}
+
+/* =========================
+   SCROLL TABLA
+========================= */
+.overflow-x-auto {
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  scrollbar-width: thin;
+}
+
+.overflow-x-auto::-webkit-scrollbar {
+  height: 7px;
+}
+
+.overflow-x-auto::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 999px;
+}
+
+/* =========================
+   TABLET
+========================= */
+@media (max-width: 1024px) {
+
+  .content-view > div {
+    padding: 1.5rem;
+  }
+
+  table {
+    min-width: 750px;
+  }
+
+  th,
+  td {
+    padding: 1rem !important;
+  }
+}
+
+/* =========================
+   MOBILE
+========================= */
+/* =========================
+   MOBILE
+========================= */
+@media (max-width: 768px) {
+
+  .content-view{
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+  }
+
+  .content-view > div {
+    width: 100%;
+    max-width: none;
+    padding: 0.5rem;
+  }
+
+  /* HEADER */
+  header h2 {
+    font-size: 1.7rem !important;
+    line-height: 1.2;
+  }
+
+  header p {
+    font-size: 0.9rem;
+  }
+
+  /* FILTROS */
+  .grid.grid-cols-1.md\:grid-cols-4 {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* CARDS */
+  .rounded-\[2rem\] {
+    border-radius: 1.3rem !important;
+  }
+
+  /* TABLA */
+  table {
+    min-width: 700px;
+  }
+
+  th {
+    font-size: 10px !important;
+    padding: 0.9rem !important;
+  }
+
+  td {
+    font-size: 0.85rem !important;
+    padding: 0.9rem !important;
+  }
+
+  /* BOTÓN */
+  td button {
+    font-size: 0.78rem;
+    padding: 0.7rem 1rem !important;
+  }
+}
+
+/* =========================
+   MOBILE PEQUEÑO
+========================= */
+@media (max-width: 480px) {
+
+  .content-view > div {
+    padding: 0.25rem;
+  }
+
+  header h2 {
+    font-size: 1.35rem !important;
+  }
+
+  header p {
+    font-size: 0.8rem;
+  }
+
+  table {
+    min-width: 650px;
+  }
+
+  th {
+    font-size: 9px !important;
+    padding: 0.75rem !important;
+  }
+
+  td {
+    font-size: 0.78rem !important;
+    padding: 0.75rem !important;
+  }
+
+  td button {
+    font-size: 0.72rem !important;
+    padding: 0.65rem 0.8rem !important;
+  }
+
+  .rounded-full {
+    font-size: 9px !important;
+  }
+}
+
+/* =========================
+   MOBILE MUY PEQUEÑO
+========================= */
+@media (max-width: 360px) {
+
+  table {
+    min-width: 600px;
+  }
+
+  header h2 {
+    font-size: 1.1rem !important;
+  }
+
+  td,
+  th {
+    padding: 0.65rem !important;
+  }
+}

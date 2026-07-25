@@ -1,0 +1,128 @@
+<div class="km-backdrop">
+
+  <div class="km-modal">
+
+    <!-- HEADER -->
+    <div class="km-header">
+
+      <div class="header-content">
+
+        <div class="header-icon">
+          <i class="fas fa-route"></i>
+        </div>
+
+        <div class="header-text">
+          <h2>Verificación de Kilometraje</h2>
+          <p>
+            Algunos vehículos requieren validar el kilometraje reportado para mantener
+            actualizado el plan de mantenimiento.
+          </p>
+        </div>
+
+        <div class="header-counter">
+          <span class="number">{{ total }}</span>
+          <small>Pendientes</small>
+        </div>
+
+      </div>
+
+      <button class="close-btn" (click)="cerrarModal()">
+        ✕
+      </button>
+
+    </div>
+
+    <!-- BODY -->
+    <div class="km-body">
+
+      <div class="alert-card">
+
+        <div class="alert-icon">
+          <i class="fas fa-phone-alt"></i>
+        </div>
+
+        <div>
+
+          <h3>Antes de actualizar el kilometraje</h3>
+
+          <p>
+            Comuníquese con el conductor y confirme el
+            <strong>kilometraje actual del tablero</strong>.
+            Luego registre el valor para mantener sincronizados el sistema,
+            el GPS y la programación de mantenimientos.
+          </p>
+
+        </div>
+
+      </div>
+
+      <!-- LISTA VEHÍCULOS -->
+      <div class="lista-vehiculos" *ngIf="vehiculos.length">
+
+        <h4>Vehículos pendientes</h4>
+
+        <div class="table-wrapper">
+
+          <table>
+
+            <thead>
+
+              <tr>
+                <th>Placa</th>
+                <th>Km Sistema</th>
+              </tr>
+
+            </thead>
+
+            <tbody>
+
+              <tr *ngFor="let v of vehiculos">
+
+                <td>
+                  <div class="placa-cell">
+                    <span class="placa">{{ v.placa }}</span>
+                  </div>
+                </td>
+
+                <td>
+                  <span class="badge badge-estimated">
+                    {{ v.km_estimado | number }}
+                  </span>
+                </td>
+
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <div class="km-footer">
+
+      <button
+        class="btn-secondary"
+        (click)="cerrarModal()">
+
+        Más tarde
+
+      </button>
+
+      <button
+        class="btn-primary"
+        (click)="irAVerificaciones()">
+
+        Ver vehículos
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>

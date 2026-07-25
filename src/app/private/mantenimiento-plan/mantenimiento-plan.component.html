@@ -1,0 +1,516 @@
+<div class="mantenimiento-container">
+
+  <!-- HEADER -->
+  <div class="page-header">
+
+    <div class="header-content">
+      <h1 class="page-title">Mantenimiento Plan</h1>
+      <p class="page-subtitle">
+        Gestión de mantenimiento preventivo del vehículo
+      </p>
+    </div>
+
+    <div class="header-actions">
+
+      <button (click)="volver()" class="btn-secondary">
+        <i class="fas fa-arrow-left"></i>
+        Volver
+      </button>
+
+      <button (click)="abrirModal()" class="btn-primary">
+        <i class="fas fa-plus"></i>
+        Programar mantenimiento
+      </button>
+
+    </div>
+
+  </div>
+
+  <div class="bg-slate-100 p-4 rounded-xl mb-4" *ngIf="vehiculo || maquinaria">
+    <div class="flex justify-between">
+      <div>
+        <p class="text-sm text-slate-500">
+
+          {{ tipo === 'vehiculo' ? 'Vehículo' : 'Maquinaria' }}
+
+        </p>
+
+
+        <p class="font-bold text-lg" *ngIf="tipo === 'vehiculo'">
+
+          {{ vehiculo?.placa }} - {{ vehiculo?.marca }}
+
+        </p>
+
+
+        <p class="font-bold text-lg" *ngIf="tipo === 'maquinaria'">
+
+          {{ maquinaria?.codigo }} - {{ maquinaria?.marca }}
+
+        </p>
+      </div>
+
+      <div class="text-right">
+
+        <ng-container *ngIf="tipo === 'vehiculo'">
+
+          <p class="text-sm text-slate-500">
+            Kilometraje actual
+          </p>
+
+          <p class="font-black text-xl text-red-600">
+            {{ vehiculo?.km_estimado | number }} km
+          </p>
+
+        </ng-container>
+
+
+        <ng-container *ngIf="tipo === 'maquinaria'">
+
+          <p class="text-sm text-slate-500">
+            Horómetro actual
+          </p>
+
+          <p class="font-black text-xl text-red-600">
+
+            {{ maquinaria?.horometro_actual | number }}
+            horas
+
+          </p>
+
+        </ng-container>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- TABLA -->
+  <div class="table-card">
+
+    <div *ngIf="planes.length > 0; else emptyState" class="table-wrapper">
+
+      <table class="data-table">
+
+        <thead>
+
+          <tr>
+
+            <th>Nombre</th>
+
+            <th>Sistema</th>
+
+            <th>Tipo</th>
+
+            <th>Control</th>
+            <th>Mantenimiento cada</th>
+
+            <th>Actual</th>
+
+            <th>Programado</th>
+
+            <th>Restante</th>
+
+            <th>Estado</th>
+
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          <tr *ngFor="let p of planes">
+
+            <td>{{ p.nombre }}</td>
+
+            <td>{{ p.sistema }}</td>
+
+            <td>{{ p.tipo_mantenimiento }}</td>
+
+            <td>{{ p.tipo_control }}</td>
+
+            <td>
+
+              <ng-container *ngIf="p.tipo_control == 'KM'">
+                {{ p.frecuencia_valor | number }} km
+              </ng-container>
+
+              <ng-container *ngIf="p.tipo_control == 'DIAS'">
+                {{ p.frecuencia_valor }} días
+              </ng-container>
+
+            </td>
+
+            <!-- ACTUAL -->
+
+            <td>
+
+              <ng-container *ngIf="p.tipo_control == 'KM'">
+                {{ p.km_total | number }} km
+              </ng-container>
+
+
+              <ng-container *ngIf="p.tipo_control == 'HORAS'">
+                {{ p.horometro_actual | number }} horas
+              </ng-container>
+
+
+              <ng-container *ngIf="p.tipo_control == 'DIAS'">
+                {{ p.ultima_fecha || '-' }}
+              </ng-container>
+
+            </td>
+
+            <!-- PROGRAMADO -->
+
+            <td>
+
+              <ng-container *ngIf="p.tipo_control == 'KM'">
+                {{ p.programado | number }} km
+              </ng-container>
+
+              <ng-container *ngIf="p.tipo_control == 'DIAS'">
+                {{ p.programado }}
+              </ng-container>
+
+            </td>
+
+            <!-- RESTANTE -->
+
+            <td [class.km-critico]="
+          p.estado != 'ACTIVO'
+        ">
+
+              <ng-container *ngIf="p.tipo_control == 'KM'">
+                {{ p.restante | number }} km
+              </ng-container>
+
+              <ng-container *ngIf="p.tipo_control == 'DIAS'">
+                {{ p.restante }} días
+              </ng-container>
+
+            </td>
+
+            <!-- ESTADO -->
+
+            <td>
+
+              <span [ngClass]="estadoClass(p.estado)">
+                {{ p.estado }}
+              </span>
+
+            </td>
+
+            <!-- ACCIONES -->
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+    <!-- EMPTY STATE -->
+    <ng-template #emptyState>
+      <div class="empty-state">
+        <div class="empty-icon">🔧</div>
+        <h3>No hay planes de mantenimiento</h3>
+        <p>Asigna el primer mantenimiento preventivo a este vehículo</p>
+
+        <button (click)="abrirModal()" class="btn-primary">
+          + Crear plan
+        </button>
+      </div>
+    </ng-template>
+
+  </div>
+
+</div>
+
+<!-- ========================= -->
+<!-- MODAL -->
+<!-- ========================= -->
+
+<div *ngIf="showModal" class="modal-backdrop" (click)="cerrarModal()">
+
+  <div class="modal-box" (click)="$event.stopPropagation()">
+
+    <!-- HEADER -->
+    <div class="modal-header">
+
+      <h2 class="modal-title">
+        <i class="fas fa-tools"></i>
+        Programar mantenimiento
+      </h2>
+
+      <button class="modal-close" (click)="cerrarModal()">
+        <i class="fas fa-times"></i>
+      </button>
+
+    </div>
+
+    <!-- BODY -->
+    <div class="modal-body">
+
+      <!-- PLAN ITEM -->
+      <div class="form-group">
+
+        <label>
+          Mantenimiento
+        </label>
+
+        <select [(ngModel)]="plan_item_id" (change)="onPlanItemChange()" class="form-input">
+          <option value="0">Seleccione mantenimiento</option>
+          <option *ngFor="let p of planItems" [value]="p.id">
+            {{ (p.sistema + ' - ' + p.nombre) | slice:0:70 }}
+          </option>
+        </select>
+
+        <small class="form-help">
+          Seleccione el mantenimiento que desea programar
+        </small>
+
+      </div>
+
+      <!-- TIPO CONTROL -->
+      <div class="form-group">
+
+        <label>
+          Tipo de control
+        </label>
+
+        <select [(ngModel)]="tipo_control" class="form-input">
+
+          <option value="KM">
+            Por kilometraje
+          </option>
+
+          <option value="DIAS">
+            Por tiempo
+          </option>
+
+        </select>
+
+        <small class="form-help">
+
+          Define cómo se controlará el mantenimiento
+
+        </small>
+
+      </div>
+
+      <!-- FRECUENCIA -->
+      <div class="form-group">
+
+        <label>
+
+          ¿Cada cuánto debe realizarse?
+
+        </label>
+
+        <input [(ngModel)]="frecuencia_valor" type="number" class="form-input" placeholder="Ej: 15000">
+
+        <small class="form-help">
+
+          <span *ngIf="tipo_control == 'KM'">
+
+            Ejemplo:
+            cada 15.000 km se realizará este mantenimiento
+
+          </span>
+
+          <span *ngIf="tipo_control == 'DIAS'">
+
+            Ejemplo:
+            cada 180 días se realizará este mantenimiento
+
+          </span>
+
+        </small>
+
+      </div>
+
+      <!-- ALERTA -->
+      <div class="form-group">
+
+        <label>
+
+          ¿Cuándo desea recibir alerta?
+
+        </label>
+
+        <input [(ngModel)]="alerta_valor" type="number" class="form-input" placeholder="Ej: 1000">
+
+        <small class="form-help">
+
+          <span *ngIf="tipo_control == 'KM'">
+
+            El sistema alertará
+            {{ alerta_valor || 0 }}
+            km antes del vencimiento
+
+          </span>
+
+          <span *ngIf="tipo_control == 'DIAS'">
+
+            El sistema alertará
+            {{ alerta_valor || 0 }}
+            días antes del vencimiento
+
+          </span>
+
+        </small>
+
+      </div>
+
+      <!-- RESUMEN -->
+      <div class="bg-slate-100 rounded-xl p-4 mt-4" *ngIf="frecuencia_valor > 0">
+
+        <p class="text-sm text-slate-500 mb-2">
+
+          Resumen de programación
+
+        </p>
+
+        <div class="text-sm space-y-2">
+
+          <!-- KM -->
+
+          <ng-container *ngIf="tipo_control == 'KM'">
+
+            <div>
+
+              Este mantenimiento se realizará
+              cada
+
+              <strong>
+                {{ frecuencia_valor | number }}
+                km
+              </strong>
+
+            </div>
+
+            <ng-container *ngIf="tipo === 'vehiculo'">
+
+              <div *ngIf="vehiculo">
+
+                Kilometraje actual:
+
+                <strong>
+                  {{ vehiculo.km_actual | number }}
+                  km
+                </strong>
+
+              </div>
+
+            </ng-container>
+
+
+            <ng-container *ngIf="tipo === 'maquinaria'">
+
+              <div *ngIf="maquinaria">
+
+                Horómetro actual:
+
+                <strong>
+                  {{ maquinaria.horometro_actual | number }}
+                  horas
+                </strong>
+
+              </div>
+
+            </ng-container>
+
+            <div *ngIf="vehiculo">
+
+              Próximo mantenimiento estimado:
+
+              <strong class="text-blue-700">
+
+                {{
+                (
+                vehiculo.km_actual
+                + frecuencia_valor
+                ) | number
+                }}
+
+                km
+
+              </strong>
+
+            </div>
+
+            <div>
+
+              El sistema alertará
+              <strong>
+                {{ alerta_valor | number }}
+                km antes
+              </strong>
+
+            </div>
+
+          </ng-container>
+
+          <!-- DIAS -->
+
+          <ng-container *ngIf="tipo_control == 'DIAS'">
+
+            <div>
+
+              Este mantenimiento se realizará
+              cada
+
+              <strong>
+                {{ frecuencia_valor }}
+                días
+              </strong>
+
+            </div>
+
+            <div>
+
+              El sistema alertará
+              <strong>
+                {{ alerta_valor }}
+                días antes
+              </strong>
+
+            </div>
+
+          </ng-container>
+
+        </div>
+
+      </div>
+
+      <!-- OBSERVACIONES -->
+      <div class="form-group mt-4">
+
+        <label>
+          Observaciones
+        </label>
+
+        <textarea [(ngModel)]="notas" rows="3" class="form-input"
+          placeholder="Notas adicionales del mantenimiento"></textarea>
+
+      </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <div class="modal-footer">
+
+      <button (click)="cerrarModal()" class="btn-secondary">
+        Cancelar
+      </button>
+
+      <button (click)="guardar()" class="btn-primary">
+        Guardar mantenimiento
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
