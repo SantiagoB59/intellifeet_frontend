@@ -10,10 +10,7 @@
 
       <div class="logo-box">
 
-        <img
-          src="assets/img/logo_transmena.jpg"
-          alt="Transmena Logo"
-        />
+        <img src="assets/img/logo.png" alt="Transmena Logo" />
 
       </div>
 
@@ -26,7 +23,7 @@
 
         </h1>
 
-        <p class="brand-status">
+        <p class="brand-status" *ngIf="!esOperador">
 
           <i class="fas fa-circle animate-pulse"></i>
 
@@ -44,7 +41,7 @@
     <!-- STATS -->
     <!-- ========================================= -->
 
-    <div class="topbar-stats">
+    <div class="topbar-stats" *ngIf="!esOperador">
 
       <div class="stat-box">
 
@@ -91,19 +88,13 @@
     <div class="topbar-right">
 
       <!-- 🔔 -->
-      <div class="relative">
+      <div class="relative" *ngIf="!esOperador">
 
-        <button
-          (click)="toggleNotifications()"
-          class="notification-btn"
-        >
+        <button (click)="toggleNotifications()" class="notification-btn">
 
           <i class="fas fa-bell text-lg"></i>
 
-          <span
-            *ngIf="notificacionesNoLeidas > 0"
-            class="notification-badge"
-          >
+          <span *ngIf="notificacionesNoLeidas > 0" class="notification-badge">
 
             {{ notificacionesNoLeidas }}
 
@@ -113,10 +104,7 @@
 
         <!-- DROPDOWN -->
 
-        <div
-          *ngIf="showNotifications"
-          class="notifications-dropdown"
-        >
+        <div *ngIf="showNotifications" class="notifications-dropdown">
 
           <!-- HEADER -->
 
@@ -134,10 +122,7 @@
 
             </div>
 
-            <button
-              (click)="marcarTodas()"
-              class="text-xs text-blue-500 hover:underline font-semibold"
-            >
+            <button (click)="marcarTodas()" class="text-xs text-blue-500 hover:underline font-semibold">
 
               Marcar todas
 
@@ -148,39 +133,26 @@
           <!-- LISTA -->
 
 
-                    <!-- LISTA -->
-          <div
-            class="max-h-[450px] overflow-y-auto"
-          >
+          <!-- LISTA -->
+          <div class="max-h-[450px] overflow-y-auto">
 
-            <div
-              *ngFor="let n of notificaciones"
-              (click)="marcarComoLeida(n)"
-              class="p-4 border-b cursor-pointer hover:bg-slate-50 transition"
-              [class.opacity-60]="n.leida"
-            >
+            <div *ngFor="let n of notificaciones" (click)="marcarComoLeida(n)"
+              class="p-4 border-b cursor-pointer hover:bg-slate-50 transition" [class.opacity-60]="n.leida">
 
               <!-- TOP -->
-              <div
-                class="flex items-start justify-between gap-3 mb-2"
-              >
+              <div class="flex items-start justify-between gap-3 mb-2">
 
                 <!-- BADGE -->
-                <span
-                  class="px-2 py-1 rounded-full text-[10px] font-bold"
-                  [ngClass]="
+                <span class="px-2 py-1 rounded-full text-[10px] font-bold" [ngClass]="
                     getClasePrioridad(n.prioridad)
-                  "
-                >
+                  ">
 
                   {{ n.prioridad || 'INFO' }}
 
                 </span>
 
                 <!-- FECHA -->
-                <span
-                  class="text-[11px] text-gray-400 whitespace-nowrap"
-                >
+                <span class="text-[11px] text-gray-400 whitespace-nowrap">
 
                   {{ n.fecha | date:'shortTime' }}
 
@@ -189,18 +161,14 @@
               </div>
 
               <!-- MENSAJE -->
-              <div
-                class="text-sm font-semibold text-gray-800 leading-relaxed"
-              >
+              <div class="text-sm font-semibold text-gray-800 leading-relaxed">
 
                 {{ n.mensaje }}
 
               </div>
 
               <!-- FOOT -->
-              <div
-                class="flex items-center justify-between mt-3 text-xs text-gray-500"
-              >
+              <div class="flex items-center justify-between mt-3 text-xs text-gray-500">
 
                 <span>
 
@@ -219,10 +187,7 @@
             </div>
 
             <!-- VACÍO -->
-            <div
-              *ngIf="notificaciones.length === 0"
-              class="p-10 text-center text-gray-500"
-            >
+            <div *ngIf="notificaciones.length === 0" class="p-10 text-center text-gray-500">
 
               <div class="text-5xl mb-3">
                 🔕
@@ -263,10 +228,9 @@
 
         </div>
 
-        <button
-          (click)="logout()"
-          class="logout-btn"
-        >
+
+
+        <button (click)="logout()" class="logout-btn">
 
           <i class="fas fa-sign-out-alt"></i>
 
@@ -275,6 +239,24 @@
           </span>
 
         </button>
+
+      </div>
+      <!-- RELOJ -->
+      <div class="clock-box">
+
+        <i class="fas fa-clock"></i>
+
+        <div class="clock-info">
+
+          <div class="clock-time">
+            {{ horaActual | date:'HH:mm:ss' }}
+          </div>
+
+          <div class="clock-date">
+            {{ horaActual | date:'EEEE d MMMM y':'':'es' }}
+          </div>
+
+        </div>
 
       </div>
 

@@ -1,179 +1,827 @@
 <div class="min-h-screen bg-gradient-to-br from-gray-100 via-gray-50 to-white p-6">
 
-  <div class="flex flex-col xl:flex-row xl:items-center xl:justify-between mb-6 gap-4">
+  <!-- ========================================================= -->
+  <!-- HEADER -->
+  <!-- ========================================================= -->
 
-    <div>
+  <div class="mb-6">
 
-      <h1 class="text-2xl lg:text-3xl font-black text-gray-800">
-        Centro de Reportes
-      </h1>
+    <h1 class="text-2xl lg:text-3xl font-black text-gray-800">
+      Centro de Reportes
+    </h1>
 
-      <p class="text-gray-500 mt-1 text-sm lg:text-base">
-        Monitoreo corporativo de alertas y mantenimientos en tiempo real
-      </p>
+    <p class="text-gray-500 mt-1 text-sm lg:text-base">
+      Monitoreo corporativo de alertas, mantenimientos e indicadores HSEQ
+    </p>
+
+  </div>
+
+
+  <!-- ========================================================= -->
+  <!-- PESTAÑAS PRINCIPALES -->
+  <!-- ========================================================= -->
+
+  <div class="flex flex-col sm:flex-row gap-3 mb-8">
+
+    <button (click)="cambiarTab('reportes')"
+      class="flex-1 sm:flex-none px-8 py-4 rounded-2xl font-bold transition-all duration-300 flex items-center justify-center gap-3"
+      [ngClass]="
+        tab === 'reportes'
+          ? 'bg-blue-600 text-white shadow-xl scale-[1.02]'
+          : 'bg-white text-gray-700 border border-gray-200 hover:bg-blue-50 hover:border-blue-300'
+      ">
+      <span class="text-xl"></span>
+      Reportes de alertas
+    </button>
+
+
+    <button (click)="cambiarTab('indicadores')"
+      class="flex-1 sm:flex-none px-8 py-4 rounded-2xl font-bold transition-all duration-300 flex items-center justify-center gap-3"
+      [ngClass]="
+        tab === 'indicadores'
+          ? 'bg-blue-600 text-white shadow-xl scale-[1.02]'
+          : 'bg-white text-gray-700 border border-gray-200 hover:bg-blue-50 hover:border-blue-300'
+      ">
+      <span class="text-xl"></span>
+      Indicadores HSEQ
+    </button>
+
+  </div>
+
+
+  <!-- ========================================================= -->
+  <!-- ========================================================= -->
+  <!-- TAB: REPORTES -->
+  <!-- ========================================================= -->
+  <!-- ========================================================= -->
+
+  <div *ngIf="tab === 'reportes'">
+
+
+    <!-- ======================================================= -->
+    <!-- KPI ALERTAS -->
+    <!-- ======================================================= -->
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 mb-6">
+
+      <div class="bg-white rounded-2xl shadow-lg p-5 border border-gray-100">
+
+        <p class="text-gray-500 text-sm">
+          Críticas
+        </p>
+
+        <h2 class="text-3xl font-black text-red-600 mt-2">
+          {{ semaforo.criticas || 0 }}
+        </h2>
+
+      </div>
+
+
+      <div class="bg-white rounded-2xl shadow-lg p-5 border border-gray-100">
+
+        <p class="text-gray-500 text-sm">
+          Altas
+        </p>
+
+        <h2 class="text-3xl font-black text-orange-500 mt-2">
+          {{ semaforo.altas || 0 }}
+        </h2>
+
+      </div>
+
+
+      <div class="bg-white rounded-2xl shadow-lg p-5 border border-gray-100">
+
+        <p class="text-gray-500 text-sm">
+          Medias
+        </p>
+
+        <h2 class="text-3xl font-black text-yellow-500 mt-2">
+          {{ semaforo.medias || 0 }}
+        </h2>
+
+      </div>
+
+
+      <div class="bg-white rounded-2xl shadow-lg p-5 border border-gray-100">
+
+        <p class="text-gray-500 text-sm">
+          Bajas
+        </p>
+
+        <h2 class="text-3xl font-black text-green-600 mt-2">
+          {{ semaforo.bajas || 0 }}
+        </h2>
+
+      </div>
 
     </div>
 
-    <div class="flex flex-col sm:flex-row gap-3 w-full xl:w-auto">
 
-      <button class="bg-red-600 hover:bg-red-700 text-white px-5 py-3 rounded-xl font-semibold shadow-lg transition"
+    <!-- ======================================================= -->
+    <!-- FILTROS -->
+    <!-- ======================================================= -->
+
+    <div class="bg-white rounded-3xl shadow-xl border border-gray-200 p-7 mb-8">
+
+      <div class="flex items-center gap-3 mb-6">
+
+        <div class="w-10 h-10 rounded-xl bg-red-100 flex items-center justify-center">
+          🔎
+        </div>
+
+        <div>
+
+          <h2 class="text-xl font-bold text-gray-800">
+            Filtros de búsqueda
+          </h2>
+
+          <p class="text-sm text-gray-500">
+            Filtra alertas y mantenimientos por período y activo
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-5">
+
+
+        <!-- TIPO -->
+
+        <div>
+
+          <label class="text-sm font-semibold text-gray-600">
+            Tipo
+          </label>
+
+          <select [(ngModel)]="filtros.tipo"
+            class="w-full mt-2 rounded-xl border border-gray-300 px-4 py-3 focus:ring-2 focus:ring-red-500">
+
+            <option value="diario">
+              Diario
+            </option>
+
+            <option value="semanal">
+              Semanal
+            </option>
+
+            <option value="mensual">
+              Mensual
+            </option>
+
+            <option value="rango">
+              Rango
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <!-- CATEGORÍA -->
+
+        <div>
+
+          <label class="text-sm font-semibold text-gray-600">
+            Categoría
+          </label>
+
+          <select [(ngModel)]="filtros.categoria"
+            class="w-full mt-2 rounded-xl border border-gray-300 px-4 py-3 focus:ring-2 focus:ring-red-500">
+
+            <option value="">
+              Todas
+            </option>
+
+            <option value="DOCUMENTO">
+              Documentos
+            </option>
+
+            <option value="GPS">
+              GPS
+            </option>
+
+            <option value="MANTENIMIENTO">
+              Mantenimiento
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <!-- ACTIVO -->
+
+        <div>
+
+          <label class="text-sm font-semibold text-gray-600">
+            Activo
+          </label>
+
+          <select [(ngModel)]="filtros.vehiculo_id"
+            class="w-full mt-2 rounded-xl border border-gray-300 px-4 py-3 focus:ring-2 focus:ring-red-500">
+
+            <option value="">
+              Todos
+            </option>
+
+            <optgroup label="🚛 Vehículos">
+
+              <option *ngFor="let v of vehiculos" [ngValue]="'V-' + v.id">
+                {{ v.placa }}
+              </option>
+
+            </optgroup>
+
+
+            <optgroup label="🏗 Maquinaria">
+
+              <option *ngFor="let m of maquinarias" [ngValue]="'M-' + m.id">
+                {{ m.codigo }}
+              </option>
+
+            </optgroup>
+
+          </select>
+
+        </div>
+
+
+        <!-- DESDE -->
+
+        <div *ngIf="filtros.tipo === 'rango'">
+
+          <label class="text-sm font-semibold text-gray-600">
+            Desde
+          </label>
+
+          <input type="date" [(ngModel)]="filtros.fecha_inicio"
+            class="w-full mt-2 rounded-xl border border-gray-300 px-4 py-3 focus:ring-2 focus:ring-red-500">
+
+        </div>
+
+
+        <!-- HASTA -->
+
+        <div *ngIf="filtros.tipo === 'rango'">
+
+          <label class="text-sm font-semibold text-gray-600">
+            Hasta
+          </label>
+
+          <input type="date" [(ngModel)]="filtros.fecha_fin"
+            class="w-full mt-2 rounded-xl border border-gray-300 px-4 py-3 focus:ring-2 focus:ring-red-500">
+
+        </div>
+
+      </div>
+
+
+      <!-- BOTÓN -->
+
+      <div class="flex flex-col sm:flex-row justify-end gap-3 mt-7">
+
+        <button (click)="aplicarFiltros()"
+          class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-8 py-3 rounded-2xl shadow-lg transition hover:scale-105">
+          Aplicar filtros
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- ======================================================= -->
+    <!-- EXPORTACIONES -->
+    <!-- ======================================================= -->
+
+    <div class="flex flex-col md:flex-row gap-3 mb-8">
+
+      <button
+        class="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-xl font-semibold shadow-lg transition"
         (click)="exportarExcelAlertas()">
-        Exportar Historial de Alertas
+        📥 Exportar historial de alertas
       </button>
 
-      <button class="bg-gray-800 hover:bg-black text-white px-5 py-3 rounded-xl font-semibold shadow-lg transition"
+
+      <button
+        class="flex-1 bg-blue-800 hover:bg-blue-900 text-white px-5 py-3 rounded-xl font-semibold shadow-lg transition"
         (click)="exportarExcelMantenimientos()">
-        Exportar Mantenimientos realizados
+        📥 Exportar mantenimientos realizados
       </button>
-      <button class="bg-red-600 hover:bg-red-700 text-white px-5 py-3 rounded-xl font-semibold shadow-lg transition"
+
+
+      <button
+        class="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-xl font-semibold shadow-lg transition"
         (click)="exportarExcelAlertasFormato()">
-        Alertas por vehiculo o maquinaria
+        📄 Alertas por activo
       </button>
 
     </div>
 
-  </div>
 
-  <!-- ================================================= -->
-  <!-- KPI CARDS -->
-  <!-- ================================================= -->
+    <!-- ======================================================= -->
+    <!-- SUBTABS -->
+    <!-- ======================================================= -->
 
-  <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 mb-6">
+    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
 
-    <div class="bg-white rounded-2xl shadow-lg p-5">
-      <p class="text-gray-500 text-sm">Críticas</p>
-      <h2 class="text-3xl font-black text-red-600 mt-2">
-        {{ semaforo.criticas || 0 }}
-      </h2>
+      <div class="flex gap-3">
+
+        <button (click)="cambiarTabReporte('alertas')" class="px-6 py-3 rounded-2xl font-semibold transition" [ngClass]="
+            subTabReporte === 'alertas'
+              ? 'bg-blue-600 text-white shadow-lg'
+              : 'bg-white border border-gray-200 text-gray-700'
+          ">
+          Historial de Alertas
+        </button>
+
+
+        <button (click)="cambiarTabReporte('mantenimientos')" class="px-6 py-3 rounded-2xl font-semibold transition"
+          [ngClass]="
+            subTabReporte === 'mantenimientos'
+              ? 'bg-blue-600 text-white shadow-lg'
+              : 'bg-white border border-gray-200 text-gray-700'
+          ">
+          🛠 Mantenimientos realizados
+        </button>
+
+      </div>
+
+
+      <div class="text-sm text-gray-500 font-medium">
+
+        <span *ngIf="subTabReporte === 'alertas'">
+          {{ alertas.length }} registros encontrados
+        </span>
+
+        <span *ngIf="subTabReporte === 'mantenimientos'">
+          {{ mantenimientos.length }} mantenimientos registrados
+        </span>
+
+      </div>
+
     </div>
 
-    <div class="bg-white rounded-2xl shadow-lg p-5">
-      <p class="text-gray-500 text-sm">Altas</p>
-      <h2 class="text-3xl font-black text-orange-500 mt-2">
-        {{ semaforo.altas || 0 }}
-      </h2>
+
+    <!-- ======================================================= -->
+    <!-- TABLA ALERTAS -->
+    <!-- ======================================================= -->
+
+    <div *ngIf="subTabReporte === 'alertas'"
+      class="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-200">
+
+      <div class="overflow-x-auto">
+
+        <table class="min-w-full">
+
+          <thead class="bg-gray-900 text-white">
+
+            <tr>
+
+              <th class="px-6 py-5 text-left">
+                Activo
+              </th>
+
+              <th class="px-6 py-5 text-left">
+                Tipo
+              </th>
+
+              <th class="px-6 py-5 text-left">
+                Categoría
+              </th>
+
+              <th class="px-6 py-5 text-left">
+                Prioridad
+              </th>
+
+              <th class="px-6 py-5 text-left">
+                Estado
+              </th>
+
+              <th class="px-6 py-5 text-left">
+                Fecha
+              </th>
+
+            </tr>
+
+          </thead>
+
+
+          <tbody>
+
+            <tr *ngIf="loading">
+
+              <td colspan="6" class="loading-row">
+
+                <div class="spinner"></div>
+
+                Cargando alertas...
+
+              </td>
+
+            </tr>
+
+
+            <tr *ngFor="let item of alertas; let i = index" class="transition duration-300 border-b" [ngClass]="{
+                'bg-white': i % 2 === 0,
+                'bg-gray-50': i % 2 !== 0
+              }">
+
+              <td class="px-6 py-5">
+
+                <div class="flex items-center gap-3">
+
+                  <div *ngIf="item.tipo_activo === 'VEHICULO'"
+                    class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
+                    🚛
+                  </div>
+
+                  <div *ngIf="item.tipo_activo === 'MAQUINARIA'"
+                    class="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center">
+                    🏗
+                  </div>
+
+                  <div>
+
+                    <div class="font-bold text-gray-800">
+                      {{ item.vehiculo }}
+                    </div>
+
+                    <div class="text-xs text-gray-500">
+                      {{ item.tipo_activo }}
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </td>
+
+
+              <td class="px-6 py-5">
+                {{ item.tipo }}
+              </td>
+
+
+              <td class="px-6 py-5">
+                {{ item.categoria }}
+              </td>
+
+
+              <td class="px-6 py-5">
+
+                <span class="px-4 py-1 rounded-full text-xs font-bold" [ngClass]="getClasePrioridad(item.prioridad)">
+                  {{ item.prioridad }}
+                </span>
+
+              </td>
+
+
+              <td class="px-6 py-5">
+
+                <span class="px-4 py-1 rounded-full text-xs font-bold" [ngClass]="{
+                    'bg-green-100 text-green-700': item.estado === 'RESUELTA',
+                    'bg-red-100 text-red-700': item.estado === 'ACTIVA',
+                    'bg-gray-200 text-gray-700': item.estado === 'IGNORADA'
+                  }">
+                  {{ item.estado }}
+                </span>
+
+              </td>
+
+
+              <td class="px-6 py-5 text-gray-500">
+                {{ item.fecha | date:'dd/MM/yyyy HH:mm' }}
+              </td>
+
+            </tr>
+
+
+            <tr *ngIf="alertas.length === 0 && !loading">
+
+              <td colspan="6" class="text-center py-12">
+
+                <div class="text-5xl">
+                  🔔
+                </div>
+
+                <h2 class="text-xl font-bold mt-4">
+                  No existen alertas
+                </h2>
+
+                <p class="text-gray-500">
+                  No se encontraron registros con los filtros seleccionados.
+                </p>
+
+              </td>
+
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
     </div>
 
-    <div class="bg-white rounded-2xl shadow-lg p-5">
-      <p class="text-gray-500 text-sm">Medias</p>
-      <h2 class="text-3xl font-black text-yellow-500 mt-2">
-        {{ semaforo.medias || 0 }}
-      </h2>
-    </div>
 
-    <div class="bg-white rounded-2xl shadow-lg p-5">
-      <p class="text-gray-500 text-sm">Bajas</p>
-      <h2 class="text-3xl font-black text-green-600 mt-2">
-        {{ semaforo.bajas || 0 }}
-      </h2>
+    <!-- ======================================================= -->
+    <!-- TABLA MANTENIMIENTOS -->
+    <!-- ======================================================= -->
+
+    <div *ngIf="subTabReporte === 'mantenimientos'"
+      class="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-200">
+
+      <div class="px-6 py-5 border-b bg-gradient-to-r from-red-50 to-white">
+
+        <div class="flex items-center justify-between flex-wrap gap-3">
+
+          <div>
+
+            <h2 class="text-xl font-bold text-gray-800">
+              🛠 Mantenimientos realizados
+            </h2>
+
+            <p class="text-sm text-gray-500 mt-1">
+              Historial consolidado de mantenimientos preventivos y correctivos.
+            </p>
+
+          </div>
+
+          <div class="bg-red-100 text-red-700 px-4 py-2 rounded-xl font-semibold text-sm">
+            {{ mantenimientos.length }} registros
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="overflow-x-auto">
+
+        <table class="min-w-full">
+
+          <thead class="bg-gray-900 text-white">
+
+            <tr>
+
+              <th class="px-6 py-5 text-left">
+                # ID
+              </th>
+
+              <th class="px-6 py-5 text-left">
+                Activo
+              </th>
+
+              <th class="px-6 py-5 text-left">
+                Tipo
+              </th>
+
+              <th class="px-6 py-5 text-left">
+                Fecha
+              </th>
+
+              <th class="px-6 py-5 text-left">
+                Horas / KM
+              </th>
+
+              <th class="px-6 py-5 text-left">
+                Valor
+              </th>
+
+            </tr>
+
+          </thead>
+
+
+          <tbody>
+
+            <tr *ngFor="let item of mantenimientos; let i = index"
+              class="transition duration-300 border-b border-gray-100 hover:bg-red-50" [ngClass]="{
+                'bg-white': i % 2 === 0,
+                'bg-gray-50': i % 2 !== 0
+              }">
+
+              <td class="px-6 py-5">
+
+                <span
+                  class="inline-flex items-center px-3 py-1 rounded-lg bg-gray-100 text-gray-700 font-semibold text-sm">
+                  #{{ item.id }}
+                </span>
+
+              </td>
+
+
+              <td class="px-6 py-5">
+
+                <div class="flex items-center gap-3">
+
+                  <div *ngIf="item.tipo_activo === 'VEHICULO'"
+                    class="w-11 h-11 rounded-full bg-blue-100 flex items-center justify-center text-xl">
+                    🚛
+                  </div>
+
+                  <div *ngIf="item.tipo_activo === 'MAQUINARIA'"
+                    class="w-11 h-11 rounded-full bg-yellow-100 flex items-center justify-center text-xl">
+                    🏗
+                  </div>
+
+                  <div>
+
+                    <div class="font-bold text-gray-800">
+                      {{ item.vehiculo }}
+                    </div>
+
+                    <div class="text-xs font-medium" [ngClass]="{
+                        'text-blue-600': item.tipo_activo === 'VEHICULO',
+                        'text-yellow-600': item.tipo_activo === 'MAQUINARIA'
+                      }">
+                      {{ item.tipo_activo }}
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </td>
+
+
+              <td class="px-6 py-5">
+
+                <span
+                  class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-red-100 text-red-700 border border-red-200">
+                  {{ item.tipo }}
+                </span>
+
+              </td>
+
+
+              <td class="px-6 py-5 text-gray-700 font-medium">
+                {{ item.fecha | date:'dd/MM/yyyy' }}
+              </td>
+
+
+              <td class="px-6 py-5">
+
+                <div class="font-semibold text-gray-800">
+
+                  {{ item.km | number }}
+
+                  <span class="text-xs text-gray-500 ml-1">
+                    {{ item.tipo_activo === 'MAQUINARIA' ? 'Horas' : 'KM' }}
+                  </span>
+
+                </div>
+
+              </td>
+
+
+              <td class="px-6 py-5">
+
+                <div class="font-bold text-green-600 text-lg">
+                  {{ item.valor | currency:'COP':'symbol':'1.0-0' }}
+                </div>
+
+              </td>
+
+            </tr>
+
+
+            <tr *ngIf="mantenimientos.length === 0">
+
+              <td colspan="6" class="text-center py-14">
+
+                <div class="text-6xl">
+                  🛠
+                </div>
+
+                <h3 class="text-xl font-bold text-gray-700 mt-4">
+                  No existen mantenimientos registrados
+                </h3>
+
+                <p class="text-gray-500 mt-2">
+                  No se encontraron resultados para los filtros seleccionados.
+                </p>
+
+              </td>
+
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
     </div>
 
   </div>
 
 
   <!-- ========================================================= -->
-  <!-- FILTROS -->
-  <!-- ========================================================= -->
+<!-- ========================================================= -->
+<!-- TAB: INDICADORES HSEQ -->
+<!-- ========================================================= -->
+<!-- ========================================================= -->
+
+<div *ngIf="tab === 'indicadores'">
+
+
+  <!-- ======================================================= -->
+  <!-- FILTROS INDICADORES -->
+  <!-- ======================================================= -->
 
   <div class="bg-white rounded-3xl shadow-xl border border-gray-200 p-7 mb-8">
 
     <div class="flex items-center gap-3 mb-6">
 
+      <div
+        class="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center">
+        🔎
+      </div>
 
-      <h2 class="text-xl font-bold text-gray-800">
+      <div>
 
-        Filtros de búsqueda
+        <h2 class="text-xl font-bold text-gray-800">
+          Filtros de indicadores
+        </h2>
 
-      </h2>
+        <p class="text-sm text-gray-500">
+          Selecciona el período y el activo que deseas analizar
+        </p>
+
+      </div>
 
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-5">
 
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
+
+
+      <!-- ================================================= -->
       <!-- TIPO -->
+      <!-- ================================================= -->
 
       <div>
 
         <label class="text-sm font-semibold text-gray-600">
-
-          Tipo
-
+          Período
         </label>
 
-        <select [(ngModel)]="filtros.tipo" class="w-full mt-2 rounded-xl border
-                    border-gray-300
-                    px-4 py-3
-                    focus:ring-2
-                    focus:ring-red-500">
-
-          <option value="diario">Diario</option>
-          <option value="semanal">Semanal</option>
-          <option value="mensual">Mensual</option>
-          <option value="rango">Rango</option>
-
-        </select>
-
-      </div>
-
-      <!-- CATEGORÍA -->
-
-      <div>
-
-        <label class="text-sm font-semibold text-gray-600">
-
-          Categoría
-
-        </label>
-
-        <select [(ngModel)]="filtros.categoria"
+        <select
+          [(ngModel)]="filtros.tipo"
           class="w-full mt-2 rounded-xl border border-gray-300 px-4 py-3 focus:ring-2 focus:ring-red-500">
 
-          <option value="">Todas</option>
-
-          <option value="DOCUMENTO">
-
-            Documentos
-
+          <option value="diario">
+            Diario
           </option>
 
-          <option value="GPS">
-
-            GPS
-
+          <option value="semanal">
+            Semanal
           </option>
 
-          <option value="MANTENIMIENTO">
+          <option value="mensual">
+            Mensual
+          </option>
 
-            Mantenimiento
-
+          <option value="rango">
+            Rango personalizado
           </option>
 
         </select>
 
       </div>
 
+
+      <!-- ================================================= -->
       <!-- ACTIVO -->
+      <!-- ================================================= -->
 
       <div>
 
         <label class="text-sm font-semibold text-gray-600">
-
           Activo
-
         </label>
 
-        <select [(ngModel)]="filtros.vehiculo_id"
+        <select
+          [(ngModel)]="filtros.vehiculo_id"
           class="w-full mt-2 rounded-xl border border-gray-300 px-4 py-3 focus:ring-2 focus:ring-red-500">
 
           <option value="">
-
-            Todos
-
+            Todos los activos
           </option>
+
+          <!-- VEHÍCULOS -->
 
           <optgroup label="🚛 Vehículos">
 
-            <option *ngFor="let v of vehiculos" [ngValue]="'V-' + v.id">
+            <option
+              *ngFor="let v of vehiculos"
+              [ngValue]="'V-' + v.id">
 
               {{ v.placa }}
 
@@ -181,9 +829,14 @@
 
           </optgroup>
 
+
+          <!-- MAQUINARIA -->
+
           <optgroup label="🏗 Maquinaria">
 
-            <option *ngFor="let m of maquinarias" [ngValue]="'M-' + m.id">
+            <option
+              *ngFor="let m of maquinarias"
+              [ngValue]="'M-' + m.id">
 
               {{ m.codigo }}
 
@@ -195,46 +848,55 @@
 
       </div>
 
-      <!-- FECHAS -->
 
-      <div *ngIf="filtros.tipo=='rango'">
+      <!-- ================================================= -->
+      <!-- DESDE -->
+      <!-- ================================================= -->
+
+      <div *ngIf="filtros.tipo === 'rango'">
 
         <label class="text-sm font-semibold text-gray-600">
-
           Desde
-
         </label>
 
-        <input type="date" [(ngModel)]="filtros.fecha_inicio"
+        <input
+          type="date"
+          [(ngModel)]="filtros.fecha_inicio"
           class="w-full mt-2 rounded-xl border border-gray-300 px-4 py-3 focus:ring-2 focus:ring-red-500">
 
       </div>
 
-      <div *ngIf="filtros.tipo=='rango'">
+
+      <!-- ================================================= -->
+      <!-- HASTA -->
+      <!-- ================================================= -->
+
+      <div *ngIf="filtros.tipo === 'rango'">
 
         <label class="text-sm font-semibold text-gray-600">
-
           Hasta
-
         </label>
 
-        <input type="date" [(ngModel)]="filtros.fecha_fin"
+        <input
+          type="date"
+          [(ngModel)]="filtros.fecha_fin"
           class="w-full mt-2 rounded-xl border border-gray-300 px-4 py-3 focus:ring-2 focus:ring-red-500">
 
       </div>
 
     </div>
 
+
+    <!-- ================================================= -->
+    <!-- BOTÓN FILTRAR -->
+    <!-- ================================================= -->
+
     <div class="flex justify-end mt-7">
 
-      <button (click)="aplicarFiltros()" class="bg-red-600 hover:bg-red-700
-                text-white
-                font-bold
-                px-8 py-3
-                rounded-2xl
-                shadow-lg
-                transition
-                hover:scale-105">
+      <button
+        type="button"
+        (click)="aplicarFiltros()"
+        class="bg-red-600 hover:bg-red-700 text-white font-bold px-8 py-3 rounded-2xl shadow-lg transition hover:scale-105">
 
         Aplicar filtros
 
@@ -245,495 +907,687 @@
   </div>
 
 
-  <!-- ========================================================= -->
-  <!-- TABS DASHBOARD -->
-  <!-- ========================================================= -->
 
-  <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
+  <!-- ======================================================= -->
+  <!-- PERÍODO + DESCARGA -->
+  <!-- ======================================================= -->
 
-    <div class="flex gap-3">
+  <div
+    *ngIf="indicadorMantenimiento?.periodo"
+    class="bg-white rounded-2xl shadow-lg border border-gray-100 p-5 mb-8">
 
-      <!-- ALERTAS -->
+    <div
+      class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
 
-      <button (click)="cambiarTab('alertas')" class="transition-all duration-300 px-7 py-3 rounded-2xl font-semibold"
-        [ngClass]="
-            tab=='alertas'
-            ?
-            'bg-red-600 text-white shadow-xl scale-105'
-            :
-            'bg-white border border-gray-200 text-gray-700 hover:bg-red-50 hover:border-red-300'
-            ">
 
-        Historial de Alertas
+      <!-- ================================================= -->
+      <!-- INFORMACIÓN PERÍODO -->
+      <!-- ================================================= -->
 
-      </button>
+      <div>
 
-      <!-- MANTENIMIENTOS -->
+        <p class="text-sm font-semibold text-gray-500">
+          Período analizado
+        </p>
 
-      <button (click)="cambiarTab('mantenimientos')"
-        class="transition-all duration-300 px-7 py-3 rounded-2xl font-semibold" [ngClass]="
-            tab=='mantenimientos'
-            ?
-            'bg-red-600 text-white shadow-xl scale-105'
-            :
-            'bg-white border border-gray-200 text-gray-700 hover:bg-red-50 hover:border-red-300'
-            ">
+        <p class="text-lg font-black text-gray-800">
 
-        🛠 Mantenimientos realizados
+          {{
+            indicadorMantenimiento.periodo.inicio
+            | date:'dd/MM/yyyy'
+          }}
 
-      </button>
+          →
 
-    </div>
+          {{
+            indicadorMantenimiento.periodo.fin
+            | date:'dd/MM/yyyy'
+          }}
 
-    <!-- CONTADOR -->
+        </p>
 
-    <div class="text-sm text-gray-500 font-medium">
+        <p class="text-sm text-gray-500 mt-1">
+          Indicadores HSEQ de mantenimiento
+        </p>
 
-      <span *ngIf="tab=='alertas'">
+      </div>
 
-        {{alertas.length}} registros encontrados
 
-      </span>
+      <!-- ================================================= -->
+      <!-- DESCARGAR -->
+      <!-- ================================================= -->
 
-      <span *ngIf="tab=='mantenimientos'">
+      <div>
 
-        {{mantenimientos.length}} mantenimientos registrados
+        <button
+          type="button"
+          (click)="exportarIndicadorMantenimiento()"
+          class="inline-flex items-center gap-3 bg-green-600 hover:bg-green-700 text-white font-bold px-6 py-3 rounded-xl shadow-lg transition hover:scale-105">
 
-      </span>
+          <span class="text-xl">
+            📥
+          </span>
 
-    </div>
+          <span>
+            Descargar indicador
+          </span>
 
-  </div>
-
-
-
-  <!-- ========================================================= -->
-  <!-- LOADING -->
-  <!-- ========================================================= -->
-
-
-
-
-
-  <!-- ========================================================= -->
-  <!-- TABLA ALERTAS -->
-  <!-- ========================================================= -->
-
-  <div *ngIf="tab=='alertas'" class="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-200">
-
-    <div class="overflow-x-auto">
-
-      <table class="min-w-full">
-
-        <!-- CABECERA -->
-
-        <thead class="bg-gray-900 text-white sticky top-0 z-10">
-
-          <tr>
-
-            <th class="px-6 py-5 text-left">
-
-              Activo
-
-            </th>
-
-            <th class="px-6 py-5 text-left">
-
-              Tipo
-
-            </th>
-
-            <th class="px-6 py-5 text-left">
-
-              Categoría
-
-            </th>
-
-            <th class="px-6 py-5 text-left">
-
-              Prioridad
-
-            </th>
-
-            <th class="px-6 py-5 text-left">
-
-              Estado
-
-            </th>
-
-            <th class="px-6 py-5 text-left">
-
-              Fecha
-
-            </th>
-
-          </tr>
-
-        </thead>
-
-        <!-- CUERPO -->
-
-        <tbody>
-
-          <tr *ngIf="loading">
-
-            <td colspan="8" class="loading-row">
-
-              <div class="spinner"></div>
-
-              Cargando mantenimientos...
-            </td>
-          </tr>
-          <tr *ngFor="let item of alertas; let i=index" class="transition duration-300 border-b" [ngClass]="{
-
-                    'bg-white':i%2==0,
-
-                    'bg-gray-50':i%2!=0
-
-                    }">
-
-            <!-- ACTIVO -->
-
-            <td class="px-6 py-5">
-
-              <div class="flex items-center gap-3">
-
-                <div *ngIf="item.tipo_activo=='VEHICULO'"
-                  class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
-
-                  🚛
-
-                </div>
-
-                <div *ngIf="item.tipo_activo=='MAQUINARIA'"
-                  class="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center">
-
-                  🏗
-
-                </div>
-
-                <div>
-
-                  <div class="font-bold text-gray-800">
-
-                    {{item.vehiculo}}
-
-                  </div>
-
-                  <div class="text-xs text-gray-500">
-
-                    {{item.tipo_activo}}
-
-                  </div>
-
-                </div>
-
-              </div>
-
-            </td>
-
-            <!-- TIPO -->
-
-            <td class="px-6 py-5">
-
-              {{item.tipo}}
-
-            </td>
-
-            <!-- CATEGORIA -->
-
-            <td class="px-6 py-5">
-
-              {{item.categoria}}
-
-            </td>
-
-            <!-- PRIORIDAD -->
-
-            <td class="px-6 py-5">
-
-              <span class="px-4 py-1 rounded-full text-xs font-bold" [ngClass]="getClasePrioridad(item.prioridad)">
-
-                {{item.prioridad}}
-
-              </span>
-
-            </td>
-
-            <!-- ESTADO -->
-
-            <td class="px-6 py-5">
-
-              <span class="px-4 py-1 rounded-full text-xs font-bold" [ngClass]="{
-
-                            'bg-green-100 text-green-700':
-                            item.estado=='RESUELTA',
-
-                            'bg-red-100 text-red-700':
-                            item.estado=='ACTIVA',
-
-                            'bg-gray-200 text-gray-700':
-                            item.estado=='IGNORADA'
-
-                            }">
-
-                {{item.estado}}
-
-              </span>
-
-            </td>
-
-            <!-- FECHA -->
-
-            <td class="px-6 py-5 text-gray-500">
-
-              {{item.fecha | date:'dd/MM/yyyy HH:mm'}}
-
-            </td>
-
-          </tr>
-
-          <!-- SIN DATOS -->
-
-          <tr *ngIf="alertas.length==0">
-
-            <td colspan="6" class="text-center py-12">
-
-              <h2 class="text-xl font-bold mt-4">
-
-                No existen alertas
-
-              </h2>
-
-              <p class="text-gray-500">
-
-                No se encontraron registros con los filtros seleccionados.
-
-              </p>
-
-            </td>
-
-          </tr>
-
-        </tbody>
-
-      </table>
-
-    </div>
-
-  </div>
-
-
-  <!-- ========================================================= -->
-  <!-- TABLA MANTENIMIENTOS -->
-  <!-- ========================================================= -->
-
-  <div *ngIf="tab=='mantenimientos'" class="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-200 mt-6">
-
-    <!-- HEADER TABLA -->
-
-    <div class="px-6 py-5 border-b bg-gradient-to-r from-red-50 to-white">
-
-      <div class="flex items-center justify-between flex-wrap gap-3">
-
-        <div>
-
-          <h2 class="text-xl font-bold text-gray-800 flex items-center gap-2">
-            🛠 Mantenimientos realizados
-          </h2>
-
-          <p class="text-sm text-gray-500 mt-1">
-            Historial consolidado de mantenimientos preventivos y correctivos.
-          </p>
-
-        </div>
-
-        <div class="bg-red-100 text-red-700 px-4 py-2 rounded-xl font-semibold text-sm">
-          {{ mantenimientos.length }} registros
-        </div>
+        </button>
 
       </div>
 
     </div>
 
-    <!-- TABLA -->
+  </div>
 
-    <div class="overflow-x-auto">
 
-      <table class="min-w-full">
 
-        <!-- CABECERA -->
+  <!-- ======================================================= -->
+  <!-- INDICADORES -->
+  <!-- ======================================================= -->
 
-        <thead class="bg-gray-900 text-white sticky top-0 z-10">
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
 
-          <tr>
 
-            <th class="px-6 py-5 text-left font-semibold">
-              # ID
-            </th>
+    <!-- ===================================================== -->
+    <!-- PREVENTIVO -->
+    <!-- ===================================================== -->
 
-            <th class="px-6 py-5 text-left font-semibold">
-              Activo
-            </th>
+    <div
+      class="bg-white rounded-2xl shadow-lg p-6 border border-gray-100">
 
-            <th class="px-6 py-5 text-left font-semibold">
-              Tipo
-            </th>
+      <!-- HEADER -->
 
-            <th class="px-6 py-5 text-left font-semibold">
-              Fecha
-            </th>
+      <div class="flex items-start justify-between">
 
-            <th class="px-6 py-5 text-left font-semibold">
-              Horas / KM
-            </th>
+        <div class="flex items-center gap-3">
 
-            <th class="px-6 py-5 text-left font-semibold">
-              Valor
-            </th>
+          <div
+            class="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center text-2xl">
 
-          </tr>
+            🛠
 
-        </thead>
+          </div>
 
-        <!-- CUERPO -->
+          <div>
 
-        <tbody>
+            <p class="text-sm font-semibold text-gray-500">
+              Mantenimiento preventivo
+            </p>
 
-          <tr *ngFor="let item of mantenimientos; let i=index"
-            class="transition duration-300 border-b border-gray-100 hover:bg-red-50" [ngClass]="{
-                    'bg-white':i%2==0,
-                    'bg-gray-50':i%2!=0
-                    }">
+            <h2 class="text-lg font-black text-gray-800">
+              Cumplimiento
+            </h2>
 
-            <!-- ID -->
+          </div>
 
-            <td class="px-6 py-5">
+        </div>
 
-              <span
-                class="inline-flex items-center px-3 py-1 rounded-lg bg-gray-100 text-gray-700 font-semibold text-sm">
-                #{{item.id}}
-              </span>
 
-            </td>
+        <!-- ESTADO META -->
 
-            <!-- ACTIVO -->
+        <span
+          class="px-3 py-1 rounded-full text-xs font-bold"
+          [ngClass]="{
 
-            <td class="px-6 py-5">
+            'bg-green-100 text-green-700':
+              indicadorMantenimiento?.preventivo?.cumple_meta,
 
-              <div class="flex items-center gap-3">
+            'bg-red-100 text-red-700':
+              !indicadorMantenimiento?.preventivo?.cumple_meta
 
-                <!-- ICONO -->
+          }">
 
-                <div *ngIf="item.tipo_activo=='VEHICULO'"
-                  class="w-11 h-11 rounded-full bg-blue-100 flex items-center justify-center text-xl">
-                  🚛
-                </div>
+          {{
+            indicadorMantenimiento?.preventivo?.cumple_meta
+              ? 'Cumple'
+              : 'No cumple'
+          }}
 
-                <div *ngIf="item.tipo_activo=='MAQUINARIA'"
-                  class="w-11 h-11 rounded-full bg-yellow-100 flex items-center justify-center text-xl">
-                  🏗
-                </div>
+        </span>
 
-                <!-- INFO -->
+      </div>
 
-                <div>
 
-                  <div class="font-bold text-gray-800">
-                    {{item.vehiculo}}
-                  </div>
+      <!-- PORCENTAJE -->
 
-                  <div class="text-xs font-medium" [ngClass]="{
-                                    'text-blue-600': item.tipo_activo=='VEHICULO',
-                                    'text-yellow-600': item.tipo_activo=='MAQUINARIA'
-                                    }">
+      <div class="mt-6 text-center">
 
-                    {{item.tipo_activo}}
+        <div
+          class="text-5xl font-black"
+          [ngClass]="{
 
-                  </div>
+            'text-green-600':
+              indicadorMantenimiento?.preventivo?.cumple_meta,
 
-                </div>
+            'text-red-600':
+              !indicadorMantenimiento?.preventivo?.cumple_meta
 
-              </div>
+          }">
 
-            </td>
+          {{
+            indicadorMantenimiento?.preventivo?.porcentaje || 0
+            | number:'1.2-2'
+          }}%
 
-            <!-- TIPO -->
+        </div>
 
-            <td class="px-6 py-5">
+        <p class="text-sm text-gray-500 mt-2">
 
-              <span
-                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-red-100 text-red-700 border border-red-200">
-                {{item.tipo}}
-              </span>
+          Meta:
+          {{
+            indicadorMantenimiento?.preventivo?.meta || 90
+          }}%
 
-            </td>
+        </p>
 
-            <!-- FECHA -->
+      </div>
 
-            <td class="px-6 py-5 text-gray-700 font-medium">
-              {{item.fecha | date:'dd/MM/yyyy'}}
-            </td>
 
-            <!-- KM / HORAS -->
+      <!-- RESUMEN -->
 
-            <td class="px-6 py-5">
+      <div class="grid grid-cols-3 gap-2 mt-6 text-center">
 
-              <div class="font-semibold text-gray-800">
 
-                {{item.km | number}}
+        <!-- REPORTADOS -->
 
-                <span class="text-xs text-gray-500 ml-1">
+        <div class="bg-gray-50 rounded-xl p-3">
 
-                  {{ item.tipo_activo=='MAQUINARIA' ? 'Horas' : 'KM' }}
+          <p class="text-xs text-gray-500">
+            Reportados
+          </p>
 
-                </span>
+          <p class="text-xl font-black text-gray-800">
 
-              </div>
+            {{
+              indicadorMantenimiento?.preventivo?.reportados || 0
+            }}
 
-            </td>
+          </p>
 
-            <!-- VALOR -->
+        </div>
 
-            <td class="px-6 py-5">
 
-              <div class="font-bold text-green-600 text-lg">
-                {{item.valor | currency:'COP':'symbol':'1.0-0'}}
-              </div>
+        <!-- EJECUTADOS -->
 
-            </td>
+        <div class="bg-green-50 rounded-xl p-3">
 
-          </tr>
+          <p class="text-xs text-gray-500">
+            Ejecutados
+          </p>
 
-          <!-- SIN DATOS -->
+          <p class="text-xl font-black text-green-600">
 
-          <tr *ngIf="mantenimientos.length==0">
+            {{
+              indicadorMantenimiento?.preventivo?.ejecutados || 0
+            }}
 
-            <td colspan="6" class="text-center py-14">
+          </p>
 
-              <div class="text-6xl">
-                🛠
-              </div>
+        </div>
 
-              <h3 class="text-xl font-bold text-gray-700 mt-4">
-                No existen mantenimientos registrados
-              </h3>
 
-              <p class="text-gray-500 mt-2">
-                No se encontraron resultados para los filtros seleccionados.
-              </p>
+        <!-- PENDIENTES -->
 
-            </td>
+        <div class="bg-yellow-50 rounded-xl p-3">
 
-          </tr>
+          <p class="text-xs text-gray-500">
+            Pendientes
+          </p>
 
-        </tbody>
+          <p class="text-xl font-black text-yellow-600">
 
-      </table>
+            {{
+              indicadorMantenimiento?.preventivo?.pendientes || 0
+            }}
+
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <!-- BARRA -->
+
+      <div class="mt-6">
+
+        <div
+          class="flex justify-between text-xs font-semibold text-gray-500 mb-2">
+
+          <span>
+            Cumplimiento
+          </span>
+
+          <span>
+
+            {{
+              indicadorMantenimiento?.preventivo?.porcentaje || 0
+              | number:'1.2-2'
+            }}%
+
+          </span>
+
+        </div>
+
+
+        <div
+          class="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+
+          <div
+            class="h-3 rounded-full transition-all duration-700"
+            [ngClass]="{
+
+              'bg-green-500':
+                indicadorMantenimiento?.preventivo?.cumple_meta,
+
+              'bg-red-500':
+                !indicadorMantenimiento?.preventivo?.cumple_meta
+
+            }"
+            [style.width.%]="
+              indicadorMantenimiento?.preventivo?.porcentaje || 0
+            ">
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- MÉTODO -->
+
+      <div
+        class="mt-5 bg-gray-50 rounded-xl px-4 py-3 text-xs text-gray-500">
+
+        <strong class="text-gray-700">
+          Método de cálculo:
+        </strong>
+
+        <br>
+
+        Mantenimientos preventivos ejecutados /
+
+        alertas preventivas reportadas × 100
+
+      </div>
 
     </div>
 
+
+
+    <!-- ===================================================== -->
+    <!-- CORRECTIVO -->
+    <!-- ===================================================== -->
+
+    <div
+      class="bg-white rounded-2xl shadow-lg p-6 border border-gray-100">
+
+      <!-- HEADER -->
+
+      <div class="flex items-start justify-between">
+
+        <div class="flex items-center gap-3">
+
+          <div
+            class="w-12 h-12 rounded-xl bg-orange-100 flex items-center justify-center text-2xl">
+
+            🔧
+
+          </div>
+
+          <div>
+
+            <p class="text-sm font-semibold text-gray-500">
+              Mantenimiento correctivo
+            </p>
+
+            <h2 class="text-lg font-black text-gray-800">
+              Cumplimiento de cierre
+            </h2>
+
+          </div>
+
+        </div>
+
+
+        <!-- ESTADO META -->
+
+        <span
+          class="px-3 py-1 rounded-full text-xs font-bold"
+          [ngClass]="{
+
+            'bg-green-100 text-green-700':
+              indicadorMantenimiento?.correctivo?.cumple_meta,
+
+            'bg-red-100 text-red-700':
+              !indicadorMantenimiento?.correctivo?.cumple_meta
+
+          }">
+
+          {{
+            indicadorMantenimiento?.correctivo?.cumple_meta
+              ? 'Cumple'
+              : 'No cumple'
+          }}
+
+        </span>
+
+      </div>
+
+
+      <!-- PORCENTAJE -->
+
+      <div class="mt-6 text-center">
+
+        <div
+          class="text-5xl font-black"
+          [ngClass]="{
+
+            'text-green-600':
+              indicadorMantenimiento?.correctivo?.cumple_meta,
+
+            'text-red-600':
+              !indicadorMantenimiento?.correctivo?.cumple_meta
+
+          }">
+
+          {{
+            indicadorMantenimiento?.correctivo?.porcentaje || 0
+            | number:'1.2-2'
+          }}%
+
+        </div>
+
+        <p class="text-sm text-gray-500 mt-2">
+
+          Meta:
+          {{
+            indicadorMantenimiento?.correctivo?.meta || 90
+          }}%
+
+        </p>
+
+      </div>
+
+
+      <!-- REPORTADOS / CERRADOS -->
+
+      <div class="grid grid-cols-2 gap-3 mt-6 text-center">
+
+        <div class="bg-gray-50 rounded-xl p-4">
+
+          <p class="text-xs text-gray-500">
+            Reportados
+          </p>
+
+          <p class="text-2xl font-black text-gray-800">
+
+            {{
+              indicadorMantenimiento?.correctivo
+                ?.mantenimientos_reportados || 0
+            }}
+
+          </p>
+
+        </div>
+
+
+        <div class="bg-green-50 rounded-xl p-4">
+
+          <p class="text-xs text-gray-500">
+            Cerrados
+          </p>
+
+          <p class="text-2xl font-black text-green-600">
+
+            {{
+              indicadorMantenimiento?.correctivo
+                ?.mantenimientos_cerrados || 0
+            }}
+
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <!-- BARRA -->
+
+      <div class="mt-6">
+
+        <div
+          class="flex justify-between text-xs font-semibold text-gray-500 mb-2">
+
+          <span>
+            Cumplimiento
+          </span>
+
+          <span>
+
+            {{
+              indicadorMantenimiento?.correctivo?.porcentaje || 0
+              | number:'1.2-2'
+            }}%
+
+          </span>
+
+        </div>
+
+
+        <div
+          class="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+
+          <div
+            class="h-3 rounded-full transition-all duration-700"
+            [ngClass]="{
+
+              'bg-green-500':
+                indicadorMantenimiento?.correctivo?.cumple_meta,
+
+              'bg-red-500':
+                !indicadorMantenimiento?.correctivo?.cumple_meta
+
+            }"
+            [style.width.%]="
+              indicadorMantenimiento?.correctivo?.porcentaje || 0
+            ">
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- MÉTODO -->
+
+      <div
+        class="mt-5 bg-gray-50 rounded-xl px-4 py-3 text-xs text-gray-500">
+
+        <strong class="text-gray-700">
+          Método de cálculo:
+        </strong>
+
+        <br>
+
+        Mantenimientos correctivos cerrados /
+
+        alertas correctivas reportadas × 100
+
+      </div>
+
+    </div>
+
+
+
+    <!-- ===================================================== -->
+    <!-- INSPECCIONES -->
+    <!-- ===================================================== -->
+
+    <div
+      class="bg-white rounded-2xl shadow-lg p-6 border border-gray-100">
+
+      <!-- HEADER -->
+
+      <div class="flex items-start justify-between">
+
+        <div class="flex items-center gap-3">
+
+          <div
+            class="w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center text-2xl">
+
+            🔍
+
+          </div>
+
+          <div>
+
+            <p class="text-sm font-semibold text-gray-500">
+              Inspecciones
+            </p>
+
+            <h2 class="text-lg font-black text-gray-800">
+              Cumplimiento
+            </h2>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- PORCENTAJE -->
+
+      <div class="mt-6 text-center">
+
+        <div
+          class="text-5xl font-black text-purple-600">
+
+          {{
+            indicadorMantenimiento?.inspecciones?.porcentaje || 0
+            | number:'1.2-2'
+          }}%
+
+        </div>
+
+        <p class="text-sm text-gray-500 mt-2">
+          Cumplimiento de inspecciones
+        </p>
+
+      </div>
+
+
+      <!-- REPORTADAS / EJECUTADAS -->
+
+      <div class="grid grid-cols-2 gap-3 mt-6 text-center">
+
+
+        <!-- REPORTADAS -->
+
+        <div class="bg-gray-50 rounded-xl p-4">
+
+          <p class="text-xs text-gray-500">
+            Reportadas
+          </p>
+
+          <p class="text-2xl font-black text-gray-800">
+
+            {{
+              indicadorMantenimiento?.inspecciones?.reportadas || 0
+            }}
+
+          </p>
+
+        </div>
+
+
+        <!-- EJECUTADAS -->
+
+        <div class="bg-purple-50 rounded-xl p-4">
+
+          <p class="text-xs text-gray-500">
+            Ejecutadas
+          </p>
+
+          <p class="text-2xl font-black text-purple-600">
+
+            {{
+              indicadorMantenimiento?.inspecciones?.ejecutadas || 0
+            }}
+
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <!-- BARRA -->
+
+      <div class="mt-6">
+
+        <div
+          class="flex justify-between text-xs font-semibold text-gray-500 mb-2">
+
+          <span>
+            Cumplimiento
+          </span>
+
+          <span>
+
+            {{
+              indicadorMantenimiento?.inspecciones?.porcentaje || 0
+              | number:'1.2-2'
+            }}%
+
+          </span>
+
+        </div>
+
+
+        <div
+          class="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+
+          <div
+            class="bg-purple-500 h-3 rounded-full transition-all duration-700"
+            [style.width.%]="
+              indicadorMantenimiento?.inspecciones?.porcentaje || 0
+            ">
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- MÉTODO -->
+
+      <div
+        class="mt-5 bg-gray-50 rounded-xl px-4 py-3 text-xs text-gray-500">
+
+        <strong class="text-gray-700">
+          Método de cálculo:
+        </strong>
+
+        <br>
+
+        Inspecciones ejecutadas /
+
+        alertas de inspección reportadas × 100
+
+      </div>
+
+    </div>
+
+
   </div>
 
-  <!-- CIERRE CONTENEDOR PRINCIPAL -->
+
+</div>
+
 </div>

@@ -1,7 +1,35 @@
+/* =========================
+   HOST CONFIGURATION
+========================= */
 :host {
-  display: flex;
-  height: 100vh;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  display: block; /* Cambia flex por block para evitar empujar elementos del padre */
+  height: 100%;
+}
+
+@media (max-width: 768px) {
+  :host {
+    height: auto; /* Permite que en móvil solo ocupe el espacio del bottom nav */
+  }
+
+  .sidebar-container {
+    display: none !important;
+  }
+
+  .mobile-bottom-nav {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    background: #172033;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.25);
+    z-index: 9999;
+    padding: 0 0.5rem;
+  }
 }
 
 /* =========================
@@ -165,12 +193,15 @@
 
   }
 
-  .menu-btn,
-  .logout-btn {
+.menu-btn,
+.logout-btn {
 
-    justify-content: center;
+  transition:
+    background-color .15s ease,
+    color .15s ease,
+    box-shadow .15s ease;
 
-  }
+}
 
 }
 
@@ -463,5 +494,251 @@
 .mobile-bottom-nav{
 
   display:none;
+
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width:768px){
+
+  .sidebar-container{
+    display:none;
+  }
+
+  .mobile-bottom-nav{
+
+    position:fixed;
+    left:0;
+    right:0;
+    bottom:0;
+
+    height:72px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-around;
+
+    background:#172033;
+
+    border-top:1px solid rgba(255,255,255,.08);
+
+    box-shadow:
+      0 -8px 30px rgba(0,0,0,.25);
+
+    z-index:9999;
+
+    padding:0 .5rem;
+
+  }
+
+  .bottom-btn{
+
+    flex:1;
+
+    height:60px;
+
+    border:none;
+    background:transparent;
+
+    color:#cbd5e1;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+
+    gap:.3rem;
+
+    border-radius:12px;
+
+    transition:.2s;
+
+    cursor:pointer;
+
+    i{
+
+      font-size:20px;
+
+    }
+
+    span{
+
+      font-size:11px;
+
+      font-weight:600;
+
+      line-height:1;
+
+    }
+
+    &:hover{
+
+      background:rgba(255,255,255,.08);
+
+      color:#fff;
+
+    }
+
+  }
+
+  /* Item activo */
+
+  .bottom-btn.bg-red-50,
+  .bottom-btn.bg-orange-50,
+  .bottom-btn.bg-blue-50,
+  .bottom-btn.bg-green-50,
+  .bottom-btn.bg-purple-50,
+  .bottom-btn.bg-cyan-50,
+  .bottom-btn.bg-yellow-50,
+  .bottom-btn.bg-amber-50{
+
+      color:#fff !important;
+
+  }
+
+  .bottom-btn.bg-red-50{
+      background:#dc2626 !important;
+  }
+
+  .bottom-btn.bg-orange-50{
+      background:#ea580c !important;
+  }
+
+  .bottom-btn.bg-blue-50{
+      background:#2563eb !important;
+  }
+
+  .bottom-btn.bg-green-50{
+      background:#16a34a !important;
+  }
+
+  .bottom-btn.bg-purple-50{
+      background:#7c3aed !important;
+  }
+
+  .bottom-btn.bg-cyan-50{
+      background:#0891b2 !important;
+  }
+
+  .bottom-btn.bg-yellow-50{
+      background:#ca8a04 !important;
+  }
+
+  .bottom-btn.bg-amber-50{
+      background:#d97706 !important;
+  }
+
+  /* Logout */
+
+  .logout-mobile{
+
+    color:#ef4444;
+
+  }
+
+  .logout-mobile:hover{
+
+    background:rgba(239,68,68,.15);
+
+  }
+
+  /* Padre */
+
+  .mobile-parent {
+  flex: 1;
+  position: relative;
+  display: flex;
+  justify-content: center; /* Centra el contenido internamente */
+}
+
+  /* Submenú */
+
+ .mobile-submenu {
+  position: absolute;
+  bottom: 80px; /* Eleva el submenú por encima del bottom nav */
+  left: 0;
+  right: auto;
+  min-width: 200px;
+  max-width: 240px;
+  background: #172033;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.5);
+  z-index: 10000; /* Asegura estar sobre cualquier botón flotante de la vista */
+  
+}
+
+/* Ajuste del Keyframe para eliminar la aceleración horizontal extra */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  } 
+}
+
+  .mobile-submenu-btn{
+
+    width:100%;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:.8rem;
+
+    padding:14px 18px;
+
+    border:none;
+
+    background:transparent;
+
+    color:#cbd5e1;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+    &:hover{
+
+      background:rgba(255,255,255,.08);
+
+      color:white;
+
+    }
+
+    i{
+
+      width:20px;
+
+      text-align:center;
+
+    }
+
+  }
+
+}
+
+@keyframes fadeUp{
+
+  from{
+
+    opacity:0;
+    transform:translate(-50%,10px);
+
+  }
+
+  to{
+
+    opacity:1;
+    transform:translate(-50%,0);
+
+  }
 
 }

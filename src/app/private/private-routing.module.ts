@@ -18,6 +18,12 @@ import { InspeccionMensualComponent } from './inspeccion-mensual/inspeccion-mens
 import { VerificacionKmModalComponent } from './verificacion-km-modal/verificacion-km-modal.component';
 import { VerificacionKmComponent } from './verificacion-km/verificacion-km.component';
 import { MantenimientosMaquinariaComponent } from './mantenimientos-maquinaria/mantenimientos-maquinaria.component';
+import { PreoperacionalComponent } from './preoperacional/preoperacional.component';
+import { ActivoOperadorComponent } from './activo-operador/activo-operador.component';
+import { UsuariosComponent } from './usuarios/usuarios.component';
+import { PreoperacionalAdminComponent } from './preoperacional-admin/preoperacional-admin.component';
+import { ReportesPreoperacionalesComponent } from './reportes-preoperacionales/reportes-preoperacionales.component';
+import { AnaliticaComponent } from './analitica/analitica.component';
 
 const routes: Routes = [
   {
@@ -42,6 +48,12 @@ const routes: Routes = [
       {path: 'inspeccion-mensual/:tipo/:id',component: InspeccionMensualComponent},
       { path: 'verificacion-km', component: VerificacionKmComponent },
       { path: 'mantenimiento-maquinaria', component: MantenimientosMaquinariaComponent },
+      { path: 'preoperacional',component: PreoperacionalComponent},
+      { path: 'activo-operador', component: ActivoOperadorComponent },
+      {path: 'usuarios', component: UsuariosComponent},
+      {path: 'preoperacional-admin', component: PreoperacionalAdminComponent},
+      {path: 'reportes-preoperacionales', component: ReportesPreoperacionalesComponent},
+      {path: 'analitica', component: AnaliticaComponent}
     ]
   }
 ];

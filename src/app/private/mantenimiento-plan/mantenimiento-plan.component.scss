@@ -9,6 +9,8 @@ $green:    #059669;
 $orange:   #d97706;
 $blue:     #2563eb;
 $red:        #DC2626;
+$blue_light:  #3b82f6;
+$blue_dark:   #172033;
 $radius:   1.5rem;
 $radius-sm: 0.75rem;
 
@@ -50,7 +52,7 @@ $radius-sm: 0.75rem;
 
 // BOTONES
 .btn-primary {
-  background: linear-gradient(135deg, $red, #DC2626 );
+  background: linear-gradient(135deg, $blue_dark, #172033 );
   color: white;
   border: none;
   padding: 1.25rem 2.5rem;

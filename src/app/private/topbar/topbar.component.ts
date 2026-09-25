@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { VehiculoService } from 'src/app/services/vehiculo.service';
 import { FlotaStats } from 'src/app/shared/models/vehiculo.model';
 import { Router } from '@angular/router';
@@ -25,13 +25,18 @@ interface Notificacion {
   vehiculo?: string;
 }
 
+
+
 @Component({
   selector: 'app-topbar',
   templateUrl: './topbar.component.html',
   styleUrls: ['./topbar.component.scss']
 })
-export class TopbarComponent implements OnInit {
+export class TopbarComponent implements OnInit, OnDestroy {
+  esOperador = false;
+  horaActual: Date = new Date();
 
+  private reloj: any;
   // =========================================
   // 🔔 NOTIFICACIONES
   // =========================================
@@ -117,9 +122,13 @@ export class TopbarComponent implements OnInit {
 
     this.cargarMaquinaria();
 
-    this.cargarAlertas();
-
     this.cargarUsuario();
+
+
+    if (!this.esOperador) {
+      this.cargarAlertas();
+    }
+    this.iniciarReloj();
   }
 
   // =========================================
@@ -129,9 +138,32 @@ export class TopbarComponent implements OnInit {
   cargarUsuario(): void {
 
     const user = this.authService.getUser();
+    console.log('USUARIO:', user);
+    this.usuarioNombre = user?.nombre || 'Usuario';
 
-    this.usuarioNombre =
-      user?.nombre || 'Usuario';
+    this.esOperador =
+      user?.tipo === 'operador' ||
+      user?.rol === 'operador';
+  }
+
+  private iniciarReloj(): void {
+
+    this.horaActual = new Date();
+
+    this.reloj = setInterval(() => {
+
+      this.horaActual = new Date();
+
+    }, 1000);
+
+  }
+
+  ngOnDestroy(): void {
+
+    if (this.reloj) {
+      clearInterval(this.reloj);
+    }
+
   }
 
   // =========================================
@@ -349,5 +381,5 @@ export class TopbarComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
-  
+
 }

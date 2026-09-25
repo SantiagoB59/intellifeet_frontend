@@ -50,4 +50,15 @@ export class PlanItemService {
     );
   }
 
+  listarTiposVehiculo(): Observable<any[]> {
+  return this.http.get<any[]>(
+    `${this.api}/tipos-vehiculo`
+  );
+}
+
+listarTiposMaquinaria(): Observable<any[]> {
+  return this.http.get<any[]>(
+    `${this.api}/tipos-maquinaria`
+  );
+}
 }

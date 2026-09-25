@@ -2,7 +2,9 @@ import {
   Component,
   OnInit
 } from '@angular/core';
+
 import { MaquinariaService } from 'src/app/services/maquinaria.service';
+
 import {
   ReportesService
 } from 'src/app/services/reportes.service';
@@ -11,14 +13,13 @@ import {
   VehiculoService
 } from 'src/app/services/vehiculo.service';
 
+
 @Component({
   selector: 'app-reportes',
   templateUrl: './reportes.component.html',
   styleUrls: ['./reportes.component.scss']
 })
-
-export class ReportesComponent
-  implements OnInit {
+export class ReportesComponent implements OnInit {
 
   // =====================================================
   // STATE
@@ -26,7 +27,8 @@ export class ReportesComponent
 
   loading = false;
 
-  tab = 'alertas';
+  tab = 'reportes';
+  subTabReporte = 'alertas';
 
   // =====================================================
   // DATA
@@ -37,16 +39,81 @@ export class ReportesComponent
   mantenimientos: any[] = [];
 
   vehiculos: any[] = [];
+
   maquinarias: any[] = [];
+
+
   semaforo: any = {
 
     criticas: 0,
-
     altas: 0,
-
     medias: 0,
-
     bajas: 0
+
+  };
+
+  // =====================================================
+  // INDICADOR HSEQ
+  // =====================================================
+
+  indicadorMantenimiento: any = {
+
+    preventivo: {
+
+      reportados: 0,
+
+      ejecutados: 0,
+
+      pendientes: 0,
+
+      porcentaje: 0,
+
+      meta: 90,
+
+      cumple_meta: false
+
+    },
+
+
+    correctivo: {
+
+      mantenimientos_reportados: 0,
+
+      mantenimientos_cerrados: 0,
+
+      porcentaje: 0,
+
+      meta: 90,
+
+      cumple_meta: false
+
+    },
+
+
+    inspecciones: {
+
+      reportadas: 0,
+
+      ejecutadas: 0,
+
+      porcentaje: 0
+
+    },
+
+
+    vehiculos: {},
+
+    maquinaria: {},
+
+
+    periodo: {
+
+      inicio: '',
+
+      fin: ''
+
+    }
+
   };
 
   // =====================================================
@@ -59,7 +126,7 @@ export class ReportesComponent
 
     categoria: '',
 
-    tipo_activo: 'VEHICULO', // NUEVO
+    tipo_activo: 'VEHICULO',
 
     vehiculo_id: '',
 
@@ -72,21 +139,20 @@ export class ReportesComponent
   };
 
 
-
   // =====================================================
   // CONSTRUCTOR
   // =====================================================
 
   constructor(
 
-    private reportesService:
-      ReportesService,
+    private reportesService: ReportesService,
 
-    private vehiculoService:
-      VehiculoService,
+    private vehiculoService: VehiculoService,
+
     private maquinariaService: MaquinariaService
 
   ) { }
+
 
   // =====================================================
   // INIT
@@ -95,9 +161,13 @@ export class ReportesComponent
   ngOnInit(): void {
 
     this.cargarVehiculos();
+
     this.cargarMaquinarias();
+
     this.cargarTodo();
+
   }
+
 
   // =====================================================
   // CARGAR TODO
@@ -105,16 +175,26 @@ export class ReportesComponent
 
   cargarTodo(): void {
 
-  const filtros = this.obtenerFiltrosEnviar();
+    const filtros = this.obtenerFiltrosEnviar();
 
-  this.cargarAlertas(filtros);
+    this.cargarAlertas(filtros);
 
-  this.cargarMantenimientos(filtros);
+    this.cargarMantenimientos(filtros);
 
-  this.cargarSemaforo();
+    this.cargarSemaforo();
 
-}
+    this.cargarIndicadorMantenimiento(filtros);
 
+  }
+
+
+  cambiarTab(tab: string): void {
+    this.tab = tab;
+  }
+
+  cambiarTabReporte(tab: string): void {
+    this.subTabReporte = tab;
+  }
   // =====================================================
   // VEHÍCULOS
   // =====================================================
@@ -122,14 +202,13 @@ export class ReportesComponent
   cargarVehiculos(): void {
 
     this.vehiculoService
-
       .listar({})
-
       .subscribe({
 
         next: (resp: any) => {
 
           this.vehiculos = resp;
+
         },
 
         error: (err) => {
@@ -138,9 +217,49 @@ export class ReportesComponent
             'Error vehículos:',
             err
           );
+
+        }
+
+      });
+
+  }
+
+  exportarIndicadorMantenimiento(): void {
+
+    const filtrosEnviar = this.obtenerFiltrosEnviar();
+
+    this.reportesService
+      .exportarIndicadorMantenimiento(filtrosEnviar)
+      .subscribe({
+        next: (blob: Blob) => {
+
+          const url = window.URL.createObjectURL(blob);
+
+          const a = document.createElement('a');
+
+          a.href = url;
+
+          a.download = 'HSEQ-R-159-Indicadores-Mantenimiento.xlsx';
+
+          a.click();
+
+          window.URL.revokeObjectURL(url);
+
+        },
+
+        error: (err) => {
+          console.error(
+            'Error descargando indicador HSEQ:',
+            err
+          );
         }
       });
+
   }
+
+  // =====================================================
+  // MAQUINARIA
+  // =====================================================
 
   cargarMaquinarias(): void {
 
@@ -154,19 +273,35 @@ export class ReportesComponent
 
         },
 
-        error: err => console.error(err)
+        error: (err) => {
+
+          console.error(
+            'Error maquinaria:',
+            err
+          );
+
+        }
 
       });
 
   }
 
+
+  // =====================================================
+  // CAMBIAR TIPO ACTIVO
+  // =====================================================
+
   cambiarTipoActivo(): void {
 
-    if (this.filtros.tipo_activo === 'VEHICULO') {
+    if (
+      this.filtros.tipo_activo === 'VEHICULO'
+    ) {
 
       this.filtros.maquinaria_id = '';
 
-    } else {
+    }
+
+    else {
 
       this.filtros.vehiculo_id = '';
 
@@ -174,11 +309,14 @@ export class ReportesComponent
 
   }
 
+
   // =====================================================
   // ALERTAS
   // =====================================================
 
-  cargarAlertas(filtros: any = this.filtros): void {
+  cargarAlertas(
+    filtros: any = this.obtenerFiltrosEnviar()
+  ): void {
 
     this.loading = true;
 
@@ -188,34 +326,43 @@ export class ReportesComponent
 
         next: (resp: any) => {
 
-          console.log('ALERTAS =>', resp);
+          console.log(
+            'ALERTAS =>',
+            resp
+          );
 
           this.alertas = resp;
 
           this.loading = false;
+
         },
 
         error: (err) => {
 
-          console.error(err);
+          console.error(
+            'Error alertas:',
+            err
+          );
 
           this.loading = false;
+
         }
 
       });
 
   }
 
+
   // =====================================================
   // MANTENIMIENTOS
   // =====================================================
 
-  cargarMantenimientos(filtros: any = this.filtros): void {
+  cargarMantenimientos(
+    filtros: any = this.obtenerFiltrosEnviar()
+  ): void {
 
     this.reportesService
-
       .getMantenimientos(filtros)
-
       .subscribe({
 
         next: (resp: any) => {
@@ -237,6 +384,7 @@ export class ReportesComponent
 
   }
 
+
   // =====================================================
   // SEMÁFORO
   // =====================================================
@@ -244,14 +392,13 @@ export class ReportesComponent
   cargarSemaforo(): void {
 
     this.reportesService
-
       .getSemaforo()
-
       .subscribe({
 
         next: (resp: any) => {
 
           this.semaforo = resp;
+
         },
 
         error: (err) => {
@@ -260,55 +407,48 @@ export class ReportesComponent
             'Error semáforo:',
             err
           );
+
         }
+
       });
+
   }
 
-  // =====================================================
-  // FILTRAR
-  // =====================================================
 
+  // =====================================================
+  // APLICAR FILTROS
+  // =====================================================
 
   aplicarFiltros(): void {
 
-    const filtrosEnviar: any = {
-      ...this.filtros,
-      vehiculo_id: '',
-      maquinaria_id: ''
-    };
+    const filtrosEnviar =
+      this.obtenerFiltrosEnviar();
 
-    if (this.filtros.vehiculo_id) {
 
-      if (this.filtros.vehiculo_id.startsWith('V-')) {
+    console.log(
+      'FILTROS ENVIADOS =>',
+      filtrosEnviar
+    );
 
-        filtrosEnviar.tipo_activo = 'VEHICULO';
-        filtrosEnviar.vehiculo_id =
-          this.filtros.vehiculo_id.replace('V-', '');
 
-      } else if (this.filtros.vehiculo_id.startsWith('M-')) {
+    this.cargarAlertas(
+      filtrosEnviar
+    );
 
-        filtrosEnviar.tipo_activo = 'MAQUINARIA';
-        filtrosEnviar.maquinaria_id =
-          this.filtros.vehiculo_id.replace('M-', '');
 
-      }
+    this.cargarMantenimientos(
+      filtrosEnviar
+    );
 
-    }
 
-    this.cargarAlertas(filtrosEnviar);
-    this.cargarMantenimientos(filtrosEnviar);
+    this.cargarIndicadorMantenimiento(
+      filtrosEnviar
+    );
 
   }
-  // =====================================================
-  // CAMBIAR TAB
-  // =====================================================
 
-  cambiarTab(
-    tab: string
-  ): void {
 
-    this.tab = tab;
-  }
+
 
   // =====================================================
   // CLASE PRIORIDAD
@@ -354,155 +494,467 @@ export class ReportesComponent
           bg-blue-100
           text-blue-700
         `;
+
     }
+
   }
 
-// =====================================================
-// EXPORTAR ALERTAS
-// =====================================================
 
-exportarExcelAlertas(): void {
+  // =====================================================
+  // OBTENER FILTROS PARA BACKEND
+  // =====================================================
 
-  const filtrosEnviar = this.obtenerFiltrosEnviar();
+  private obtenerFiltrosEnviar(): any {
 
-  this.reportesService
+    const filtrosEnviar: any = {
 
-    .descargarExcelAlertas(
-      filtrosEnviar
-    )
+      tipo: this.filtros.tipo,
 
-    .subscribe({
+      categoria: this.filtros.categoria,
 
-      next: (blob: Blob) => {
+      tipo_activo: this.filtros.tipo_activo,
 
-        const url =
-          window.URL
-            .createObjectURL(
-              blob
-            );
+      vehiculo_id: '',
 
-        const a =
-          document
-            .createElement('a');
+      maquinaria_id: '',
 
-        a.href = url;
+      fecha_inicio: this.filtros.fecha_inicio,
 
-        a.download =
-          `REPORTE_ALERTAS_${Date.now()}.xlsx`;
+      fecha_fin: this.filtros.fecha_fin
 
-        a.click();
+    };
 
-        window.URL
-          .revokeObjectURL(
-            url
-          );
+
+    const activo =
+      this.obtenerActivoSeleccionado();
+
+
+    if (activo) {
+
+      filtrosEnviar.tipo_activo =
+        activo.tipo;
+
+
+      if (
+        activo.tipo === 'VEHICULO'
+      ) {
+
+        filtrosEnviar.vehiculo_id =
+          activo.id;
+
+      }
+
+      else if (
+        activo.tipo === 'MAQUINARIA'
+      ) {
+
+        filtrosEnviar.maquinaria_id =
+          activo.id;
+
+      }
+
+    }
+
+
+    return filtrosEnviar;
+
+  }
+
+
+  // =====================================================
+  // OBTENER ACTIVO SELECCIONADO
+  // =====================================================
+
+  private obtenerActivoSeleccionado(): any {
+
+    const valor =
+      this.filtros.vehiculo_id;
+
+
+    if (!valor) {
+
+      return null;
+
+    }
+
+
+    if (
+      valor.startsWith('V-')
+    ) {
+
+      return {
+
+        tipo: 'VEHICULO',
+
+        id: Number(
+          valor.replace('V-', '')
+        )
+
+      };
+
+    }
+
+
+    if (
+      valor.startsWith('M-')
+    ) {
+
+      return {
+
+        tipo: 'MAQUINARIA',
+
+        id: Number(
+          valor.replace('M-', '')
+        )
+
+      };
+
+    }
+
+
+    return null;
+
+  }
+
+
+  // =====================================================
+  // INDICADOR HSEQ
+  // =====================================================
+
+  cargarIndicadorMantenimiento(filtros: any = this.filtros): void {
+
+    console.log('==============================');
+    console.log('FILTROS INDICADOR:', filtros);
+    console.log('==============================');
+
+    this.reportesService.getIndicadorMantenimiento(filtros).subscribe({
+
+      next: (resp: any) => {
+
+        console.log('RESPUESTA INDICADOR:', resp);
+
+        console.log(
+          'PREVENTIVO:',
+          resp?.indicadores?.preventivo
+        );
+
+        console.log(
+          'CORRECTIVO:',
+          resp?.indicadores?.correctivo
+        );
+
+        console.log(
+          'INSPECCIONES:',
+          resp?.indicadores?.inspecciones
+        );
+
+        console.log(
+          'PERIODO:',
+          resp?.periodo
+        );
+
+
+        // =================================================
+        // MAPEAR RESPUESTA DEL BACKEND
+        // =================================================
+
+        this.indicadorMantenimiento = {
+
+          // =================================================
+          // PREVENTIVO
+          // =================================================
+
+          preventivo: {
+
+            reportados:
+              Number(
+                resp?.indicadores?.preventivo?.reportados ?? 0
+              ),
+
+            ejecutados:
+              Number(
+                resp?.indicadores?.preventivo?.ejecutados ?? 0
+              ),
+
+            pendientes:
+              Number(
+                resp?.indicadores?.preventivo?.pendientes ?? 0
+              ),
+
+            porcentaje:
+              Number(
+                resp?.indicadores?.preventivo?.porcentaje ?? 0
+              ),
+
+            meta:
+              Number(
+                resp?.indicadores?.preventivo?.meta ?? 90
+              ),
+
+            cumple_meta:
+              Boolean(
+                resp?.indicadores?.preventivo?.cumple_meta ?? false
+              )
+          },
+
+
+          // =================================================
+          // CORRECTIVO
+          // =================================================
+
+          correctivo: {
+
+            mantenimientos_reportados:
+              Number(
+                resp?.indicadores?.correctivo
+                  ?.mantenimientos_reportados ?? 0
+              ),
+
+            mantenimientos_cerrados:
+              Number(
+                resp?.indicadores?.correctivo
+                  ?.mantenimientos_cerrados ?? 0
+              ),
+
+            porcentaje:
+              Number(
+                resp?.indicadores?.correctivo?.porcentaje ?? 0
+              ),
+
+            meta:
+              Number(
+                resp?.indicadores?.correctivo?.meta ?? 90
+              ),
+
+            cumple_meta:
+              Boolean(
+                resp?.indicadores?.correctivo?.cumple_meta ?? false
+              )
+          },
+
+
+          // =================================================
+          // INSPECCIONES
+          // =================================================
+
+          inspecciones: {
+
+            reportadas:
+              Number(
+                resp?.indicadores?.inspecciones?.reportadas ?? 0
+              ),
+
+            ejecutadas:
+              Number(
+                resp?.indicadores?.inspecciones?.resueltas ?? 0
+              ),
+
+            porcentaje:
+              Number(
+                resp?.indicadores?.inspecciones?.porcentaje ?? 0
+              )
+          },
+
+
+          // =================================================
+          // DETALLE
+          // =================================================
+
+          vehiculos:
+            resp?.vehiculos ?? {},
+
+          maquinaria:
+            resp?.maquinaria ?? {},
+
+
+          // =================================================
+          // PERIODO
+          // =================================================
+
+          periodo: {
+
+            inicio:
+              resp?.periodo?.inicio ?? '',
+
+            fin:
+              resp?.periodo?.fin ?? ''
+
+          }
+
+        };
+
+
+        console.log(
+          'INDICADOR FINAL PARA HTML:',
+          this.indicadorMantenimiento
+        );
 
       },
+
+
+      // =====================================================
+      // ERROR
+      // =====================================================
 
       error: (err) => {
 
         console.error(
-          'Error descargando Excel:',
+          'ERROR INDICADOR MANTENIMIENTO:',
           err
         );
+
+
+        this.indicadorMantenimiento = {
+
+          preventivo: {
+
+            reportados: 0,
+
+            ejecutados: 0,
+
+            pendientes: 0,
+
+            porcentaje: 0,
+
+            meta: 90,
+
+            cumple_meta: false
+
+          },
+
+
+          correctivo: {
+
+            mantenimientos_reportados: 0,
+
+            mantenimientos_cerrados: 0,
+
+            porcentaje: 0,
+
+            meta: 90,
+
+            cumple_meta: false
+
+          },
+
+
+          inspecciones: {
+
+            reportadas: 0,
+
+            ejecutadas: 0,
+
+            porcentaje: 0
+
+          },
+
+
+          vehiculos: {},
+
+          maquinaria: {},
+
+
+          periodo: {
+
+            inicio: '',
+
+            fin: ''
+
+          }
+
+        };
 
       }
 
     });
 
-}
-// =====================================================
-// OBTENER ACTIVO SELECCIONADO
-// =====================================================
+  }
 
 
-// =====================================================
-// OBTENER FILTROS PARA ENVIAR AL BACKEND
-// =====================================================
 
-private obtenerFiltrosEnviar() {
+  exportarExcelAlertas(): void {
 
-  const filtrosEnviar: any = {
-    ...this.filtros,
-    vehiculo_id: '',
-    maquinaria_id: ''
-  };
+    const filtrosEnviar =
+      this.obtenerFiltrosEnviar();
 
-  const activo = this.obtenerActivoSeleccionado();
 
-  if (activo) {
+    this.reportesService
+      .descargarExcelAlertas(
+        filtrosEnviar
+      )
+      .subscribe({
 
-    filtrosEnviar.tipo_activo = activo.tipo;
+        next: (blob: Blob) => {
 
-    if (activo.tipo === 'VEHICULO') {
+          const url =
+            window.URL.createObjectURL(
+              blob
+            );
 
-      filtrosEnviar.vehiculo_id = activo.id;
 
-    } else {
+          const a =
+            document.createElement('a');
 
-      filtrosEnviar.maquinaria_id = activo.id;
 
-    }
+          a.href = url;
+
+
+          a.download =
+            `REPORTE_ALERTAS_${Date.now()}.xlsx`;
+
+
+          a.click();
+
+
+          window.URL.revokeObjectURL(
+            url
+          );
+
+        },
+
+        error: (err) => {
+
+          console.error(
+            'Error descargando Excel:',
+            err
+          );
+
+        }
+
+      });
 
   }
 
-  return filtrosEnviar;
 
-}
-
-private obtenerActivoSeleccionado() {
-
-  if (!this.filtros.vehiculo_id) {
-    return null;
-  }
-
-  if (this.filtros.vehiculo_id.startsWith('V-')) {
-
-    return {
-      tipo: 'VEHICULO',
-      id: Number(this.filtros.vehiculo_id.replace('V-', ''))
-    };
-
-  }
-
-  if (this.filtros.vehiculo_id.startsWith('M-')) {
-
-    return {
-      tipo: 'MAQUINARIA',
-      id: Number(this.filtros.vehiculo_id.replace('M-', ''))
-    };
-
-  }
-
-  return null;
-
-}
-
+  // =====================================================
+  // EXPORTAR MANTENIMIENTO
+  // =====================================================
 
   exportarExcelMantenimientos(): void {
 
-    if (!this.filtros.vehiculo_id) {
+    const activo =
+      this.obtenerActivoSeleccionado();
 
-      alert('Debes seleccionar un activo');
+
+    if (!activo) {
+
+      alert(
+        'Debes seleccionar un activo'
+      );
 
       return;
 
     }
 
-    // =========================================
-    // VEHÍCULO
-    // =========================================
 
-    if (this.filtros.vehiculo_id.startsWith('V-')) {
-
-      const vehiculoId = Number(
-        this.filtros.vehiculo_id.replace('V-', '')
-      );
+    if (
+      activo.tipo === 'VEHICULO'
+    ) {
 
       this.reportesService
 
         .descargarFormatoMantenimiento(
-          vehiculoId
+          activo.id
         )
 
         .subscribe({
@@ -510,19 +962,28 @@ private obtenerActivoSeleccionado() {
           next: (blob: Blob) => {
 
             const url =
-              window.URL.createObjectURL(blob);
+              window.URL.createObjectURL(
+                blob
+              );
+
 
             const a =
               document.createElement('a');
 
+
             a.href = url;
 
+
             a.download =
-              `HOJA_VIDA_${vehiculoId}.xlsx`;
+              `HOJA_VIDA_${activo.id}.xlsx`;
+
 
             a.click();
 
-            window.URL.revokeObjectURL(url);
+
+            window.URL.revokeObjectURL(
+              url
+            );
 
           },
 
@@ -539,11 +1000,10 @@ private obtenerActivoSeleccionado() {
 
     }
 
-    // =========================================
-    // MAQUINARIA
-    // =========================================
 
-    else if (this.filtros.vehiculo_id.startsWith('M-')) {
+    else if (
+      activo.tipo === 'MAQUINARIA'
+    ) {
 
       alert(
         'El formato de hoja de vida para maquinaria aún no está disponible.'
@@ -553,60 +1013,90 @@ private obtenerActivoSeleccionado() {
 
   }
 
+
+  // =====================================================
+  // EXPORTAR ALERTAS POR ACTIVO
+  // =====================================================
+
   exportarExcelAlertasFormato(): void {
 
-  const activo = this.obtenerActivoSeleccionado();
+    const activo =
+      this.obtenerActivoSeleccionado();
 
-  if (!activo) {
 
-    alert('Debes seleccionar un activo');
+    if (!activo) {
 
-    return;
+      alert(
+        'Debes seleccionar un activo'
+      );
+
+      return;
+
+    }
+
+
+    if (
+      activo.tipo === 'VEHICULO'
+    ) {
+
+      this.reportesService
+
+        .descargarFormatoAlertas(
+          activo.id
+        )
+
+        .subscribe({
+
+          next: (blob: Blob) => {
+
+            const url =
+              window.URL.createObjectURL(
+                blob
+              );
+
+
+            const a =
+              document.createElement('a');
+
+
+            a.href = url;
+
+
+            a.download =
+              `HOJA_ALERTAS_${activo.id}.xlsx`;
+
+
+            a.click();
+
+
+            window.URL.revokeObjectURL(
+              url
+            );
+
+          },
+
+          error: (err) => {
+
+            console.error(
+              'Error descargando alertas:',
+              err
+            );
+
+          }
+
+        });
+
+    }
+
+
+    else {
+
+      alert(
+        'El formato de alertas para maquinaria aún no está disponible.'
+      );
+
+    }
 
   }
 
-  if (activo.tipo === 'VEHICULO') {
-
-    this.reportesService
-
-      .descargarFormatoAlertas(activo.id)
-
-      .subscribe({
-
-        next: (blob: Blob) => {
-
-          const url =
-            window.URL.createObjectURL(blob);
-
-          const a =
-            document.createElement('a');
-
-          a.href = url;
-
-          a.download =
-            `HOJA_ALERTAS_${activo.id}.xlsx`;
-
-          a.click();
-
-          window.URL.revokeObjectURL(url);
-
-        },
-
-        error: (err) => {
-
-          console.error(err);
-
-        }
-
-      });
-
-  } else {
-
-    alert(
-      'El formato de alertas para maquinaria aún no está disponible.'
-    );
-
-  }
-
-}
 }

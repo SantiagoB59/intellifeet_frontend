@@ -83,7 +83,7 @@
 }
 
 .brand-title span {
-  color: #dc2626;
+  color: #2563eb;
 }
 
 .brand-status {
@@ -165,7 +165,7 @@
 
 .notification-btn:hover {
   background: rgba(15, 23, 42, 0.05);
-  color: #dc2626;
+  color: #2563eb;
 }
 
 .notification-badge {
@@ -179,7 +179,7 @@
 
   border-radius: 999px;
 
-  background: #ef4444;
+  background: #2563eb;
   color: white;
 
   display: flex;
@@ -276,7 +276,7 @@
 
   border-radius: 999px;
 
-  background: #dc2626;
+  background: #172033;
   color: white;
 
   display: flex;
@@ -295,7 +295,7 @@
 
   border-radius: 0.9rem;
 
-  background: #ef4444;
+  background: #172033;
   color: white;
 
   font-size: 0.85rem;
@@ -307,7 +307,7 @@
 }
 
 .logout-btn:hover {
-  background: #dc2626;
+  background: #2563eb;
   transform: translateY(-1px);
 }
 
@@ -480,4 +480,169 @@
 
     z-index: 9999;
   }
+}
+
+.clock-box{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    padding:10px 18px;
+
+    border-radius:16px;
+
+    background:rgba(255,255,255,.08);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    color:#2563eb;
+
+    margin:0 20px;
+
+}
+
+.clock-box i{
+
+    font-size:22px;
+
+    color:#38bdf8;
+
+}
+
+.clock-info{
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+.clock-time{
+
+    font-size:22px;
+
+    font-weight:700;
+
+    letter-spacing:1px;
+
+    line-height:1;
+
+}
+
+.clock-date{
+
+    font-size:12px;
+
+    opacity:.8;
+
+    text-transform:capitalize;
+
+}
+
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width:1200px){
+
+  .clock-date{
+    display:none;
+  }
+
+  .clock-time{
+    font-size:18px;
+  }
+
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width:768px){
+
+  .topbar-container{
+
+    flex-wrap:wrap;
+    gap:12px;
+
+  }
+
+  .topbar-left{
+
+    width:100%;
+    justify-content:center;
+
+  }
+
+  .topbar-stats{
+
+    width:100%;
+    justify-content:center;
+
+  }
+
+  .clock-box{
+
+    order:3;
+
+    width:100%;
+
+    justify-content:center;
+
+    margin:0;
+
+    padding:8px 14px;
+
+  }
+
+  .clock-time{
+
+    font-size:22px;
+
+  }
+
+  .clock-date{
+
+    display:none;
+
+  }
+
+  .topbar-right{
+
+    width:100%;
+
+    justify-content:center;
+
+  }
+
+}
+
+/* =========================
+   MÓVILES PEQUEÑOS
+========================= */
+
+@media (max-width:480px){
+
+  .clock-box{
+
+    padding:8px;
+
+  }
+
+  .clock-box i{
+
+    font-size:18px;
+
+  }
+
+  .clock-time{
+
+    font-size:18px;
+
+  }
+
 }

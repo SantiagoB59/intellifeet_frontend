@@ -11,10 +11,10 @@
 
     <div class="header-content">
 
-      <h1>Gestión de Mantenimientos</h1>
+      <h1>Registrar mantenimientos de vehiculos automotores realizados</h1>
 
       <p class="page-subtitle">
-        Registro real de mantenimientos realizados.
+        Aqui podras registrar los mantenimientos realizados a los vehículos, incluyendo detalles como fecha, tipo de mantenimiento, kilometraje, proveedor, costo y soporte.
       </p>
 
     </div>
@@ -166,7 +166,7 @@
 
             <a
               *ngIf="m.soporte"
-              [href]="'https://transmenasmart.com/' + m.soporte"
+              [href]="'http://localhost:5000/' + m.soporte"
               target="_blank"
               class="action-link">
 

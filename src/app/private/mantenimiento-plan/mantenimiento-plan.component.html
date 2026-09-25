@@ -58,7 +58,7 @@
             Kilometraje actual
           </p>
 
-          <p class="font-black text-xl text-red-600">
+          <p class="font-black text-xl text-blue-600">
             {{ vehiculo?.km_estimado | number }} km
           </p>
 
@@ -71,7 +71,7 @@
             Horómetro actual
           </p>
 
-          <p class="font-black text-xl text-red-600">
+          <p class="font-black text-xl text-blue-600">
 
             {{ maquinaria?.horometro_actual | number }}
             horas
@@ -134,6 +134,10 @@
                 {{ p.frecuencia_valor | number }} km
               </ng-container>
 
+              <ng-container *ngIf="p.tipo_control == 'HORAS'">
+                {{ p.frecuencia_horas | number }} horas
+              </ng-container>
+
               <ng-container *ngIf="p.tipo_control == 'DIAS'">
                 {{ p.frecuencia_valor }} días
               </ng-container>
@@ -168,6 +172,10 @@
                 {{ p.programado | number }} km
               </ng-container>
 
+              <ng-container *ngIf="p.tipo_control == 'HORAS'">
+                {{ p.horas_programadas | number }} horas
+              </ng-container>
+
               <ng-container *ngIf="p.tipo_control == 'DIAS'">
                 {{ p.programado }}
               </ng-container>
@@ -176,12 +184,14 @@
 
             <!-- RESTANTE -->
 
-            <td [class.km-critico]="
-          p.estado != 'ACTIVO'
-        ">
+            <td [class.km-critico]="p.estado != 'ACTIVO'">
 
               <ng-container *ngIf="p.tipo_control == 'KM'">
                 {{ p.restante | number }} km
+              </ng-container>
+
+              <ng-container *ngIf="p.tipo_control == 'HORAS'">
+                {{ p.horas_restantes | number }} horas
               </ng-container>
 
               <ng-container *ngIf="p.tipo_control == 'DIAS'">
@@ -275,21 +285,46 @@
       <!-- TIPO CONTROL -->
       <div class="form-group">
 
-        <label>
-          Tipo de control
-        </label>
 
-        <select [(ngModel)]="tipo_control" class="form-input">
+        <div class="form-group">
 
-          <option value="KM">
-            Por kilometraje
-          </option>
+          <label>
+            Tipo de control
+          </label>
 
-          <option value="DIAS">
-            Por tiempo
-          </option>
+          <select [(ngModel)]="tipo_control" class="form-input" [disabled]="tipo === 'maquinaria'">
 
-        </select>
+            <option *ngIf="tipo === 'vehiculo'" value="KM">
+              Por kilometraje
+            </option>
+
+            <option value="DIAS">
+              Por tiempo
+            </option>
+
+            <option *ngIf="tipo === 'maquinaria'" value="HORAS">
+              Por horómetro
+            </option>
+
+          </select>
+
+          <small class="form-help">
+
+            <span *ngIf="tipo === 'vehiculo' && tipo_control === 'KM'">
+              El mantenimiento se controlará según el kilometraje del vehículo.
+            </span>
+
+            <span *ngIf="tipo === 'vehiculo' && tipo_control === 'DIAS'">
+              El mantenimiento se controlará según el paso de los días.
+            </span>
+
+            <span *ngIf="tipo === 'maquinaria'">
+              El mantenimiento se controlará según las horas del horómetro.
+            </span>
+
+          </small>
+
+        </div>
 
         <small class="form-help">
 
@@ -303,27 +338,29 @@
       <div class="form-group">
 
         <label>
-
           ¿Cada cuánto debe realizarse?
-
         </label>
 
-        <input [(ngModel)]="frecuencia_valor" type="number" class="form-input" placeholder="Ej: 15000">
+        <input [(ngModel)]="frecuencia_valor" type="number" min="1" class="form-input" [placeholder]="
+      tipo_control === 'KM'
+        ? 'Ej: 15000'
+        : tipo_control === 'HORAS'
+          ? 'Ej: 500'
+          : 'Ej: 180'
+    ">
 
         <small class="form-help">
 
-          <span *ngIf="tipo_control == 'KM'">
-
-            Ejemplo:
-            cada 15.000 km se realizará este mantenimiento
-
+          <span *ngIf="tipo_control === 'KM'">
+            Ejemplo: cada 15.000 km se realizará este mantenimiento.
           </span>
 
-          <span *ngIf="tipo_control == 'DIAS'">
+          <span *ngIf="tipo_control === 'HORAS'">
+            Ejemplo: cada 500 horas de horómetro se realizará este mantenimiento.
+          </span>
 
-            Ejemplo:
-            cada 180 días se realizará este mantenimiento
-
+          <span *ngIf="tipo_control === 'DIAS'">
+            Ejemplo: cada 180 días se realizará este mantenimiento.
           </span>
 
         </small>
@@ -334,29 +371,35 @@
       <div class="form-group">
 
         <label>
-
           ¿Cuándo desea recibir alerta?
-
         </label>
 
-        <input [(ngModel)]="alerta_valor" type="number" class="form-input" placeholder="Ej: 1000">
+        <input [(ngModel)]="alerta_valor" type="number" min="0" class="form-input" [placeholder]="
+      tipo_control === 'KM'
+        ? 'Ej: 1000'
+        : tipo_control === 'HORAS'
+          ? 'Ej: 50'
+          : 'Ej: 15'
+    ">
 
         <small class="form-help">
 
-          <span *ngIf="tipo_control == 'KM'">
-
+          <span *ngIf="tipo_control === 'KM'">
             El sistema alertará
             {{ alerta_valor || 0 }}
-            km antes del vencimiento
-
+            km antes del vencimiento.
           </span>
 
-          <span *ngIf="tipo_control == 'DIAS'">
-
+          <span *ngIf="tipo_control === 'HORAS'">
             El sistema alertará
             {{ alerta_valor || 0 }}
-            días antes del vencimiento
+            horas antes del vencimiento.
+          </span>
 
+          <span *ngIf="tipo_control === 'DIAS'">
+            El sistema alertará
+            {{ alerta_valor || 0 }}
+            días antes del vencimiento.
           </span>
 
         </small>
@@ -367,59 +410,36 @@
       <div class="bg-slate-100 rounded-xl p-4 mt-4" *ngIf="frecuencia_valor > 0">
 
         <p class="text-sm text-slate-500 mb-2">
-
           Resumen de programación
-
         </p>
 
         <div class="text-sm space-y-2">
 
-          <!-- KM -->
+          <!-- ========================= -->
+          <!-- VEHÍCULO - KM -->
+          <!-- ========================= -->
 
-          <ng-container *ngIf="tipo_control == 'KM'">
+          <ng-container *ngIf="tipo_control === 'KM' && tipo === 'vehiculo'">
 
             <div>
-
-              Este mantenimiento se realizará
-              cada
+              Este mantenimiento se realizará cada
 
               <strong>
                 {{ frecuencia_valor | number }}
                 km
               </strong>
-
             </div>
 
-            <ng-container *ngIf="tipo === 'vehiculo'">
+            <div *ngIf="vehiculo">
 
-              <div *ngIf="vehiculo">
+              Kilometraje actual:
 
-                Kilometraje actual:
+              <strong>
+                {{ vehiculo.km_actual | number }}
+                km
+              </strong>
 
-                <strong>
-                  {{ vehiculo.km_actual | number }}
-                  km
-                </strong>
-
-              </div>
-
-            </ng-container>
-
-
-            <ng-container *ngIf="tipo === 'maquinaria'">
-
-              <div *ngIf="maquinaria">
-
-                Horómetro actual:
-
-                <strong>
-                  {{ maquinaria.horometro_actual | number }}
-                  horas
-                </strong>
-
-              </div>
-
-            </ng-container>
+            </div>
 
             <div *ngIf="vehiculo">
 
@@ -429,8 +449,8 @@
 
                 {{
                 (
-                vehiculo.km_actual
-                + frecuencia_valor
+                vehiculo.km_actual +
+                frecuencia_valor
                 ) | number
                 }}
 
@@ -443,6 +463,7 @@
             <div>
 
               El sistema alertará
+
               <strong>
                 {{ alerta_valor | number }}
                 km antes
@@ -452,17 +473,80 @@
 
           </ng-container>
 
-          <!-- DIAS -->
 
-          <ng-container *ngIf="tipo_control == 'DIAS'">
+          <!-- ========================= -->
+          <!-- MAQUINARIA - HORAS -->
+          <!-- ========================= -->
+
+          <ng-container *ngIf="tipo_control === 'HORAS' && tipo === 'maquinaria'">
 
             <div>
 
-              Este mantenimiento se realizará
-              cada
+              Este mantenimiento se realizará cada
 
               <strong>
-                {{ frecuencia_valor }}
+                {{ frecuencia_valor | number }}
+                horas
+              </strong>
+
+            </div>
+
+            <div *ngIf="maquinaria">
+
+              Horómetro actual:
+
+              <strong>
+                {{ maquinaria.horometro_actual | number }}
+                horas
+              </strong>
+
+            </div>
+
+            <div *ngIf="maquinaria">
+
+              Próximo mantenimiento estimado:
+
+              <strong class="text-blue-700">
+
+                {{
+                (
+                maquinaria.horometro_actual +
+                frecuencia_valor
+                ) | number
+                }}
+
+                horas
+
+              </strong>
+
+            </div>
+
+            <div>
+
+              El sistema alertará
+
+              <strong>
+                {{ alerta_valor | number }}
+                horas antes
+              </strong>
+
+            </div>
+
+          </ng-container>
+
+
+          <!-- ========================= -->
+          <!-- POR DÍAS -->
+          <!-- ========================= -->
+
+          <ng-container *ngIf="tipo_control === 'DIAS'">
+
+            <div>
+
+              Este mantenimiento se realizará cada
+
+              <strong>
+                {{ frecuencia_valor | number }}
                 días
               </strong>
 
@@ -471,8 +555,9 @@
             <div>
 
               El sistema alertará
+
               <strong>
-                {{ alerta_valor }}
+                {{ alerta_valor | number }}
                 días antes
               </strong>
 

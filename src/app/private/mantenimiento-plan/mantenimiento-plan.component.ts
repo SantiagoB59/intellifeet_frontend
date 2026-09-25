@@ -10,39 +10,41 @@ interface PlanVehiculo {
   id: number;
 
   vehiculo_id?: number;
-
   maquinaria_id?: number;
 
   plan_item: any;
 
   sistema: string;
-
   nombre: string;
-
   descripcion: string;
-
   tipo_mantenimiento: string;
 
   tipo_control: 'KM' | 'DIAS' | 'HORAS';
 
-  frecuencia_valor: number;
-
-  alerta_valor: number;
-
+  // =========================
+  // VEHÍCULO
+  // =========================
+  frecuencia_valor?: number;
+  alerta_valor?: number;
+  km_total?: number;
+  programado?: any;
+  restante?: number;
   ultimo_km?: number;
 
-  ultima_horas?: number;
+  // =========================
+  // MAQUINARIA
+  // =========================
+  frecuencia_horas?: number;
+  alerta_horas?: number;
+  horas_base?: number;
+  horas_programadas?: number;
+  horas_restantes?: number;
+  horometro_actual?: number;
 
+  ultima_horas?: number;
   ultima_fecha?: string;
 
-  km_total?: number;
-
-  programado: any;
-
-  restante: number;
-
   estado: string;
-  horometro_actual?: number;
 }
 
 @Component({
@@ -55,6 +57,7 @@ export class MantenimientoPlanComponent implements OnInit {
   // =========================
   // ROUTE PARAMS
   // =========================
+
   tipo!: 'vehiculo' | 'maquinaria';
 
   entityId!: number;
@@ -62,6 +65,7 @@ export class MantenimientoPlanComponent implements OnInit {
   // =========================
   // DATA
   // =========================
+
   vehiculo: any = null;
 
   maquinaria: any = null;
@@ -73,11 +77,13 @@ export class MantenimientoPlanComponent implements OnInit {
   // =========================
   // MODAL
   // =========================
+
   showModal = false;
 
   // =========================
   // FORM
   // =========================
+
   plan_item_id = 0;
 
   tipo_control: 'KM' | 'DIAS' | 'HORAS' = 'KM';
@@ -94,13 +100,18 @@ export class MantenimientoPlanComponent implements OnInit {
     private maquinariaService: MaquinariaService,
     private router: Router,
     private route: ActivatedRoute
-  ) { }
+  ) {}
+
+  // =========================================================
+  // INIT
+  // =========================================================
 
   ngOnInit(): void {
 
     // =========================
     // PARAMS
     // =========================
+
     this.tipo = this.route.snapshot.paramMap.get(
       'tipo'
     ) as 'vehiculo' | 'maquinaria';
@@ -112,9 +123,12 @@ export class MantenimientoPlanComponent implements OnInit {
     // =========================
     // VALIDAR
     // =========================
+
     if (!this.entityId || !this.tipo) {
 
-      this.router.navigate(['/dashboard/flota']);
+      this.router.navigate([
+        '/dashboard/flota'
+      ]);
 
       return;
     }
@@ -122,6 +136,7 @@ export class MantenimientoPlanComponent implements OnInit {
     // =========================
     // VEHÍCULO
     // =========================
+
     if (this.tipo === 'vehiculo') {
 
       this.cargarVehiculo();
@@ -132,6 +147,7 @@ export class MantenimientoPlanComponent implements OnInit {
     // =========================
     // MAQUINARIA
     // =========================
+
     if (this.tipo === 'maquinaria') {
 
       this.cargarMaquinaria();
@@ -139,15 +155,18 @@ export class MantenimientoPlanComponent implements OnInit {
       this.cargarPlanesMaquinaria();
     }
 
-    // =========================
-    // CATÁLOGO PLAN ITEMS
-    // =========================
-    this.cargarPlanItems();
+    // IMPORTANTE:
+    // cargarPlanItems() NO se llama aquí.
+    //
+    // Se llama después de obtener el vehículo
+    // o la maquinaria, porque necesitamos conocer
+    // su tipo específico.
   }
 
-  // =====================================
+  // =========================================================
   // VEHÍCULO
-  // =====================================
+  // =========================================================
+
   cargarVehiculo(): void {
 
     this.vehiculoService
@@ -155,41 +174,69 @@ export class MantenimientoPlanComponent implements OnInit {
       .subscribe({
 
         next: (res) => {
+
           this.vehiculo = res;
+
+          console.log(
+            'VEHÍCULO:',
+            res
+          );
+
+          // Una vez tenemos el vehículo,
+          // cargamos solamente los plan items
+          // correspondientes a su tipo.
+          this.cargarPlanItems();
         },
 
         error: (err) => {
-          console.error(err);
+
+          console.error(
+            'Error cargando vehículo:',
+            err
+          );
         }
       });
   }
 
-  // =====================================
+  // =========================================================
   // MAQUINARIA
-  // =====================================
+  // =========================================================
+
   cargarMaquinaria(): void {
 
-  this.maquinariaService
-    .getById(this.entityId)
-    .subscribe({
+    this.maquinariaService
+      .getById(this.entityId)
+      .subscribe({
 
-      next: (res) => {
+        next: (res) => {
 
-        console.log("MAQUINARIA:", res);
+          console.log(
+            'MAQUINARIA:',
+            res
+          );
 
-        this.maquinaria = res;
+          this.maquinaria = res;
 
-      },
+          // Una vez tenemos la maquinaria,
+          // cargamos solamente los plan items
+          // correspondientes a su tipo.
+          this.cargarPlanItems();
+        },
 
-      error: (err) => {
-        console.error(err);
-      }
-    });
-}
+        error: (err) => {
 
-  // =====================================
+          console.error(
+            'Error cargando maquinaria:',
+            err
+          );
+        }
+      });
+  }
+
+  // =========================================================
   // PLANES VEHÍCULO
-  // =====================================
+  // =========================================================
+
   cargarPlanesVehiculo(): void {
 
     this.service
@@ -197,18 +244,24 @@ export class MantenimientoPlanComponent implements OnInit {
       .subscribe({
 
         next: (res) => {
+
           this.planes = res;
         },
 
         error: (err) => {
-          console.error(err);
+
+          console.error(
+            'Error cargando planes del vehículo:',
+            err
+          );
         }
       });
   }
 
-  // =====================================
+  // =========================================================
   // PLANES MAQUINARIA
-  // =====================================
+  // =========================================================
+
   cargarPlanesMaquinaria(): void {
 
     this.service
@@ -216,37 +269,160 @@ export class MantenimientoPlanComponent implements OnInit {
       .subscribe({
 
         next: (res) => {
+
           this.planes = res;
         },
 
         error: (err) => {
-          console.error(err);
+
+          console.error(
+            'Error cargando planes de maquinaria:',
+            err
+          );
         }
       });
   }
 
-  // =====================================
-  // PLAN ITEMS
-  // =====================================
+  // =========================================================
+  // CATÁLOGO PLAN ITEMS
+  // =========================================================
+
   cargarPlanItems(): void {
 
-    this.service.getPlanItems()
-      .subscribe({
+    // =======================================================
+    // VEHÍCULO
+    // =======================================================
 
-        next: (res) => {
-          this.planItems = res;
-        },
+    if (this.tipo === 'vehiculo') {
 
-        error: (err) => {
-          console.error(err);
-        }
-      });
+      if (!this.vehiculo) {
+
+        console.error(
+          'No existe información del vehículo.'
+        );
+
+        return;
+      }
+
+      // Intentamos obtener el ID directamente.
+      //
+      // Ejemplo:
+      // tipo_vehiculo_id = 3
+      //
+      // También soportamos una respuesta anidada:
+      // tipo_vehiculo: { id: 3 }
+      const tipoVehiculoId =
+        this.vehiculo.tipo_vehiculo_id ??
+        this.vehiculo.tipo_vehiculo?.id;
+
+      console.log(
+        'TIPO VEHÍCULO ID:',
+        tipoVehiculoId
+      );
+
+      this.service
+        .getPlanItems(
+          'VEHICULO',
+          tipoVehiculoId
+        )
+        .subscribe({
+
+          next: (res) => {
+
+            this.planItems = res;
+
+            console.log(
+              'PLAN ITEMS VEHÍCULO:',
+              res
+            );
+          },
+
+          error: (err) => {
+
+            console.error(
+              'Error cargando plan items del vehículo:',
+              err
+            );
+          }
+        });
+
+      return;
+    }
+
+    // =======================================================
+    // MAQUINARIA
+    // =======================================================
+
+    if (this.tipo === 'maquinaria') {
+
+      if (!this.maquinaria) {
+
+        console.error(
+          'No existe información de la maquinaria.'
+        );
+
+        return;
+      }
+
+      // Ejemplo:
+      // tipo_maquinaria_id = 6
+      //
+      // También soportamos:
+      // tipo_maquinaria: { id: 6 }
+      const tipoMaquinariaId =
+        this.maquinaria.tipo_maquinaria_id ??
+        this.maquinaria.tipo_maquinaria?.id;
+
+      console.log(
+        'TIPO MAQUINARIA ID:',
+        tipoMaquinariaId
+      );
+
+      this.service
+        .getPlanItems(
+          'MAQUINARIA',
+          tipoMaquinariaId
+        )
+        .subscribe({
+
+          next: (res) => {
+
+            this.planItems = res;
+
+            console.log(
+              'PLAN ITEMS MAQUINARIA:',
+              res
+            );
+          },
+
+          error: (err) => {
+
+            console.error(
+              'Error cargando plan items de maquinaria:',
+              err
+            );
+          }
+        });
+    }
   }
 
-  // =====================================
+  // =========================================================
   // MODAL
-  // =====================================
+  // =========================================================
+
   abrirModal(): void {
+
+    this.resetForm();
+
+    if (this.tipo === 'maquinaria') {
+
+      this.tipo_control = 'HORAS';
+
+    } else {
+
+      this.tipo_control = 'KM';
+    }
+
     this.showModal = true;
   }
 
@@ -257,14 +433,18 @@ export class MantenimientoPlanComponent implements OnInit {
     this.resetForm();
   }
 
-  // =====================================
+  // =========================================================
   // RESET FORM
-  // =====================================
+  // =========================================================
+
   resetForm(): void {
 
     this.plan_item_id = 0;
 
-    this.tipo_control = 'KM';
+    this.tipo_control =
+      this.tipo === 'maquinaria'
+        ? 'HORAS'
+        : 'KM';
 
     this.frecuencia_valor = 0;
 
@@ -273,51 +453,101 @@ export class MantenimientoPlanComponent implements OnInit {
     this.notas = '';
   }
 
-  // =====================================
+  // =========================================================
   // CAMBIO PLAN ITEM
-  // =====================================
+  // =========================================================
+
   onPlanItemChange(): void {
 
     const plan = this.planItems.find(
       p => p.id == this.plan_item_id
     );
 
-    if (plan) {
+    if (!plan) {
+
+      this.frecuencia_valor = 0;
+
+      this.alerta_valor = 0;
+
+      return;
+    }
+
+    // =========================
+    // TIPO DE CONTROL
+    // =========================
+
+    if (this.tipo === 'maquinaria') {
+
+      this.tipo_control = 'HORAS';
+
+    } else {
 
       this.tipo_control =
         plan.tipo_control || 'KM';
-
-      this.frecuencia_valor =
-        plan.frecuencia_valor || 0;
-
-      this.alerta_valor =
-        plan.alerta_valor || 0;
     }
+
+    // =========================
+    // FRECUENCIA
+    // =========================
+
+    this.frecuencia_valor =
+      plan.frecuencia_valor || 0;
+
+    // =========================
+    // ALERTA
+    // =========================
+
+    this.alerta_valor =
+      plan.alerta_valor || 0;
   }
 
-  // =====================================
+  // =========================================================
   // GUARDAR
-  // =====================================
+  // =========================================================
+
   guardar(): void {
 
-    // =========================
+    // Validación básica
+    if (!this.plan_item_id) {
+
+      console.warn(
+        'Debe seleccionar un mantenimiento.'
+      );
+
+      return;
+    }
+
+    // =======================================================
     // VEHÍCULO
-    // =========================
+    // =======================================================
+
     if (this.tipo === 'vehiculo') {
 
       const data = {
 
-        plan_item_id: this.plan_item_id,
+        plan_item_id:
+          this.plan_item_id,
 
-        tipo_control: this.tipo_control,
+        tipo_control:
+          this.tipo_control,
 
-        frecuencia_valor: this.frecuencia_valor,
+        frecuencia_valor:
+          this.frecuencia_valor,
 
-        alerta_valor: this.alerta_valor
+        alerta_valor:
+          this.alerta_valor
       };
 
+      console.log(
+        'DATOS PLAN VEHÍCULO:',
+        data
+      );
+
       this.service
-        .crearPlan(this.entityId, data)
+        .crearPlan(
+          this.entityId,
+          data
+        )
         .subscribe({
 
           next: () => {
@@ -328,27 +558,43 @@ export class MantenimientoPlanComponent implements OnInit {
           },
 
           error: (err) => {
-            console.error(err);
+
+            console.error(
+              'Error creando plan del vehículo:',
+              err
+            );
           }
         });
     }
 
-    // =========================
+    // =======================================================
     // MAQUINARIA
-    // =========================
+    // =======================================================
+
     if (this.tipo === 'maquinaria') {
 
       const data = {
 
-        plan_item_id: this.plan_item_id,
+        plan_item_id:
+          this.plan_item_id,
 
-        frecuencia_horas: this.frecuencia_valor,
+        frecuencia_horas:
+          this.frecuencia_valor,
 
-        alerta_horas: this.alerta_valor
+        alerta_horas:
+          this.alerta_valor
       };
 
+      console.log(
+        'DATOS PLAN MAQUINARIA:',
+        data
+      );
+
       this.service
-        .crearPlanMaquinaria(this.entityId, data)
+        .crearPlanMaquinaria(
+          this.entityId,
+          data
+        )
         .subscribe({
 
           next: () => {
@@ -359,20 +605,26 @@ export class MantenimientoPlanComponent implements OnInit {
           },
 
           error: (err) => {
-            console.error(err);
+
+            console.error(
+              'Error creando plan de maquinaria:',
+              err
+            );
           }
         });
     }
   }
 
-  // =====================================
+  // =========================================================
   // COMPLETAR
-  // =====================================
+  // =========================================================
+
   completar(id: number): void {
 
-    // =========================
+    // =======================================================
     // VEHÍCULO
-    // =========================
+    // =======================================================
+
     if (this.tipo === 'vehiculo') {
 
       this.service
@@ -380,18 +632,24 @@ export class MantenimientoPlanComponent implements OnInit {
         .subscribe({
 
           next: () => {
+
             this.cargarPlanesVehiculo();
           },
 
           error: (err) => {
-            console.error(err);
+
+            console.error(
+              'Error completando plan del vehículo:',
+              err
+            );
           }
         });
     }
 
-    // =========================
+    // =======================================================
     // MAQUINARIA
-    // =========================
+    // =======================================================
+
     if (this.tipo === 'maquinaria') {
 
       this.service
@@ -399,19 +657,25 @@ export class MantenimientoPlanComponent implements OnInit {
         .subscribe({
 
           next: () => {
+
             this.cargarPlanesMaquinaria();
           },
 
           error: (err) => {
-            console.error(err);
+
+            console.error(
+              'Error completando plan de maquinaria:',
+              err
+            );
           }
         });
     }
   }
 
-  // =====================================
+  // =========================================================
   // BADGES
-  // =====================================
+  // =========================================================
+
   estadoClass(estado: string): string {
 
     switch (estado) {
@@ -430,11 +694,14 @@ export class MantenimientoPlanComponent implements OnInit {
     }
   }
 
-  // =====================================
+  // =========================================================
   // VOLVER
-  // =====================================
+  // =========================================================
+
   volver(): void {
 
-    this.router.navigate(['/dashboard/flota']);
+    this.router.navigate([
+      '/dashboard/flota'
+    ]);
   }
 }

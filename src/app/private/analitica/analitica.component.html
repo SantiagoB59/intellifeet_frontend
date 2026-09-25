@@ -1,0 +1,1603 @@
+<div class="analitica-page">
+
+  <!-- =========================================================
+       HEADER
+  ========================================================== -->
+  <div class="dashboard-header">
+
+    <div class="header-info">
+
+      <div>
+        <h1>Analítica de Flota</h1>
+        <p>
+          Indicadores de rendimiento, operación, costos y mantenimiento
+        </p>
+      </div>
+    </div>
+
+    <div class="header-actions">
+
+      <div class="date-selector">
+        <span class="selector-icon">📅</span>
+
+        <select [(ngModel)]="periodoSeleccionado">
+          <option value="7">Últimos 7 días</option>
+          <option value="30">Últimos 30 días</option>
+          <option value="90">Últimos 90 días</option>
+          <option value="365">Último año</option>
+        </select>
+      </div>
+
+      <button class="btn-refresh" (click)="actualizarDashboard()">
+        <span>↻</span>
+        Actualizar
+      </button>
+
+    </div>
+  </div>
+
+
+  <!-- =========================================================
+       FILTROS
+  ========================================================== -->
+  <section class="filters-card">
+
+    <div class="filter-group">
+      <label>Tipo de activo</label>
+
+      <div class="segmented-control">
+
+        <button
+          [class.active]="tipoActivo === 'TODOS'"
+          (click)="cambiarTipoActivo('TODOS')">
+          Todos
+        </button>
+
+        <button
+          [class.active]="tipoActivo === 'VEHICULOS'"
+          (click)="cambiarTipoActivo('VEHICULOS')">
+          🚛 Vehículos
+        </button>
+
+        <button
+          [class.active]="tipoActivo === 'MAQUINARIA'"
+          (click)="cambiarTipoActivo('MAQUINARIA')">
+          🚜 Maquinaria
+        </button>
+
+      </div>
+    </div>
+
+
+    <div class="filter-group asset-filter">
+      <label>Activo</label>
+
+      <select [(ngModel)]="activoSeleccionado">
+        <option value="TODOS">Todos los activos</option>
+
+        <option
+          *ngFor="let activo of activos"
+          [value]="activo.id">
+          {{ activo.nombre }}
+        </option>
+
+      </select>
+    </div>
+
+
+    <div class="filter-group">
+      <label>Periodo</label>
+
+      <select [(ngModel)]="periodoSeleccionado">
+        <option value="7">7 días</option>
+        <option value="30">30 días</option>
+        <option value="90">90 días</option>
+        <option value="365">1 año</option>
+      </select>
+    </div>
+
+  </section>
+
+
+  <!-- =========================================================
+       KPI PRINCIPALES
+  ========================================================== -->
+  <section class="kpi-grid">
+
+    <!-- Activos -->
+    <div class="kpi-card">
+
+      <div class="kpi-top">
+        <div class="kpi-icon blue">
+          🚛
+        </div>
+
+        <span class="kpi-label">
+          Activos
+        </span>
+      </div>
+
+      <div class="kpi-value">
+        {{ metricas.totalActivos }}
+      </div>
+
+      <div class="kpi-footer">
+        <span class="positive">
+          ↑ {{ metricas.activosOperativos }}
+        </span>
+
+        <span>
+          operativos
+        </span>
+      </div>
+
+    </div>
+
+
+    <!-- Kilómetros -->
+    <div class="kpi-card">
+
+      <div class="kpi-top">
+        <div class="kpi-icon purple">
+          🛣️
+        </div>
+
+        <span class="kpi-label">
+          Kilómetros recorridos
+        </span>
+      </div>
+
+      <div class="kpi-value">
+        {{ metricas.kmRecorridos | number:'1.0-0' }}
+        <small>km</small>
+      </div>
+
+      <div class="kpi-footer">
+        <span class="positive">
+          ↑ {{ metricas.crecimientoKm }}%
+        </span>
+
+        <span>
+          vs. periodo anterior
+        </span>
+      </div>
+
+    </div>
+
+
+    <!-- Combustible -->
+    <div class="kpi-card">
+
+      <div class="kpi-top">
+        <div class="kpi-icon orange">
+          ⛽
+        </div>
+
+        <span class="kpi-label">
+          Consumo combustible
+        </span>
+      </div>
+
+      <div class="kpi-value">
+        {{ metricas.consumoPromedio | number:'1.1-2' }}
+        <small>km/L</small>
+      </div>
+
+      <div class="kpi-footer">
+        <span class="positive">
+          ↑ {{ metricas.eficienciaCombustible }}%
+        </span>
+
+        <span>
+          eficiencia
+        </span>
+      </div>
+
+    </div>
+
+
+    <!-- Mantenimiento -->
+    <div class="kpi-card">
+
+      <div class="kpi-top">
+        <div class="kpi-icon red">
+          🔧
+        </div>
+
+        <span class="kpi-label">
+          Costo mantenimiento
+        </span>
+      </div>
+
+      <div class="kpi-value currency">
+        ${{ metricas.costoMantenimiento | number:'1.0-0' }}
+      </div>
+
+      <div class="kpi-footer">
+        <span class="warning">
+          {{ metricas.mantenimientosPendientes }}
+        </span>
+
+        <span>
+          pendientes
+        </span>
+      </div>
+
+    </div>
+
+
+    <!-- Disponibilidad -->
+    <div class="kpi-card">
+
+      <div class="kpi-top">
+        <div class="kpi-icon green">
+          ✓
+        </div>
+
+        <span class="kpi-label">
+          Disponibilidad
+        </span>
+      </div>
+
+      <div class="kpi-value">
+        {{ metricas.disponibilidad }}%
+      </div>
+
+      <div class="kpi-footer">
+        <span class="positive">
+          Excelente
+        </span>
+
+        <span>
+          disponibilidad
+        </span>
+      </div>
+
+    </div>
+
+
+    <!-- Alertas -->
+    <div class="kpi-card">
+
+      <div class="kpi-top">
+        <div class="kpi-icon red-light">
+          ⚠️
+        </div>
+
+        <span class="kpi-label">
+          Alertas activas
+        </span>
+      </div>
+
+      <div class="kpi-value">
+        {{ metricas.alertasActivas }}
+      </div>
+
+      <div class="kpi-footer">
+
+        <span class="danger">
+          {{ metricas.alertasCriticas }}
+        </span>
+
+        <span>
+          críticas
+        </span>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================================================
+       RESUMEN DE RENDIMIENTO
+  ========================================================== -->
+  <section class="section-block">
+
+    <div class="section-header">
+
+      <div>
+        <h2>Rendimiento de la flota</h2>
+        <p>
+          Comparación de los principales indicadores operativos
+        </p>
+      </div>
+
+    </div>
+
+
+    <div class="performance-grid">
+
+      <!-- GRÁFICA KM -->
+      <div class="chart-card">
+
+        <div class="chart-header">
+
+          <div>
+            <h3>Kilómetros recorridos</h3>
+            <span>Comportamiento del periodo</span>
+          </div>
+
+          <div class="chart-total">
+            {{ metricas.kmRecorridos | number:'1.0-0' }} km
+          </div>
+
+        </div>
+
+        <div class="fake-chart">
+
+          <div class="chart-y">
+            <span>10k</span>
+            <span>7.5k</span>
+            <span>5k</span>
+            <span>2.5k</span>
+            <span>0</span>
+          </div>
+
+          <div class="chart-area">
+
+            <div class="grid-line"></div>
+            <div class="grid-line"></div>
+            <div class="grid-line"></div>
+            <div class="grid-line"></div>
+            <div class="grid-line"></div>
+
+            <svg
+              viewBox="0 0 600 220"
+              preserveAspectRatio="none"
+              class="line-chart">
+
+              <defs>
+
+                <linearGradient
+                  id="areaGradient"
+                  x1="0"
+                  y1="0"
+                  x2="0"
+                  y2="1">
+
+                  <stop
+                    offset="0%"
+                    stop-opacity="0.25"/>
+
+                  <stop
+                    offset="100%"
+                    stop-opacity="0"/>
+
+                </linearGradient>
+
+              </defs>
+
+              <path
+                class="chart-area-fill"
+                d="M0,180
+                   L50,165
+                   L100,175
+                   L150,135
+                   L200,145
+                   L250,110
+                   L300,125
+                   L350,95
+                   L400,105
+                   L450,70
+                   L500,85
+                   L550,50
+                   L600,65
+                   L600,220
+                   L0,220 Z">
+              </path>
+
+              <polyline
+                class="chart-line"
+                points="
+                0,180
+                50,165
+                100,175
+                150,135
+                200,145
+                250,110
+                300,125
+                350,95
+                400,105
+                450,70
+                500,85
+                550,50
+                600,65">
+              </polyline>
+
+            </svg>
+
+            <div class="chart-x">
+              <span>Lun</span>
+              <span>Mar</span>
+              <span>Mié</span>
+              <span>Jue</span>
+              <span>Vie</span>
+              <span>Sáb</span>
+              <span>Dom</span>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- CONSUMO -->
+      <div class="chart-card">
+
+        <div class="chart-header">
+
+          <div>
+            <h3>Consumo de combustible</h3>
+            <span>Rendimiento promedio</span>
+          </div>
+
+          <div class="chart-total">
+            {{ metricas.consumoPromedio | number:'1.1-2' }} km/L
+          </div>
+
+        </div>
+
+        <div class="fuel-chart">
+
+          <div
+            class="fuel-bar"
+            *ngFor="let dato of consumoCombustible">
+
+            <div class="fuel-info">
+
+              <span>
+                {{ dato.nombre }}
+              </span>
+
+              <strong>
+                {{ dato.consumo | number:'1.1-2' }} km/L
+              </strong>
+
+            </div>
+
+            <div class="bar-container">
+
+              <div
+                class="bar-fill"
+                [style.width.%]="dato.porcentaje">
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================================================
+       COMPARACIÓN VEHÍCULOS
+  ========================================================== -->
+  <section class="section-block">
+
+    <div class="section-header">
+
+      <div>
+        <h2>Comparación de activos</h2>
+        <p>
+          Identifica cuáles activos tienen mejor rendimiento
+        </p>
+      </div>
+
+      <button class="btn-secondary">
+        Ver detalle
+      </button>
+
+    </div>
+
+
+    <div class="table-card">
+
+      <div class="table-responsive">
+
+        <table>
+
+          <thead>
+
+            <tr>
+
+              <th>Activo</th>
+
+              <th>Tipo</th>
+
+              <th>KM / Horas</th>
+
+              <th>Combustible</th>
+
+              <th>Mantenimiento</th>
+
+              <th>Disponibilidad</th>
+
+              <th>Eficiencia</th>
+
+              <th>Estado</th>
+
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+            <tr
+              *ngFor="let activo of rendimientoActivos">
+
+              <td>
+
+                <div class="asset-name">
+
+                  <div class="asset-avatar">
+                    {{ activo.icono }}
+                  </div>
+
+                  <div>
+                    <strong>
+                      {{ activo.nombre }}
+                    </strong>
+
+                    <span>
+                      {{ activo.marca }}
+                    </span>
+                  </div>
+
+                </div>
+
+              </td>
+
+
+              <td>
+                <span class="type-badge">
+                  {{ activo.tipo }}
+                </span>
+              </td>
+
+
+              <td>
+
+                <strong>
+                  {{ activo.uso | number:'1.0-0' }}
+                </strong>
+
+                <small>
+                  {{ activo.unidad }}
+                </small>
+
+              </td>
+
+
+              <td>
+
+                <div class="metric-cell">
+
+                  <strong>
+                    {{ activo.consumo | number:'1.1-2' }}
+                    {{ activo.unidadConsumo }}
+                  </strong>
+
+                  <div class="mini-progress">
+
+                    <div
+                      class="mini-progress-fill"
+                      [style.width.%]="activo.consumoPorcentaje">
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </td>
+
+
+              <td>
+
+                <strong>
+                  ${{ activo.costoMantenimiento | number:'1.0-0' }}
+                </strong>
+
+              </td>
+
+
+              <td>
+
+                <span
+                  class="availability"
+                  [class.high]="activo.disponibilidad >= 90"
+                  [class.medium]="activo.disponibilidad >= 75 && activo.disponibilidad < 90"
+                  [class.low]="activo.disponibilidad < 75">
+
+                  {{ activo.disponibilidad }}%
+
+                </span>
+
+              </td>
+
+
+              <td>
+
+                <div
+                  class="efficiency"
+                  [class.good]="activo.eficiencia >= 80"
+                  [class.medium]="activo.eficiencia >= 60 && activo.eficiencia < 80"
+                  [class.bad]="activo.eficiencia < 60">
+
+                  <span>
+                    {{ activo.eficiencia }}%
+                  </span>
+
+                  <div class="efficiency-bar">
+
+                    <div
+                      [style.width.%]="activo.eficiencia">
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </td>
+
+
+              <td>
+
+                <span
+                  class="status-badge"
+                  [class.operativo]="activo.estado === 'OPERATIVO'"
+                  [class.mantenimiento]="activo.estado === 'MANTENIMIENTO'"
+                  [class.detener]="activo.estado === 'DETENIDO'">
+
+                  <span class="status-dot"></span>
+
+                  {{ activo.estado }}
+
+                </span>
+
+              </td>
+
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================================================
+       COSTOS
+  ========================================================== -->
+  <section class="section-block">
+
+    <div class="section-header">
+
+      <div>
+        <h2>Análisis de costos</h2>
+
+        <p>
+          Distribución de los costos asociados a la operación
+        </p>
+      </div>
+
+    </div>
+
+
+    <div class="cost-grid">
+
+      <!-- COSTO TOTAL -->
+      <div class="cost-card primary">
+
+        <div class="cost-icon">
+          💰
+        </div>
+
+        <div>
+
+          <span>
+            Costo operativo total
+          </span>
+
+          <strong>
+            ${{ costos.costoTotal | number:'1.0-0' }}
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <!-- COMBUSTIBLE -->
+      <div class="cost-card">
+
+        <div class="cost-icon">
+          ⛽
+        </div>
+
+        <div>
+
+          <span>
+            Combustible
+          </span>
+
+          <strong>
+            ${{ costos.combustible | number:'1.0-0' }}
+          </strong>
+
+          <small>
+            {{ costos.porcentajeCombustible }}% del total
+          </small>
+
+        </div>
+
+      </div>
+
+
+      <!-- MANTENIMIENTO -->
+      <div class="cost-card">
+
+        <div class="cost-icon">
+          🔧
+        </div>
+
+        <div>
+
+          <span>
+            Mantenimiento
+          </span>
+
+          <strong>
+            ${{ costos.mantenimiento | number:'1.0-0' }}
+          </strong>
+
+          <small>
+            {{ costos.porcentajeMantenimiento }}% del total
+          </small>
+
+        </div>
+
+      </div>
+
+
+      <!-- OTROS -->
+      <div class="cost-card">
+
+        <div class="cost-icon">
+          📦
+        </div>
+
+        <div>
+
+          <span>
+            Otros costos
+          </span>
+
+          <strong>
+            ${{ costos.otros | number:'1.0-0' }}
+          </strong>
+
+          <small>
+            {{ costos.porcentajeOtros }}% del total
+          </small>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================================================
+       MANTENIMIENTO
+  ========================================================== -->
+  <section class="section-block">
+
+    <div class="section-header">
+
+      <div>
+
+        <h2>Salud de mantenimiento</h2>
+
+        <p>
+          Estado preventivo y correctivo de la flota
+        </p>
+
+      </div>
+
+      <button class="btn-secondary">
+        Ver mantenimientos
+      </button>
+
+    </div>
+
+
+    <div class="maintenance-grid">
+
+      <!-- DONUT -->
+      <div class="maintenance-card">
+
+        <div class="donut-container">
+
+          <div
+            class="donut"
+            [style.--percentage]="mantenimiento.porcentajeCumplimiento + '%'">
+
+            <div class="donut-center">
+
+              <strong>
+                {{ mantenimiento.porcentajeCumplimiento }}%
+              </strong>
+
+              <span>
+                cumplimiento
+              </span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="donut-legend">
+
+          <div>
+            <span class="legend-dot completed"></span>
+            <span>Completados</span>
+            <strong>{{ mantenimiento.completados }}</strong>
+          </div>
+
+          <div>
+            <span class="legend-dot pending"></span>
+            <span>Pendientes</span>
+            <strong>{{ mantenimiento.pendientes }}</strong>
+          </div>
+
+          <div>
+            <span class="legend-dot overdue"></span>
+            <span>Vencidos</span>
+            <strong>{{ mantenimiento.vencidos }}</strong>
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- ALERTAS -->
+      <div class="maintenance-card alerts-card">
+
+        <h3>
+          Alertas de mantenimiento
+        </h3>
+
+        <div class="alert-list">
+
+          <div
+            class="alert-row"
+            *ngFor="let alerta of alertasMantenimiento">
+
+            <div
+              class="alert-icon"
+              [class.critical]="alerta.prioridad === 'CRITICA'"
+              [class.high]="alerta.prioridad === 'ALTA'"
+              [class.medium]="alerta.prioridad === 'MEDIA'">
+
+              ⚠️
+
+            </div>
+
+            <div class="alert-content">
+
+              <strong>
+                {{ alerta.titulo }}
+              </strong>
+
+              <span>
+                {{ alerta.activo }}
+              </span>
+
+            </div>
+
+            <span
+              class="priority-badge"
+              [class.critical]="alerta.prioridad === 'CRITICA'"
+              [class.high]="alerta.prioridad === 'ALTA'"
+              [class.medium]="alerta.prioridad === 'MEDIA'">
+
+              {{ alerta.prioridad }}
+
+            </span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================================================
+       OPERACIÓN
+  ========================================================== -->
+  <section class="section-block">
+
+    <div class="section-header">
+
+      <div>
+
+        <h2>Indicadores operativos</h2>
+
+        <p>
+          Utilización y comportamiento de los activos
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div class="operation-grid">
+
+      <!-- UTILIZACIÓN -->
+      <div class="operation-card">
+
+        <div class="operation-header">
+
+          <div>
+            <span>
+              Utilización de flota
+            </span>
+
+            <strong>
+              {{ operacion.utilizacion }}%
+            </strong>
+          </div>
+
+          <span class="operation-icon">
+            📈
+          </span>
+
+        </div>
+
+        <div class="large-progress">
+
+          <div
+            [style.width.%]="operacion.utilizacion">
+          </div>
+
+        </div>
+
+        <p>
+          Porcentaje de tiempo en operación
+        </p>
+
+      </div>
+
+
+      <!-- TIEMPO -->
+      <div class="operation-card">
+
+        <div class="operation-header">
+
+          <div>
+
+            <span>
+              Horas operativas
+            </span>
+
+            <strong>
+              {{ operacion.horasOperativas | number:'1.0-0' }} h
+            </strong>
+
+          </div>
+
+          <span class="operation-icon">
+            ⏱️
+          </span>
+
+        </div>
+
+        <div class="operation-detail">
+
+          <div>
+            <span>Promedio diario</span>
+            <strong>
+              {{ operacion.promedioHoras }} h
+            </strong>
+          </div>
+
+          <div>
+            <span>Meta</span>
+            <strong>
+              {{ operacion.metaHoras }} h
+            </strong>
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- VIAJES -->
+      <div class="operation-card">
+
+        <div class="operation-header">
+
+          <div>
+
+            <span>
+              Viajes realizados
+            </span>
+
+            <strong>
+              {{ operacion.viajes }}
+            </strong>
+
+          </div>
+
+          <span class="operation-icon">
+            🚚
+          </span>
+
+        </div>
+
+        <div class="operation-detail">
+
+          <div>
+            <span>Finalizados</span>
+            <strong>
+              {{ operacion.viajesFinalizados }}
+            </strong>
+          </div>
+
+          <div>
+            <span>Cancelados</span>
+            <strong>
+              {{ operacion.viajesCancelados }}
+            </strong>
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- CARGA -->
+      <div class="operation-card">
+
+        <div class="operation-header">
+
+          <div>
+
+            <span>
+              Carga transportada
+            </span>
+
+            <strong>
+              {{ operacion.cargaTransportada | number:'1.0-0' }} t
+            </strong>
+
+          </div>
+
+          <span class="operation-icon">
+            📦
+          </span>
+
+        </div>
+
+        <p class="operation-description">
+          Peso total movilizado durante el periodo.
+        </p>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================================================
+       RENTABILIDAD
+  ========================================================== -->
+  <section class="section-block">
+
+    <div class="section-header">
+
+      <div>
+
+        <h2>Rentabilidad por activo</h2>
+
+        <p>
+          Relación entre ingresos generados y costos operativos
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div class="profitability-card">
+
+      <div class="profit-summary">
+
+        <div class="profit-main">
+
+          <span>
+            Rentabilidad estimada
+          </span>
+
+          <strong>
+            {{ rentabilidad.porcentaje }}%
+          </strong>
+
+          <small>
+            Margen operativo
+          </small>
+
+        </div>
+
+
+        <div class="profit-values">
+
+          <div>
+            <span>Ingresos</span>
+
+            <strong>
+              ${{ rentabilidad.ingresos | number:'1.0-0' }}
+            </strong>
+          </div>
+
+          <div>
+            <span>Costos</span>
+
+            <strong>
+              ${{ rentabilidad.costos | number:'1.0-0' }}
+            </strong>
+          </div>
+
+          <div>
+            <span>Utilidad</span>
+
+            <strong class="profit">
+              ${{ rentabilidad.utilidad | number:'1.0-0' }}
+            </strong>
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="profit-bars">
+
+        <div class="profit-bar-row">
+
+          <div class="profit-bar-label">
+            <span>Ingresos</span>
+            <strong>
+              ${{ rentabilidad.ingresos | number:'1.0-0' }}
+            </strong>
+          </div>
+
+          <div class="profit-bar">
+
+            <div
+              class="income"
+              [style.width.%]="100">
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="profit-bar-row">
+
+          <div class="profit-bar-label">
+            <span>Costos</span>
+
+            <strong>
+              ${{ rentabilidad.costos | number:'1.0-0' }}
+            </strong>
+
+          </div>
+
+          <div class="profit-bar">
+
+            <div
+              class="expenses"
+              [style.width.%]="rentabilidad.porcentajeCostos">
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================================================
+       INSPECCIONES
+  ========================================================== -->
+  <section class="section-block">
+
+    <div class="section-header">
+
+      <div>
+
+        <h2>Indicadores de inspecciones</h2>
+
+        <p>
+          Calidad y seguridad de las inspecciones preoperacionales
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div class="inspection-grid">
+
+      <div class="inspection-card">
+
+        <span class="inspection-icon">
+          📋
+        </span>
+
+        <div>
+
+          <span>
+            Inspecciones realizadas
+          </span>
+
+          <strong>
+            {{ inspecciones.total }}
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <div class="inspection-card">
+
+        <span class="inspection-icon">
+          ✓
+        </span>
+
+        <div>
+
+          <span>
+            Sin novedades
+          </span>
+
+          <strong>
+            {{ inspecciones.sinNovedades }}
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <div class="inspection-card">
+
+        <span class="inspection-icon warning">
+          ⚠️
+        </span>
+
+        <div>
+
+          <span>
+            Con anomalías
+          </span>
+
+          <strong>
+            {{ inspecciones.conAnomalias }}
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <div class="inspection-card">
+
+        <span class="inspection-icon danger">
+          🚨
+        </span>
+
+        <div>
+
+          <span>
+            Críticas
+          </span>
+
+          <strong>
+            {{ inspecciones.criticas }}
+          </strong>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================================================
+       RANKING
+  ========================================================== -->
+  <section class="section-block">
+
+    <div class="section-header">
+
+      <div>
+
+        <h2>Ranking de rendimiento</h2>
+
+        <p>
+          Mejores y peores activos según los indicadores seleccionados
+        </p>
+
+      </div>
+
+      <select [(ngModel)]="rankingSeleccionado">
+
+        <option value="EFICIENCIA">
+          Eficiencia
+        </option>
+
+        <option value="COMBUSTIBLE">
+          Combustible
+        </option>
+
+        <option value="COSTO">
+          Costo mantenimiento
+        </option>
+
+        <option value="DISPONIBILIDAD">
+          Disponibilidad
+        </option>
+
+      </select>
+
+    </div>
+
+
+    <div class="ranking-grid">
+
+      <!-- TOP -->
+      <div class="ranking-card">
+
+        <div class="ranking-title">
+
+          <span class="ranking-icon gold">
+            🏆
+          </span>
+
+          <div>
+            <h3>Mejor rendimiento</h3>
+            <span>Top de activos</span>
+          </div>
+
+        </div>
+
+
+        <div class="ranking-list">
+
+          <div
+            class="ranking-item"
+            *ngFor="let activo of rankingMejores; let i = index">
+
+            <span class="ranking-position">
+              {{ i + 1 }}
+            </span>
+
+            <div class="ranking-avatar">
+              {{ activo.icono }}
+            </div>
+
+            <div class="ranking-name">
+
+              <strong>
+                {{ activo.nombre }}
+              </strong>
+
+              <span>
+                {{ activo.tipo }}
+              </span>
+
+            </div>
+
+            <strong class="ranking-score">
+              {{ activo.valor }}%
+            </strong>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- BOTTOM -->
+      <div class="ranking-card">
+
+        <div class="ranking-title">
+
+          <span class="ranking-icon danger">
+            ⚠️
+          </span>
+
+          <div>
+            <h3>Requieren atención</h3>
+            <span>Activos con menor rendimiento</span>
+          </div>
+
+        </div>
+
+
+        <div class="ranking-list">
+
+          <div
+            class="ranking-item"
+            *ngFor="let activo of rankingPeores; let i = index">
+
+            <span class="ranking-position">
+              {{ i + 1 }}
+            </span>
+
+            <div class="ranking-avatar">
+              {{ activo.icono }}
+            </div>
+
+            <div class="ranking-name">
+
+              <strong>
+                {{ activo.nombre }}
+              </strong>
+
+              <span>
+                {{ activo.tipo }}
+              </span>
+
+            </div>
+
+            <strong class="ranking-score danger-text">
+              {{ activo.valor }}%
+            </strong>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================================================
+       ÚLTIMAS ALERTAS
+  ========================================================== -->
+  <section class="section-block">
+
+    <div class="section-header">
+
+      <div>
+
+        <h2>Últimas alertas</h2>
+
+        <p>
+          Eventos que requieren seguimiento
+        </p>
+
+      </div>
+
+      <button class="btn-secondary">
+        Ver todas
+      </button>
+
+    </div>
+
+
+    <div class="alerts-table-card">
+
+      <div
+        class="alert-history-row"
+        *ngFor="let alerta of ultimasAlertas">
+
+        <div
+          class="history-alert-icon"
+          [class.critical]="alerta.prioridad === 'CRITICA'"
+          [class.high]="alerta.prioridad === 'ALTA'"
+          [class.medium]="alerta.prioridad === 'MEDIA'">
+
+          ⚠️
+
+        </div>
+
+
+        <div class="history-content">
+
+          <strong>
+            {{ alerta.titulo }}
+          </strong>
+
+          <span>
+            {{ alerta.descripcion }}
+          </span>
+
+        </div>
+
+
+        <div class="history-asset">
+          {{ alerta.activo }}
+        </div>
+
+
+        <div class="history-date">
+          {{ alerta.fecha }}
+        </div>
+
+
+        <span
+          class="priority-badge"
+          [class.critical]="alerta.prioridad === 'CRITICA'"
+          [class.high]="alerta.prioridad === 'ALTA'"
+          [class.medium]="alerta.prioridad === 'MEDIA'">
+
+          {{ alerta.prioridad }}
+
+        </span>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================================================
+       FOOTER DEL DASHBOARD
+  ========================================================== -->
+  <div class="dashboard-footer">
+
+    <span>
+      Última actualización: {{ ultimaActualizacion }}
+    </span>
+
+    <span>
+      Intellifeet · Analítica de Flota
+    </span>
+
+  </div>
+
+</div>

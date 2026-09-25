@@ -26,6 +26,12 @@ import { InspeccionMensualComponent } from './inspeccion-mensual/inspeccion-mens
 import { VerificacionKmModalComponent } from './verificacion-km-modal/verificacion-km-modal.component';
 import { VerificacionKmComponent } from './verificacion-km/verificacion-km.component';
 import { MantenimientosMaquinariaComponent } from './mantenimientos-maquinaria/mantenimientos-maquinaria.component';
+import { PreoperacionalComponent } from './preoperacional/preoperacional.component';
+import { ActivoOperadorComponent } from './activo-operador/activo-operador.component';
+import { UsuariosComponent } from './usuarios/usuarios.component';
+import { PreoperacionalAdminComponent } from './preoperacional-admin/preoperacional-admin.component';
+import { ReportesPreoperacionalesComponent } from './reportes-preoperacionales/reportes-preoperacionales.component';
+import { AnaliticaComponent } from './analitica/analitica.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +52,13 @@ import { MantenimientosMaquinariaComponent } from './mantenimientos-maquinaria/m
     InspeccionMensualComponent,
     VerificacionKmModalComponent,
     VerificacionKmComponent,
-    MantenimientosMaquinariaComponent
+    MantenimientosMaquinariaComponent,
+    PreoperacionalComponent,
+    ActivoOperadorComponent,
+    UsuariosComponent,
+    PreoperacionalAdminComponent,
+    ReportesPreoperacionalesComponent,
+    AnaliticaComponent
   ],
   imports: [
     CommonModule,

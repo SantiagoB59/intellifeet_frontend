@@ -1,0 +1,648 @@
+<div class="min-h-screen bg-slate-100 pb-8">
+
+    <!-- ========================================= -->
+    <!-- LOADING -->
+    <!-- ========================================= -->
+
+    <div *ngIf="cargando" class="fixed inset-0 bg-white flex flex-col items-center justify-center z-50">
+
+        <i class="fas fa-spinner fa-spin text-5xl text-blue-600 mb-5"></i>
+
+        <h2 class="text-xl font-bold text-slate-700">
+
+            Cargando asignaciones...
+
+        </h2>
+
+    </div>
+
+    <!-- ========================================= -->
+    <!-- CONTENIDO -->
+    <!-- ========================================= -->
+
+    <ng-container *ngIf="!cargando">
+
+        <!-- ========================================= -->
+        <!-- HEADER -->
+        <!-- ========================================= -->
+
+        <div class="px-5 pt-5">
+
+            <div class="
+bg-gradient-to-r
+from-[#0F172A]
+via-[#172554]
+to-[#1E293B]
+text-white rounded-t-3xl px-8 py-6">
+
+                <div class="flex items-center justify-between">
+
+                    <div class="flex items-center">
+
+                        <div class="w-16 h-16 rounded-2xl bg-white/20 flex items-center justify-center mr-4">
+
+                            <i class="fas fa-user-cog text-3xl"></i>
+
+                        </div>
+
+                        <div>
+
+                            <h1 class="text-3xl font-bold">
+
+                                Asignación de Operadores
+
+                            </h1>
+
+                            <p class="text-blue-100 mt-1">
+
+                                Administra la relación entre operadores y los
+                                vehículos o maquinaria asignados.
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <button (click)="nuevo()"
+                        class="bg-white text-blue-700 hover:bg-blue-50 rounded-2xl px-6 py-3 font-bold shadow-lg transition">
+
+                        <i class="fas fa-plus-circle mr-2"></i>
+
+                        Nueva asignación
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ========================================= -->
+        <!-- LISTADO -->
+        <!-- ========================================= -->
+
+        <div class="p-5 space-y-5">
+
+            <div *ngFor="let item of asignaciones" class="bg-white rounded-3xl shadow-lg overflow-hidden">
+
+                <!-- CABECERA -->
+
+                <div class="px-6 py-5 border-b bg-slate-50">
+
+                    <div class="flex justify-between items-center">
+
+                        <div class="flex items-center">
+
+                            <div class="w-14 h-14 rounded-full bg-blue-100 flex items-center justify-center mr-4">
+
+                                <i class="fas fa-user text-blue-600 text-xl"></i>
+
+                            </div>
+
+                            <div>
+
+                                <h3 class="text-xl font-bold text-slate-800">
+
+                                    {{ item.usuario.nombre }}
+
+                                </h3>
+
+                                <div class="text-sm text-slate-500">
+
+                                    {{ item.usuario.username }}
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <span class="px-4 py-2 rounded-full text-sm font-bold bg-green-100 text-green-700">
+                            Activo
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <!-- CUERPO -->
+
+                <div class="p-6">
+
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+
+                        <div>
+
+                            <small class="uppercase text-slate-400 tracking-wide">
+
+                                Tipo
+
+                            </small>
+
+                            <div class="font-bold text-slate-700 mt-1">
+
+                                {{ item.vehiculo ? 'Vehículo' : 'Maquinaria' }}
+
+                            </div>
+
+                        </div>
+
+                        <div>
+
+                            <small class="uppercase text-slate-400 tracking-wide">
+
+                                Activo
+
+                            </small>
+
+                            <div class="font-bold text-slate-700 mt-1">
+
+                                <span *ngIf="item.vehiculo">
+
+                                    🚛 {{ item.vehiculo.placa }}
+
+                                </span>
+
+                                <span *ngIf="item.maquinaria">
+
+                                    🚜 {{ item.maquinaria.codigo }}
+
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                        <div>
+
+                            <small class="uppercase text-slate-400 tracking-wide">
+
+                                Fecha
+
+                            </small>
+
+                            <div class="font-bold text-slate-700 mt-1">
+
+                                {{ item.fecha_asignacion | date:'dd/MM/yyyy' }}
+
+                            </div>
+
+                        </div>
+
+                        <div>
+
+                            <small class="uppercase text-slate-400 tracking-wide">
+
+                                Estado
+
+                            </small>
+
+                            <div class="font-bold mt-1">
+
+                                {{ item.activo ? 'En servicio' : 'Finalizada' }}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div *ngIf="item.observaciones" class="mt-6 bg-slate-50 rounded-2xl p-4">
+
+                        <div class="text-xs uppercase text-slate-500 font-semibold mb-2">
+
+                            Observaciones
+
+                        </div>
+
+                        <div class="text-slate-700">
+
+                            {{ item.observaciones }}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- FOOTER -->
+
+                <div class="bg-slate-50 border-t px-6 py-4 flex justify-end gap-3">
+
+                    <button (click)="editar(item)"
+                        class="bg-amber-500 hover:bg-amber-600 text-white rounded-xl px-6 py-3 font-semibold transition">
+
+                        <i class="fas fa-edit mr-2"></i>
+
+                        Editar
+
+                    </button>
+
+                    <button (click)="eliminar(item)"
+                        class="bg-red-600 hover:bg-red-700 text-white rounded-xl px-6 py-3 font-semibold transition">
+
+                        <i class="fas fa-trash mr-2"></i>
+
+                        Eliminar
+
+                    </button>
+
+                </div>
+
+            </div>
+
+            <!-- SIN DATOS -->
+
+            <div *ngIf="asignaciones.length==0" class="bg-white rounded-3xl shadow-lg p-12 text-center">
+
+                <i class="fas fa-user-slash text-6xl text-slate-300 mb-6"></i>
+
+                <h2 class="text-2xl font-bold text-slate-700">
+
+                    No existen asignaciones
+
+                </h2>
+
+                <p class="text-slate-500 mt-3">
+
+                    Presiona el botón <b>Nueva asignación</b> para crear la
+                    primera relación entre un operador y un activo.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </ng-container>
+
+</div>
+
+<!-- ===================================================== -->
+<!-- MODAL NUEVA / EDITAR ASIGNACIÓN -->
+<!-- ===================================================== -->
+
+<div *ngIf="mostrarModal" class="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
+
+    <div class="bg-white rounded-3xl w-[95%] max-w-2xl shadow-2xl overflow-hidden">
+
+        <!-- HEADER -->
+
+        <div class="bg-gradient-to-r from-blue-700 to-blue-600 text-white p-6">
+
+            <div class="flex items-center">
+
+                <div class="w-14 h-14 rounded-2xl bg-white/20 flex items-center justify-center mr-4">
+
+                    <i class="fas fa-user-plus text-2xl"></i>
+
+                </div>
+
+                <div>
+
+                    <h2 class="text-2xl font-bold">
+
+                        {{ editando ? 'Editar Asignación' : 'Nueva Asignación' }}
+
+                    </h2>
+
+                    <p class="text-blue-100">
+
+                        Seleccione el operador y el activo.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- BODY -->
+
+        <div class="p-6 space-y-6">
+
+            <!-- OPERADOR -->
+
+            <div>
+
+                <label class="block font-semibold mb-2">
+
+                    Operador
+
+                </label>
+
+                <select [(ngModel)]="form.usuario_id" class="w-full border rounded-2xl p-4">
+
+                    <option [ngValue]="null">
+
+                        Seleccione...
+
+                    </option>
+
+                    <option *ngFor="let usuario of usuarios" [ngValue]="usuario.id">
+
+                        {{ usuario.nombre }}
+
+                    </option>
+
+                </select>
+
+            </div>
+
+            <!-- TIPO -->
+
+            <div>
+
+                <label class="block font-semibold mb-3">
+
+                    Tipo de activo
+
+                </label>
+
+                <div class="grid grid-cols-2 gap-4">
+
+                    <button type="button" (click)="seleccionarTipo('vehiculo')" [ngClass]="{
+
+                        'bg-blue-600 text-white' : tipoActivo=='vehiculo',
+
+                        'bg-slate-100' : tipoActivo!='vehiculo'
+
+                    }" class="rounded-2xl py-4 font-bold transition">
+
+                        <i class="fas fa-truck mr-2"></i>
+
+                        Vehículo
+
+                    </button>
+
+                    <button type="button" (click)="seleccionarTipo('maquinaria')" [ngClass]="{
+
+                        'bg-blue-600 text-white' : tipoActivo=='maquinaria',
+
+                        'bg-slate-100' : tipoActivo!='maquinaria'
+
+                    }" class="rounded-2xl py-4 font-bold transition">
+
+                        <i class="fas fa-tractor mr-2"></i>
+
+                        Maquinaria
+
+                    </button>
+
+                </div>
+
+            </div>
+
+            <!-- VEHÍCULO -->
+
+            <div *ngIf="tipoActivo=='vehiculo'">
+
+                <label class="block font-semibold mb-2">
+
+                    Vehículo
+
+                </label>
+
+                <select [(ngModel)]="form.vehiculo_id" class="w-full border rounded-2xl p-4">
+
+                    <option [ngValue]="null">
+
+                        Seleccione...
+
+                    </option>
+
+                    <option *ngFor="let vehiculo of vehiculos" [ngValue]="vehiculo.id">
+
+                        {{ vehiculo.placa }}
+
+                    </option>
+
+                </select>
+
+            </div>
+
+            <!-- MAQUINARIA -->
+
+            <div *ngIf="tipoActivo=='maquinaria'">
+
+                <label class="block font-semibold mb-2">
+
+                    Maquinaria
+
+                </label>
+
+                <select [(ngModel)]="form.maquinaria_id" class="w-full border rounded-2xl p-4">
+
+                    <option [ngValue]="null">
+
+                        Seleccione...
+
+                    </option>
+
+                    <option *ngFor="let maquinaria of maquinarias" [ngValue]="maquinaria.id">
+
+                        {{ maquinaria.codigo }}
+
+                    </option>
+
+                </select>
+
+            </div>
+
+            <!-- OBSERVACIONES -->
+
+            <div>
+
+                <label class="block font-semibold mb-2">
+
+                    Observaciones
+
+                </label>
+
+                <textarea rows="4" [(ngModel)]="form.observaciones" class="w-full border rounded-2xl p-4 resize-none"
+                    placeholder="Observaciones de la asignación">
+
+                </textarea>
+
+            </div>
+
+        </div>
+
+        <!-- FOOTER -->
+
+        <div class="border-t bg-slate-50 p-5">
+
+            <div class="grid grid-cols-2 gap-4">
+
+                <button (click)="cerrarModal()"
+                    class="bg-slate-500 hover:bg-slate-600 text-white rounded-2xl py-4 font-bold">
+
+                    <i class="fas fa-times mr-2"></i>
+
+                    Cancelar
+
+                </button>
+
+                <button (click)="guardar()" [disabled]="guardando"
+                    class="bg-blue-600 hover:bg-blue-700 disabled:bg-slate-400 text-white rounded-2xl py-4 font-bold">
+
+                    <span *ngIf="!guardando">
+
+                        <i class="fas fa-save mr-2"></i>
+
+                        Guardar
+
+                    </span>
+
+                    <span *ngIf="guardando">
+
+                        <i class="fas fa-spinner fa-spin mr-2"></i>
+
+                        Guardando...
+
+                    </span>
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ===================================================== -->
+<!-- MODAL CONFIRMAR ELIMINAR -->
+<!-- ===================================================== -->
+
+<div *ngIf="mostrarEliminar" class="fixed inset-0 bg-black/70 flex items-center justify-center z-[60]">
+
+    <div class="bg-white rounded-3xl shadow-2xl w-[95%] max-w-md overflow-hidden">
+
+        <!-- HEADER -->
+
+        <div class="bg-red-600 text-white p-6 text-center">
+
+            <div class="w-20 h-20 rounded-full bg-white/20 flex items-center justify-center mx-auto mb-4">
+
+                <i class="fas fa-trash text-4xl"></i>
+
+            </div>
+
+            <h2 class="text-2xl font-bold">
+
+                Eliminar asignación
+
+            </h2>
+
+        </div>
+
+        <!-- BODY -->
+
+        <div class="p-6 text-center">
+
+            <p class="text-slate-700 text-lg">
+
+                ¿Está seguro de eliminar esta asignación?
+
+            </p>
+
+            <div *ngIf="registroEliminar" class="mt-5">
+
+                <div class="font-bold text-xl">
+
+                    {{ registroEliminar.usuario.nombre }}
+
+                </div>
+
+                <div class="text-slate-500 mt-2">
+
+                    <span *ngIf="registroEliminar.vehiculo">
+
+                        🚛 {{ registroEliminar.vehiculo.placa }}
+
+                    </span>
+
+                    <span *ngIf="registroEliminar.maquinaria">
+
+                        🚜 {{ registroEliminar.maquinaria.codigo }}
+
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- FOOTER -->
+
+        <div class="grid grid-cols-2 gap-3 p-5 border-t">
+
+            <button (click)="mostrarEliminar=false"
+                class="bg-slate-500 hover:bg-slate-600 transition text-white rounded-2xl py-4 font-bold">
+
+                <i class="fas fa-times mr-2"></i>
+
+                Cancelar
+
+            </button>
+
+            <button (click)="confirmarEliminar()" [disabled]="eliminando"
+                class="bg-red-600 hover:bg-red-700 transition disabled:bg-red-300 text-white rounded-2xl py-4 font-bold">
+
+                <span *ngIf="!eliminando">
+
+                    <i class="fas fa-trash mr-2"></i>
+
+                    Eliminar
+
+                </span>
+
+                <span *ngIf="eliminando">
+
+                    <i class="fas fa-spinner fa-spin mr-2"></i>
+
+                    Eliminando...
+
+                </span>
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ===================================================== -->
+<!-- MENSAJE DE ÉXITO -->
+<!-- ===================================================== -->
+
+<div *ngIf="mensajeVisible"
+    class="fixed bottom-6 right-6 bg-green-600 text-white rounded-2xl shadow-2xl px-6 py-4 flex items-center z-[70]">
+
+    <i class="fas fa-check-circle text-2xl mr-3"></i>
+
+    <div>
+
+        <div class="font-bold">
+
+            Operación realizada
+
+        </div>
+
+        <div class="text-sm">
+
+            {{ mensaje }}
+
+        </div>
+
+    </div>
+
+</div>

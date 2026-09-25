@@ -45,7 +45,8 @@ export class AlertasComponent implements OnInit {
   // =====================================================
   filtros = {
     prioridad: '',
-    tipo: ''
+    tipo: '',
+    busqueda: ''
   };
 
   modalDocumento = false;
@@ -81,89 +82,141 @@ export class AlertasComponent implements OnInit {
   // =====================================================
   cargarAlertas(): void {
 
-  this.loading = true;
+    this.loading = true;
 
-  this.alertasService
-    .listar(this.filtros)
-    .subscribe({
+    this.alertasService
+      .listar(this.filtros)
+      .subscribe({
 
-      next: (resp) => {
+        next: (resp) => {
 
-        let alertas = [...resp];
+          let alertas = [...resp];
 
-        // Filtrar según la pestaña
-        if (this.pestanaActiva === 'VERIFICAR') {
+          // =====================================================
+          // FILTRAR SEGÚN LA PESTAÑA
+          // =====================================================
 
-          alertas = alertas.filter(a =>
-            a.estado === 'ACTIVA'
-          );
+          if (this.pestanaActiva === 'VERIFICAR') {
 
-        } else {
+            alertas = alertas.filter(a =>
+              a.estado === 'ACTIVA'
+            );
 
-          alertas = alertas.filter(a =>
-            a.estado === 'RESUELTA' ||
-            a.estado === 'IGNORADA'
-          );
+          } else {
+
+            alertas = alertas.filter(a =>
+              a.estado === 'RESUELTA' ||
+              a.estado === 'IGNORADA'
+            );
+
+          }
+
+          // =====================================================
+          // FILTRAR PRIORIDAD
+          // =====================================================
+
+          if (this.filtros.prioridad) {
+
+            alertas = alertas.filter(a =>
+              a.prioridad === this.filtros.prioridad
+            );
+
+          }
+
+          // =====================================================
+          // FILTRAR TIPO
+          // =====================================================
+
+          if (this.filtros.tipo) {
+
+            alertas = alertas.filter(a =>
+              a.tipo === this.filtros.tipo
+            );
+
+          }
+
+          // =====================================================
+          // BUSCAR POR PLACA O CÓDIGO DE MAQUINARIA
+          // =====================================================
+
+          if (this.filtros.busqueda?.trim()) {
+
+            const busqueda = this.filtros.busqueda
+              .trim()
+              .toLowerCase();
+
+            alertas = alertas.filter((a: any) => {
+
+              const placa = a.vehiculo?.placa
+                ?.toString()
+                .toLowerCase() || '';
+
+              const codigo = a.maquinaria?.codigo
+                ?.toString()
+                .toLowerCase() || '';
+
+              return (
+                placa.includes(busqueda) ||
+                codigo.includes(busqueda)
+              );
+
+            });
+
+          }
+
+          // =====================================================
+          // ORDENAR POR FECHA
+          // MÁS NUEVA → MÁS ANTIGUA
+          // =====================================================
+
+          alertas.sort((a: any, b: any) => {
+
+            const fechaA = new Date(a.created_at).getTime();
+            const fechaB = new Date(b.created_at).getTime();
+
+            if (fechaB !== fechaA) {
+              return fechaB - fechaA;
+            }
+
+            return b.id - a.id;
+
+          });
+
+          // =====================================================
+          // GUARDAR
+          // =====================================================
+
+          this.alertas = alertas;
+
+          this.paginaActual = 1;
+
+          this.actualizarPaginacion();
+
+          this.loading = false;
+
+        },
+
+        error: err => {
+
+          console.error(err);
+
+          this.loading = false;
 
         }
 
-        // Filtrar prioridad
-        if (this.filtros.prioridad) {
+      });
 
-          alertas = alertas.filter(a =>
-            a.prioridad === this.filtros.prioridad
-          );
-
-        }
-
-        // Filtrar tipo
-        if (this.filtros.tipo) {
-
-          alertas = alertas.filter(a =>
-            a.tipo === this.filtros.tipo
-          );
-
-        }
-
-        // Ordenar
-        alertas.sort(
-          (a, b) =>
-            this.getPesoPrioridad(b.prioridad) -
-            this.getPesoPrioridad(a.prioridad)
-        );
-
-        this.alertas = alertas;
-
-        this.paginaActual = 1;
-
-        this.actualizarPaginacion();
-
-        this.loading = false;
-
-      },
-
-      error: err => {
-
-        console.error(err);
-
-        this.loading = false;
-
-      }
-
-    });
-
-}
-
+  }
   // =====================================================
   // GESTIÓN DE PESTAÑAS
   // =====================================================
   cambiarPestana(pestana: 'VERIFICAR' | 'HISTORICO'): void {
 
-  this.pestanaActiva = pestana;
+    this.pestanaActiva = pestana;
 
-  this.cargarAlertas();
+    this.cargarAlertas();
 
-}
+  }
 
   // =====================================================
   // CARGAR ESTADÍSTICAS
@@ -190,14 +243,15 @@ export class AlertasComponent implements OnInit {
 
   limpiarFiltros(): void {
 
-  this.filtros = {
-    prioridad: '',
-    tipo: ''
-  };
+    this.filtros = {
+      prioridad: '',
+      tipo: '',
+      busqueda: ''
+    };
 
-  this.cargarAlertas();
+    this.cargarAlertas();
 
-}
+  }
 
   // =====================================================
   // ACCIONES (RESOLVER / IGNORAR)

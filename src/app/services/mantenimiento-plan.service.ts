@@ -9,7 +9,7 @@ export class MantenimientoPlanService {
 
   private api = environment.apiUrl;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   // =========================================
   // 🚗 PLAN VEHÍCULOS
@@ -72,11 +72,38 @@ export class MantenimientoPlanService {
   // 📋 PLAN ITEMS
   // =========================================
 
-  getPlanItems(): Observable<any> {
+  // =========================================
+  // 📋 PLAN ITEMS
+  // =========================================
 
-    return this.http.get(
-      `${this.api}/api/plan-items`
-    );
+  getPlanItems(
+    tipoActivo?: 'VEHICULO' | 'MAQUINARIA',
+    tipoId?: number
+  ): Observable<any[]> {
+
+    let url = `${this.api}/api/plan-items`;
+
+    const params: string[] = [];
+
+    if (tipoActivo) {
+      params.push(`tipo_activo=${tipoActivo}`);
+    }
+
+    if (tipoId) {
+      if (tipoActivo === 'VEHICULO') {
+        params.push(`tipo_vehiculo_id=${tipoId}`);
+      }
+
+      if (tipoActivo === 'MAQUINARIA') {
+        params.push(`tipo_maquinaria_id=${tipoId}`);
+      }
+    }
+
+    if (params.length > 0) {
+      url += `?${params.join('&')}`;
+    }
+
+    return this.http.get<any[]>(url);
   }
 
   // =========================================

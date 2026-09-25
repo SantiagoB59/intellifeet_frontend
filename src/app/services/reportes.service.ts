@@ -6,7 +6,7 @@ import {
 } from '@angular/common/http';
 
 import { environment }
-from 'src/environment/environment';
+  from 'src/environment/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -158,22 +158,50 @@ export class ReportesService {
   }
 
 
-// =========================================
-// DESCARGAR FORMATO PROFESIONAL ALERTAS
-// =========================================
+  // =========================================
+  // DESCARGAR FORMATO PROFESIONAL ALERTAS
+  // =========================================
 
-descargarFormatoAlertas(
-  vehiculoId: number
-) {
+  descargarFormatoAlertas(
+    vehiculoId: number
+  ) {
 
-  return this.http.get(
+    return this.http.get(
 
-    `${this.base}/alertas-formato/${vehiculoId}`,
+      `${this.base}/alertas-formato/${vehiculoId}`,
 
-    {
-      responseType: 'blob'
-    }
-  );
+      {
+        responseType: 'blob'
+      }
+    );
+  }
+
+
+  getIndicadorMantenimiento(
+    filters: any
+  ) {
+
+    return this.http.get<any>(
+      `${this.base}/indicador-mantenimiento`,
+      {
+        params: this.buildParams(filters)
+      }
+    );
+
+  }
+
+  exportarIndicadorMantenimiento(filtros: any) {
+
+    return this.http.get(
+      `${this.base}/indicador-mantenimiento/exportar`,
+      {
+        params: this.buildParams(filtros),
+        responseType: 'blob'
+      }
+    );
+
+  }
+
 }
-}
+
 

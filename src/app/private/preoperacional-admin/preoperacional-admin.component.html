@@ -1,0 +1,752 @@
+<div class="min-h-screen bg-slate-100 pb-10">
+
+
+    <!-- ========================================= -->
+    <!-- LOADING -->
+    <!-- ========================================= -->
+
+    <div *ngIf="cargando" class="fixed inset-0 bg-white flex flex-col items-center justify-center z-50">
+
+        <i class="fas fa-spinner fa-spin text-5xl text-blue-600 mb-5"></i>
+
+        <h2 class="text-xl font-bold text-slate-700">
+            Cargando preoperacionales...
+        </h2>
+
+    </div>
+
+
+
+    <!-- ========================================= -->
+    <!-- CONTENIDO -->
+    <!-- ========================================= -->
+
+    <div *ngIf="!cargando">
+
+
+        <!-- ========================================= -->
+        <!-- HEADER -->
+        <!-- ========================================= -->
+
+        <div class="bg-gradient-to-r
+from-[#0F172A]
+via-[#172554]
+to-[#1E293B]
+text-white rounded-t-3xl px-8 py-6">
+
+
+            <div class="flex items-center">
+
+
+                <div class="w-16 h-16 rounded-2xl bg-white/20 flex items-center justify-center mr-4">
+
+                    <i class="fas fa-clipboard-check text-3xl"></i>
+
+                </div>
+
+
+
+                <div>
+
+                    <h1 class="text-2xl font-bold">
+
+                        Gestión Preoperacional
+
+                    </h1>
+
+
+                    <p class="text-blue-100">
+
+                        Consulta y seguimiento de inspecciones realizadas
+
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+
+        </div>
+
+
+
+
+
+
+        <!-- ========================================= -->
+        <!-- FILTROS -->
+        <!-- ========================================= -->
+
+
+        <div class="p-5">
+
+
+            <div class="bg-white rounded-3xl shadow-lg p-5">
+
+
+                <div class="flex items-center mb-5">
+
+
+                    <i class="fas fa-filter text-blue-600 text-xl mr-3"></i>
+
+
+                    <h2 class="text-lg font-bold text-slate-800">
+
+                        Filtros de búsqueda
+
+                    </h2>
+
+
+                </div>
+
+
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+
+
+                    <!-- ========================= -->
+                    <!-- FECHA DESDE -->
+                    <!-- ========================= -->
+
+                    <div>
+
+                        <label class="text-sm font-semibold text-slate-700">
+                            Desde
+                        </label>
+
+                        <input type="date" [(ngModel)]="filtros.fecha_inicio" class="w-full border border-slate-300 rounded-xl p-3 mt-1
+                   focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+
+                    </div>
+
+
+                    <!-- ========================= -->
+                    <!-- FECHA HASTA -->
+                    <!-- ========================= -->
+
+                    <div>
+
+                        <label class="text-sm font-semibold text-slate-700">
+                            Hasta
+                        </label>
+
+                        <input type="date" [(ngModel)]="filtros.fecha_fin" class="w-full border border-slate-300 rounded-xl p-3 mt-1
+                   focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+
+                    </div>
+
+
+                    <!-- ========================= -->
+                    <!-- OPERADOR -->
+                    <!-- ========================= -->
+
+                    <div>
+
+                        <label class="text-sm font-semibold text-slate-700">
+                            Operador
+                        </label>
+
+                        <select [(ngModel)]="filtros.usuario_id" class="w-full border border-slate-300 rounded-xl p-3 mt-1
+                   focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+
+                            <option value="">
+                                Todos
+                            </option>
+
+                            <option *ngFor="let operador of operadores" [value]="operador.id">
+
+                                {{ operador.nombre }}
+
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- ========================= -->
+                    <!-- VEHÍCULO -->
+                    <!-- ========================= -->
+
+                    <div>
+
+                        <label class="text-sm font-semibold text-slate-700">
+                            Vehículo
+                        </label>
+
+                        <select [(ngModel)]="filtros.vehiculo_id" class="w-full border border-slate-300 rounded-xl p-3 mt-1
+                   focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+
+                            <option value="">
+                                Todos
+                            </option>
+
+                            <option *ngFor="let vehiculo of vehiculos" [value]="vehiculo.id">
+
+                                {{ vehiculo.placa }}
+
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- ========================= -->
+                    <!-- MAQUINARIA -->
+                    <!-- ========================= -->
+
+                    <div>
+
+                        <label class="text-sm font-semibold text-slate-700">
+                            Maquinaria
+                        </label>
+
+                        <select [(ngModel)]="filtros.maquinaria_id" class="w-full border border-slate-300 rounded-xl p-3 mt-1
+                   focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+
+                            <option value="">
+                                Todas
+                            </option>
+
+                            <option *ngFor="let maquinaria of maquinarias" [value]="maquinaria.id">
+
+                                {{ maquinaria.codigo_maquinaria }}
+
+                                -
+
+                                {{ maquinaria.tipo_maquinaria }}
+
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- ========================= -->
+                    <!-- ESTADO -->
+                    <!-- ========================= -->
+
+                    <div>
+
+                        <label class="text-sm font-semibold text-slate-700">
+                            Estado
+                        </label>
+
+                        <select [(ngModel)]="filtros.estado" class="w-full border border-slate-300 rounded-xl p-3 mt-1
+                   focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+
+                            <option value="">
+                                Todos
+                            </option>
+
+                            <option value="FINALIZADA">
+                                Finalizadas
+                            </option>
+
+                            <option value="BORRADOR">
+                                Borrador
+                            </option>
+
+                            <option value="ANULADA">
+                                Anuladas
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- ========================= -->
+                    <!-- BUSCAR -->
+                    <!-- ========================= -->
+
+                    <div class="flex items-end">
+
+                        <button (click)="listar()" class="w-full bg-blue-600 hover:bg-blue-700
+                   text-white rounded-xl py-3 font-bold
+                   transition shadow">
+
+                            <i class="fas fa-search mr-2"></i>
+
+                            Buscar
+
+                        </button>
+
+                    </div>
+
+
+                    <!-- ========================= -->
+                    <!-- LIMPIAR -->
+                    <!-- ========================= -->
+
+                    <div class="flex items-end">
+
+                        <button (click)="limpiarFiltros()" class="w-full bg-slate-600 hover:bg-slate-700
+                   text-white rounded-xl py-3 font-bold
+                   transition shadow">
+
+                            <i class="fas fa-times mr-2"></i>
+
+                            Limpiar
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+        <div class="px-5">
+
+            <div class="bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden">
+
+                <div class="overflow-x-auto">
+
+                    <table class="w-full">
+
+                        <!-- CABECERA -->
+
+                        <thead class="bg-gradient-to-r from-[#0F172A] via-[#172554] to-[#1E293B] text-white">
+
+                            <tr>
+
+                                <th class="px-6 py-5 text-left font-semibold">
+                                    <i class="fas fa-calendar-alt mr-2"></i>
+                                    Fecha
+                                </th>
+
+                                <th class="px-6 py-5 text-left font-semibold">
+                                    <i class="fas fa-user mr-2"></i>
+                                    Operador
+                                </th>
+
+                                <th class="px-6 py-5 text-left font-semibold">
+                                    <i class="fas fa-truck mr-2"></i>
+                                    Vehículo
+                                </th>
+
+                                <th class="px-6 py-5 text-center font-semibold">
+                                    <i class="fas fa-circle-check mr-2"></i>
+                                    Estado
+                                </th>
+
+                                <th class="px-6 py-5 text-center font-semibold">
+                                    <i class="fas fa-gears mr-2"></i>
+                                    Acciones
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+                        <!-- CUERPO -->
+
+                        <tbody>
+
+                            <tr *ngFor="let item of inspecciones"
+                                class="border-b border-slate-100 hover:bg-slate-50 transition-all duration-200">
+
+                                <!-- FECHA -->
+
+                                <td class="px-6 py-4">
+
+                                    <div class="font-semibold text-slate-800">
+
+                                        {{item.fecha || (item.hora_inicio | date:'dd/MM/yyyy')}}
+
+                                    </div>
+
+                                    <div class="text-xs text-slate-500">
+
+                                        {{item.hora_inicio | date:'HH:mm'}}
+
+                                    </div>
+
+                                </td>
+
+                                <!-- OPERADOR -->
+
+                                <td class="px-6 py-4">
+
+                                    <div class="flex items-center gap-3">
+
+                                        <div
+                                            class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
+
+                                            <i class="fas fa-user text-blue-700"></i>
+
+                                        </div>
+
+                                        <span class="font-medium">
+
+                                            {{item.usuario || item.usuario?.nombre}}
+
+                                        </span>
+
+                                    </div>
+
+                                </td>
+
+                                <!-- VEHICULO -->
+
+                                <!-- ACTIVO -->
+
+                                <td class="px-6 py-4">
+
+                                    <div class="flex items-center gap-3">
+
+                                        <div
+                                            class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center">
+
+                                            <i class="fas fa-truck text-indigo-700" *ngIf="!item.maquinaria_id">
+                                            </i>
+
+                                            <i class="fas fa-tractor text-indigo-700" *ngIf="item.maquinaria_id">
+                                            </i>
+
+                                        </div>
+
+                                        <div>
+
+                                            <div class="font-semibold text-slate-800">
+
+                                                {{
+                                                item.maquinaria_id
+                                                ? item.codigo_maquinaria
+                                                : (
+                                                item.placa ||
+                                                item.vehiculo?.placa ||
+                                                '-'
+                                                )
+                                                }}
+
+                                            </div>
+
+                                            <div *ngIf="item.maquinaria_id" class="text-xs text-slate-500">
+
+                                                {{ item.tipo_maquinaria || 'Maquinaria' }}
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+                                <!-- ESTADO -->
+
+                                <td class="px-6 py-4 text-center">
+
+                                    <span class="inline-flex items-center px-4 py-1 rounded-full text-xs font-bold"
+                                        [ngClass]="claseEstado(item.estado)">
+
+                                        {{item.estado}}
+
+                                    </span>
+
+                                </td>
+
+                                <!-- ACCIONES -->
+
+                                <td class="px-6 py-4">
+
+                                    <div class="flex justify-center gap-3">
+
+                                        <button (click)="verDetalle(item)"
+                                            class="w-11 h-11 rounded-xl bg-blue-600 hover:bg-blue-700 text-white transition shadow">
+
+                                            <i class="fas fa-eye"></i>
+
+                                        </button>
+
+                                        <button (click)="descargarPdf(item)"
+                                            class="w-11 h-11 rounded-xl bg-red-600 hover:bg-red-700 text-white transition shadow">
+
+                                            <i class="fas fa-file-pdf"></i>
+
+                                        </button>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+                            <!-- SIN DATOS -->
+
+                            <tr *ngIf="inspecciones.length==0">
+
+                                <td colspan="5" class="py-16">
+
+                                    <div class="flex flex-col items-center justify-center text-slate-400">
+
+                                        <i class="fas fa-folder-open text-6xl mb-5"></i>
+
+                                        <h3 class="text-lg font-semibold">
+
+                                            No hay inspecciones registradas
+
+                                        </h3>
+
+                                        <p class="text-sm">
+
+                                            Cuando existan inspecciones aparecerán aquí.
+
+                                        </p>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+
+</div>
+
+
+<!-- ================================================= -->
+<!-- MODAL DETALLE INSPECCIÓN -->
+<!-- ================================================= -->
+
+<div *ngIf="seleccionado"
+    class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm flex items-center justify-center z-50 p-6">
+
+    <div class="bg-slate-50 rounded-3xl shadow-2xl w-full max-w-6xl max-h-[92vh] overflow-hidden animate-fade-in">
+
+        <!-- ================================================= -->
+        <!-- HEADER -->
+        <!-- ================================================= -->
+
+        <div
+            class="bg-gradient-to-r from-[#0F172A] via-[#172554] to-[#1E293B] text-white px-8 py-6 flex justify-between items-center">
+
+            <div>
+
+                <h2 class="text-3xl font-bold flex items-center gap-3">
+                    <i class="fas fa-clipboard-check text-2xl"></i>
+                    Detalle de Inspección
+                </h2>
+
+                <p class="text-blue-100 mt-1">
+                    Información completa de la inspección realizada.
+                </p>
+
+            </div>
+
+            <button (click)="cerrarDetalle()" class="w-11 h-11 rounded-full bg-white/20 hover:bg-red-500 transition">
+
+                <i class="fas fa-times text-xl"></i>
+
+            </button>
+
+        </div>
+
+        <!-- ================================================= -->
+        <!-- CONTENIDO -->
+        <!-- ================================================= -->
+
+        <div class="overflow-y-auto max-h-[80vh] p-7">
+
+            <!-- ========================= -->
+            <!-- INFORMACIÓN GENERAL -->
+            <!-- ========================= -->
+
+            <div class="grid md:grid-cols-4 gap-5 mb-8">
+
+                <div class="bg-white rounded-2xl shadow p-5">
+
+                    <div class="text-slate-400 text-sm mb-2">
+                        Operador
+                    </div>
+
+                    <div class="font-bold text-lg text-slate-800">
+
+                        <i class="fas fa-user text-blue-600 mr-2"></i>
+
+                        {{ seleccionado.usuario }}
+
+                    </div>
+
+                </div>
+
+                <div class="bg-white rounded-2xl shadow p-5">
+
+                    <div class="text-slate-400 text-sm mb-2">
+                        Vehículo
+                    </div>
+
+                    <div class="font-bold text-lg text-slate-800">
+
+                        <i class="fas fa-truck text-blue-600 mr-2"></i>
+
+                        {{ seleccionado.placa }}
+
+                    </div>
+
+                </div>
+
+                <div class="bg-white rounded-2xl shadow p-5">
+
+                    <div class="text-slate-400 text-sm mb-2">
+                        Estado
+                    </div>
+
+                    <span class="px-4 py-2 rounded-full text-sm font-bold" [ngClass]="{
+                        'bg-green-100 text-green-700': seleccionado.estado=='FINALIZADA',
+                        'bg-yellow-100 text-yellow-700': seleccionado.estado=='EN_PROCESO',
+                        'bg-red-100 text-red-700': seleccionado.estado!='FINALIZADA' && seleccionado.estado!='EN_PROCESO'
+                    }">
+
+                        {{ seleccionado.estado }}
+
+                    </span>
+
+                </div>
+
+                <div class="bg-white rounded-2xl shadow p-5">
+
+                    <div class="text-slate-400 text-sm mb-2">
+                        Total preguntas
+                    </div>
+
+                    <div class="font-bold text-2xl text-blue-700">
+
+                        {{ seleccionado.respuestas.length }}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- ================================================= -->
+            <!-- RESPUESTAS -->
+            <!-- ================================================= -->
+
+            <div *ngFor="let categoria of seleccionado.plantilla?.categorias" class="mb-8">
+
+                <!-- CATEGORÍA -->
+
+                <div class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl px-5 py-3 mb-4 shadow">
+
+                    <h3 class="font-bold text-lg">
+
+                        <i class="fas fa-folder-open mr-2"></i>
+
+                        {{ categoria.nombre }}
+
+                    </h3>
+
+                </div>
+
+                <!-- ITEMS -->
+
+                <div *ngFor="let item of categoria.items"
+                    class="bg-white rounded-2xl shadow-md border border-slate-200 p-5 mb-4 hover:shadow-xl transition">
+
+                    <!-- Pregunta -->
+
+                    <div class="flex justify-between items-start">
+
+                        <div class="font-semibold text-slate-800 text-lg">
+
+                            {{ item.descripcion }}
+
+                        </div>
+
+                        <span class="px-4 py-1 rounded-full text-sm font-bold" [ngClass]="{
+
+                            'bg-green-100 text-green-700':
+                            obtenerRespuesta(item.id)?.valor=='SI',
+
+                            'bg-red-100 text-red-700':
+                            obtenerRespuesta(item.id)?.valor=='NO',
+
+                            'bg-yellow-100 text-yellow-700':
+                            obtenerRespuesta(item.id)?.valor=='NA'
+
+                        }">
+
+                            {{ obtenerRespuesta(item.id)?.valor || '-' }}
+
+                        </span>
+
+                    </div>
+
+                    <!-- Observación -->
+
+                    <div *ngIf="obtenerRespuesta(item.id)?.observacion"
+                        class="mt-4 bg-red-50 border-l-4 border-red-500 rounded-xl p-4">
+
+                        <div class="font-bold text-red-700 mb-1">
+
+                            <i class="fas fa-comment-dots mr-2"></i>
+
+                            Observación
+
+                        </div>
+
+                        <div class="text-red-600">
+
+                            {{ obtenerRespuesta(item.id)?.observacion }}
+
+                        </div>
+
+                    </div>
+
+                    <!-- Fotos -->
+
+                    <div *ngIf="obtenerRespuesta(item.id)?.fotos?.length" class="mt-5">
+
+                        <div class="font-semibold text-slate-700 mb-3">
+
+                            <i class="fas fa-camera text-blue-600 mr-2"></i>
+
+                            Evidencias Fotográficas
+
+                        </div>
+
+                        <div class="flex flex-wrap gap-4">
+
+                            <a *ngFor="let foto of obtenerRespuesta(item.id)?.fotos"
+                                [href]="'http://127.0.0.1:5000/' + foto.archivo" target="_blank">
+
+                                <img [src]="'http://127.0.0.1:5000/' + foto.archivo"
+                                    class="w-52 h-40 rounded-xl object-cover border-2 border-slate-200 hover:scale-105 hover:shadow-xl transition cursor-pointer">
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

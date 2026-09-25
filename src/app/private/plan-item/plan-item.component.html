@@ -46,7 +46,7 @@
                 </option>
 
                 <option *ngFor="let s of sistemas" [value]="s.nombre">
-                      {{ s.nombre }}
+                    {{ s.nombre }}
                 </option>
 
             </select>
@@ -83,208 +83,218 @@
             </button>
 
         </div>
-<!-- ========================================================= -->
-<!-- TABLA MANTENIMIENTOS -->
-<!-- ========================================================= -->
+        <!-- ========================================================= -->
+        <!-- TABLA MANTENIMIENTOS -->
+        <!-- ========================================================= -->
 
-<div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-200">
+        <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-200">
 
-    <!-- HEADER -->
+            <!-- HEADER -->
 
-    <div class="px-6 py-5 border-b bg-gradient-to-r from-red-50 to-white">
+            <div class="px-6 py-5 border-b bg-gradient-to-r from-blue-50 to-white">
 
-        <div class="flex items-center justify-between flex-wrap gap-3">
+                <div class="flex items-center justify-between flex-wrap gap-3">
 
-            <div>
+                    <div>
 
-                <h2 class="text-xl font-bold text-gray-800 flex items-center gap-2">
+                        <h2 class="text-xl font-bold text-gray-800 flex items-center gap-2">
 
-                    <i class="fas fa-tools text-red-600"></i>
+                            <i class="fas fa-tools text-blue-600"></i>
 
-                    Catálogo de mantenimientos
+                            Catálogo de mantenimientos
 
-                </h2>
+                        </h2>
 
-                <p class="text-sm text-gray-500 mt-1">
+                        <p class="text-sm text-gray-500 mt-1">
 
-                    Administración de los mantenimientos preventivos, correctivos y programados del sistema.
-
-                </p>
-
-            </div>
-
-            <div class="bg-red-100 text-red-700 px-4 py-2 rounded-xl font-semibold text-sm">
-
-                {{ filteredItems.length }} registros
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <!-- TABLA -->
-
-    <div class="overflow-x-auto">
-
-        <table class="min-w-full">
-
-            <!-- CABECERA -->
-
-            <thead class="bg-gray-900 text-white sticky top-0 z-10">
-
-                <tr>
-
-                    <th class="px-6 py-5 text-left">
-                        Sistema
-                    </th>
-
-                    <th class="px-6 py-5 text-left">
-                        Mantenimiento
-                    </th>
-
-                    <th class="px-6 py-5 text-left">
-                        Tipo
-                    </th>
-
-                    <th class="px-6 py-5 text-left">
-                        Control
-                    </th>
-
-                    <th class="px-6 py-5 text-center">
-                        Acciones
-                    </th>
-
-                </tr>
-
-            </thead>
-
-            <!-- CUERPO -->
-
-            <tbody>
-
-                <!-- LOADING -->
-
-                <tr *ngIf="loading">
-
-                    <td colspan="5" class="loading-row">
-
-                        <div class="spinner"></div>
-
-                        Cargando mantenimientos...
-
-                    </td>
-
-                </tr>
-
-                <!-- VACÍO -->
-
-                <tr *ngIf="!loading && filteredItems.length===0">
-
-                    <td colspan="5" class="text-center py-14">
-
-                        <div class="text-6xl">
-
-                            🛠
-
-                        </div>
-
-                        <h3 class="text-xl font-bold text-gray-700 mt-4">
-
-                            No existen mantenimientos registrados
-
-                        </h3>
-
-                        <p class="text-gray-500 mt-2">
-
-                            No hay información para mostrar.
+                            Administración de los mantenimientos preventivos, correctivos y programados del sistema.
 
                         </p>
 
-                    </td>
+                    </div>
 
-                </tr>
+                    <div class="bg-blue-100 text-blue-700 px-4 py-2 rounded-xl font-semibold text-sm">
 
-                <!-- ITEMS -->
+                        {{ filteredItems.length }} registros
 
-                <tr
-                    *ngFor="let item of filteredItems; let i=index; trackBy: trackById"
-                    class="transition duration-300 border-b border-gray-100 hover:bg-red-50"
-                    [ngClass]="{
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- TABLA -->
+
+            <div class="overflow-x-auto">
+
+                <table class="min-w-full">
+
+                    <!-- CABECERA -->
+
+                    <thead class="bg-gray-900 text-white sticky top-0 z-10">
+
+                        <tr>
+
+                            <th class="px-6 py-5 text-left">
+                                Sistema
+                            </th>
+
+                            <th class="px-6 py-5 text-left">
+                                Mantenimiento
+                            </th>
+
+                            <th class="px-6 py-5 text-left">
+                                Tipo
+                            </th>
+                            <th class="px-6 py-5 text-left">
+                                Tipo de vehiculo
+                            </th>
+
+                            <th class="px-6 py-5 text-left">
+                                Control
+                            </th>
+
+                            <th class="px-6 py-5 text-center">
+                                Acciones
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <!-- CUERPO -->
+
+                    <tbody>
+
+                        <!-- LOADING -->
+
+                        <tr *ngIf="loading">
+
+                            <td colspan="5" class="loading-row">
+
+                                <div class="spinner"></div>
+
+                                Cargando mantenimientos...
+
+                            </td>
+
+                        </tr>
+
+                        <!-- VACÍO -->
+
+                        <tr *ngIf="!loading && filteredItems.length===0">
+
+                            <td colspan="5" class="text-center py-14">
+
+                                <div class="text-6xl">
+
+                                    🛠
+
+                                </div>
+
+                                <h3 class="text-xl font-bold text-gray-700 mt-4">
+
+                                    No existen mantenimientos registrados
+
+                                </h3>
+
+                                <p class="text-gray-500 mt-2">
+
+                                    No hay información para mostrar.
+
+                                </p>
+
+                            </td>
+
+                        </tr>
+
+                        <!-- ITEMS -->
+
+                        <tr *ngFor="let item of filteredItems; let i=index; trackBy: trackById"
+                            class="transition duration-300 border-b border-gray-100 hover:bg-blue-50" [ngClass]="{
                         'bg-white':i%2==0,
                         'bg-gray-50':i%2!=0
                     }">
 
-                    <!-- SISTEMA -->
+                            <!-- SISTEMA -->
 
-                    <td class="px-6 py-5">
+                            <td class="px-6 py-5">
 
-                        <div class="flex items-center gap-3">
+                                <div class="flex items-center gap-3">
 
-                            <div class="w-11 h-11 rounded-full bg-red-100 flex items-center justify-center">
+                                    <div class="w-11 h-11 rounded-full bg-blue-100 flex items-center justify-center">
 
-                                <i class="fas fa-cogs text-red-600"></i>
+                                        <i class="fas fa-cogs text-blue-600"></i>
 
-                            </div>
+                                    </div>
 
-                            <div>
+                                    <div>
+
+                                        <div class="font-bold text-gray-800">
+
+                                            {{ item.sistema }}
+
+                                        </div>
+
+                                        <div class="text-xs text-gray-500">
+
+                                            Sistema
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+                            <!-- MANTENIMIENTO -->
+
+                            <td class="px-6 py-5">
 
                                 <div class="font-bold text-gray-800">
 
-                                    {{ item.sistema }}
+                                    {{ item.nombre }}
 
                                 </div>
 
-                                <div class="text-xs text-gray-500">
+                                <div class="text-sm text-gray-500 mt-1">
 
-                                    Sistema
+                                    {{ item.descripcion || 'Sin descripción' }}
 
                                 </div>
 
-                            </div>
+                            </td>
 
-                        </div>
+                            <!-- TIPO -->
 
-                    </td>
+                            <td class="px-6 py-5">
 
-                    <!-- MANTENIMIENTO -->
+                                <span
+                                    class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-red-100 text-red-700 border border-red-200">
 
-                    <td class="px-6 py-5">
+                                    {{ item.tipo_mantenimiento }}
 
-                        <div class="font-bold text-gray-800">
+                                </span>
 
-                            {{ item.nombre }}
+                            </td>
 
-                        </div>
+                            <td class="px-6 py-5">
 
-                        <div class="text-sm text-gray-500 mt-1">
+                                <span class="font-bold text-gray-800">
 
-                            {{ item.descripcion || 'Sin descripción' }}
+                                    {{ item.tipo_activo }}
 
-                        </div>
+                                </span>
 
-                    </td>
+                            </td>
 
-                    <!-- TIPO -->
+                            <!-- CONTROL -->
 
-                    <td class="px-6 py-5">
+                            <td class="px-6 py-5">
 
-                        <span
-                            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-red-100 text-red-700 border border-red-200">
-
-                            {{ item.tipo_mantenimiento }}
-
-                        </span>
-
-                    </td>
-
-                    <!-- CONTROL -->
-
-                    <td class="px-6 py-5">
-
-                        <span
-                            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold"
-                            [ngClass]="{
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold"
+                                    [ngClass]="{
 
                                 'bg-blue-100 text-blue-700 border border-blue-200':
                                 item.tipo_control=='KM',
@@ -300,56 +310,60 @@
 
                             }">
 
-                            {{ item.tipo_control }}
+                                    {{ item.tipo_control }}
 
-                        </span>
+                                </span>
 
-                    </td>
+                            </td>
 
-                    <!-- ACCIONES -->
+                            <!-- ACCIONES -->
 
-                    <td class="px-6 py-5">
+                            <td class="px-6 py-5">
 
-                        <div class="flex justify-center gap-2">
+                                <div class="flex justify-center gap-2">
 
-                            <button
-                                class="w-10 h-10 rounded-xl bg-blue-100 hover:bg-blue-200 text-blue-700 transition"
-                                (click)="abrirVer(item)">
+                                    <button
+                                        class="w-10 h-10 rounded-xl bg-blue-100 hover:bg-blue-200 text-blue-700 transition"
+                                        (click)="abrirVer(item)">
 
-                                <i class="fas fa-eye"></i>
+                                        <i class="fas fa-eye"></i>
 
-                            </button>
+                                    </button>
 
-                            <button
-                                class="w-10 h-10 rounded-xl bg-yellow-100 hover:bg-yellow-200 text-yellow-700 transition"
-                                (click)="abrirEditar(item)">
+                                    <button
+                                        class="w-10 h-10 rounded-xl bg-yellow-100 hover:bg-yellow-200 text-yellow-700 transition"
+                                        (click)="abrirEditar(item)">
 
-                                <i class="fas fa-edit"></i>
+                                        <i class="fas fa-edit"></i>
 
-                            </button>
+                                    </button>
 
-                            <button
-                                class="w-10 h-10 rounded-xl bg-red-100 hover:bg-red-200 text-red-700 transition"
-                                (click)="confirmarEliminar(item)">
+                                    <button
+                                        class="w-10 h-10 rounded-xl bg-red-100 hover:bg-red-200 text-red-700 transition"
+                                        (click)="confirmarEliminar(item)">
 
-                                <i class="fas fa-trash-alt"></i>
+                                        <i class="fas fa-trash-alt"></i>
 
-                            </button>
+                                    </button>
 
-                        </div>
+                                </div>
 
-                    </td>
+                            </td>
 
-                </tr>
+                        </tr>
 
-            </tbody>
+                    </tbody>
 
-        </table>
+                </table>
 
-    </div>
+            </div>
 
-</div>
+        </div>
     </section>
+
+    <!-- ═════════════════════════════ -->
+    <!-- MODAL -->
+    <!-- ═════════════════════════════ -->
 
     <!-- ═════════════════════════════ -->
     <!-- MODAL -->
@@ -359,7 +373,10 @@
 
         <div class="modal-panel" (click)="$event.stopPropagation()">
 
+            <!-- ========================================= -->
             <!-- HEADER -->
+            <!-- ========================================= -->
+
             <div class="modal-header">
 
                 <div>
@@ -374,7 +391,7 @@
 
                 </div>
 
-                <button class="modal-close" (click)="cerrarModal()">
+                <button type="button" class="modal-close" (click)="cerrarModal()">
 
                     <i class="fas fa-times-circle"></i>
 
@@ -382,10 +399,18 @@
 
             </div>
 
+
+            <!-- ========================================= -->
             <!-- FORM -->
+            <!-- ========================================= -->
+
             <form [formGroup]="form" (ngSubmit)="guardar()" class="modal-form">
 
-                <!-- GENERAL -->
+
+                <!-- ========================================= -->
+                <!-- INFORMACIÓN GENERAL -->
+                <!-- ========================================= -->
+
                 <div class="form-section">
 
                     <div class="form-section-title">
@@ -396,9 +421,102 @@
 
                     </div>
 
+
+                    <!-- ===================================== -->
+                    <!-- TIPO ACTIVO -->
+                    <!-- ===================================== -->
+
+                    <div class="form-field">
+
+                        <label class="block mb-1 font-semibold text-gray-700">
+                            Selecciona tipo de activo *
+                        </label>
+
+                        <select formControlName="tipo_activo">
+
+                            <option value="VEHICULO">
+                                Vehículo
+                            </option>
+
+                            <option value="MAQUINARIA">
+                                Maquinaria
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <!-- ===================================== -->
+                    <!-- TIPO ESPECÍFICO DE VEHÍCULO -->
+                    <!-- ===================================== -->
+
+                    <div class="form-field" *ngIf="
+        form.get('tipo_activo')?.value === 'VEHICULO'
+    ">
+
+                        <label>
+                            Tipo de vehículo
+                        </label>
+
+                        <select formControlName="tipo_vehiculo_id">
+
+                            <option [ngValue]="null">
+                                Todos los vehículos
+                            </option>
+
+                            <option *ngFor="let tipo of tiposVehiculo" [ngValue]="tipo.id">
+                                {{ tipo.nombre }}
+                            </option>
+
+                        </select>
+
+                        <small>
+                            Si seleccionas "Todos los vehículos",
+                            el mantenimiento estará disponible para
+                            cualquier tipo de vehículo.
+                        </small>
+
+                    </div>
+
+
+                    <!-- ===================================== -->
+                    <!-- TIPO ESPECÍFICO DE MAQUINARIA -->
+                    <!-- ===================================== -->
+
+                    <div class="form-field" *ngIf="
+        form.get('tipo_activo')?.value === 'MAQUINARIA'
+    ">
+
+                        <label>
+                            Tipo de maquinaria
+                        </label>
+
+                        <select formControlName="tipo_maquinaria_id">
+
+                            <option [ngValue]="null">
+                                Todas las maquinarias
+                            </option>
+
+                            <option *ngFor="let tipo of tiposMaquinaria" [ngValue]="tipo.id">
+                                {{ tipo.nombre }}
+                            </option>
+
+                        </select>
+
+                        <small>
+                            Si seleccionas "Todas las maquinarias",
+                            el mantenimiento estará disponible para
+                            cualquier tipo de maquinaria.
+                        </small>
+
+                    </div>
                     <div class="form-grid">
 
+
+                        <!-- ================================= -->
                         <!-- SISTEMA -->
+                        <!-- ================================= -->
+
                         <div class="form-field">
 
                             <label>
@@ -411,7 +529,9 @@
                                     Seleccione sistema
                                 </option>
 
-                                <option *ngFor="let s of sistemas" [value]="s.nombre">
+                                <option *ngFor="
+                                    let s of sistemas
+                                " [value]="s.nombre">
                                     {{ s.nombre }}
                                 </option>
 
@@ -419,27 +539,37 @@
 
                         </div>
 
+
+                        <!-- ================================= -->
                         <!-- NOMBRE -->
+                        <!-- ================================= -->
+
                         <div class="form-field">
 
                             <label>
                                 Nombre *
                             </label>
 
-                            <input formControlName="nombre" placeholder="Ej: Cambio de aceite">
+                            <input formControlName="nombre" placeholder="Ej: Mantenimiento">
 
                         </div>
 
+
+                        <!-- ================================= -->
                         <!-- TIPO -->
+                        <!-- ================================= -->
+
                         <div class="form-field">
 
                             <label>
-                                Tipo mantenimiento
+                                Tipo mantenimiento *
                             </label>
 
                             <select formControlName="tipo_mantenimiento">
 
-                                <option *ngFor="let t of tiposMantenimiento" [value]="t">
+                                <option *ngFor="
+                                    let t of tiposMantenimiento
+                                " [value]="t">
                                     {{ t }}
                                 </option>
 
@@ -447,22 +577,53 @@
 
                         </div>
 
+
+                        <!-- ================================= -->
                         <!-- CONTROL -->
+                        <!-- ================================= -->
+
                         <div class="form-field">
 
                             <label>
-                                Tipo control
+                                Tipo control *
                             </label>
 
                             <select formControlName="tipo_control">
 
-                                <option value="KM">
-                                    Kilometraje
-                                </option>
+                                <!-- VEHÍCULO -->
 
-                                <option value="DIAS">
-                                    Tiempo
-                                </option>
+                                <ng-container *ngIf="
+                                    form.get(
+                                        'tipo_activo'
+                                    )?.value ===
+                                    'VEHICULO'
+                                ">
+
+                                    <option value="KM">
+                                        Kilometraje
+                                    </option>
+
+                                    <option value="DIAS">
+                                        Tiempo
+                                    </option>
+
+                                </ng-container>
+
+
+                                <!-- MAQUINARIA -->
+
+                                <ng-container *ngIf="
+                                    form.get(
+                                        'tipo_activo'
+                                    )?.value ===
+                                    'MAQUINARIA'
+                                ">
+
+                                    <option value="HORAS">
+                                        Horómetro
+                                    </option>
+
+                                </ng-container>
 
                             </select>
 
@@ -472,15 +633,359 @@
 
                 </div>
 
-                <!-- CONFIG -->
-                <div class="form-section">
 
+                <!-- ========================================= -->
+                <!-- CONFIGURACIÓN VEHÍCULO -->
+                <!-- ========================================= -->
+
+                <div class="form-section" *ngIf="
+                    form.get('tipo_activo')?.value ===
+                    'VEHICULO'
+                ">
+
+                    <div class="form-section-title">
+
+                        <i class="fas fa-car"></i>
+
+                        Configuración del mantenimiento
+
+                    </div>
 
 
                     <div class="form-grid">
 
 
-                        <!-- OBLIGATORIO -->
+                        <!-- FRECUENCIA -->
+
+                        <div class="form-field">
+
+                            <label>
+                                Frecuencia
+                            </label>
+
+                            <div class="input-with-suffix">
+
+                                <input type="number" min="1" formControlName="frecuencia_valor" placeholder="Ej: 10000">
+
+                                <span>
+
+                                    {{
+                                    form.get(
+                                    'tipo_control'
+                                    )?.value === 'KM'
+                                    ? 'km'
+                                    : 'días'
+                                    }}
+
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- ALERTA -->
+
+                        <div class="form-field">
+
+                            <label>
+                                Anticipación de alerta
+                            </label>
+
+                            <div class="input-with-suffix">
+
+                                <input type="number" min="0" formControlName="alerta_valor" placeholder="Ej: 500">
+
+                                <span>
+
+                                    {{
+                                    form.get(
+                                    'tipo_control'
+                                    )?.value === 'KM'
+                                    ? 'km'
+                                    : 'días'
+                                    }}
+
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ========================================= -->
+                <!-- CONFIGURACIÓN MAQUINARIA -->
+                <!-- ========================================= -->
+
+                <div class="form-section" *ngIf="
+                    form.get('tipo_activo')?.value ===
+                    'MAQUINARIA'
+                ">
+
+                    <div class="form-section-title">
+
+                        <i class="fas fa-tractor"></i>
+
+                        Configuración por horómetro
+
+                    </div>
+
+
+                    <div class="form-grid">
+
+
+                        <!-- FRECUENCIA -->
+
+                        <div class="form-field">
+
+                            <label>
+                                Frecuencia de mantenimiento *
+                            </label>
+
+                            <div class="input-with-suffix">
+
+                                <input type="number" min="1" formControlName="frecuencia_valor" placeholder="Ej: 500">
+
+                                <span>
+                                    horas
+                                </span>
+
+                            </div>
+
+                            <small>
+                                Ejemplo: 500 horas genera
+                                3700, 4200, 4700...
+                                según el horómetro inicial.
+                            </small>
+
+                        </div>
+
+
+                        <!-- ALERTA -->
+
+                        <div class="form-field">
+
+                            <label>
+                                Anticipación de alerta *
+                            </label>
+
+                            <div class="input-with-suffix">
+
+                                <input type="number" min="0" formControlName="alerta_valor" placeholder="Ej: 50">
+
+                                <span>
+                                    horas
+                                </span>
+
+                            </div>
+
+                            <small>
+                                Ejemplo: con 50 horas,
+                                la alerta aparece 50 horas
+                                antes.
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ========================================= -->
+                <!-- ACTIVIDADES MAQUINARIA -->
+                <!-- ========================================= -->
+
+                <div class="form-section" *ngIf="
+                    form.get('tipo_activo')?.value ===
+                    'MAQUINARIA'
+                ">
+
+                    <div class="flex items-center justify-between mb-4">
+
+                        <div>
+
+                            <div class="form-section-title mb-1">
+
+                                <i class="fas fa-list-check"></i>
+
+                                Actividades del mantenimiento
+
+                            </div>
+
+                            <p class="text-sm text-gray-500">
+
+                                Define las tareas que forman parte
+                                de este mantenimiento.
+
+                            </p>
+
+                        </div>
+
+                        <span class="px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-bold">
+
+                            {{ actividades.length }}
+                            actividades
+
+                        </span>
+
+                    </div>
+
+
+                    <!-- ===================================== -->
+                    <!-- LISTA ACTIVIDADES -->
+                    <!-- ===================================== -->
+
+                    <div formArrayName="actividades" class="space-y-4">
+
+                        <div *ngFor="
+                            let actividad of actividades.controls;
+                            let i = index
+                        " [formGroupName]="i" class="activity-card">
+
+                            <!-- HEADER ACTIVIDAD -->
+
+                            <div class="activity-header">
+
+                                <div class="flex items-center gap-2">
+
+                                    <div
+                                        class="w-8 h-8 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center font-bold">
+                                        {{ i + 1 }}
+                                    </div>
+
+                                    <strong>
+                                        Actividad {{ i + 1 }}
+                                    </strong>
+
+                                </div>
+
+
+                                <button type="button" class="btn-danger-small" (click)="
+                                    eliminarActividad(i)
+                                ">
+
+                                    <i class="fas fa-trash"></i>
+
+                                </button>
+
+                            </div>
+
+
+                            <!-- CAMPOS -->
+
+                            <div class="form-grid">
+
+
+                                <!-- NOMBRE -->
+
+                                <div class="form-field">
+
+                                    <label>
+                                        Actividad *
+                                    </label>
+
+                                    <input formControlName="nombre" placeholder="Ej: Cambio de aceite">
+
+                                </div>
+
+
+                                <!-- OBLIGATORIA -->
+
+                                <div class="form-field">
+
+                                    <label>
+                                        Obligatoria
+                                    </label>
+
+                                    <select formControlName="obligatorio">
+
+                                        <option [ngValue]="true">
+                                            Sí
+                                        </option>
+
+                                        <option [ngValue]="false">
+                                            No
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+
+                            </div>
+
+
+                            <!-- DESCRIPCIÓN -->
+
+                            <div class="form-field">
+
+                                <label>
+                                    Descripción
+                                </label>
+
+                                <input formControlName="descripcion" placeholder="Detalle de la actividad">
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ===================================== -->
+                    <!-- SIN ACTIVIDADES -->
+                    <!-- ===================================== -->
+
+                    <div *ngIf="
+                        actividades.length === 0
+                    " class="text-center py-6 border-2 border-dashed border-gray-200 rounded-xl">
+
+                        <i class="fas fa-list-check text-3xl text-gray-300 mb-2"></i>
+
+                        <p class="text-gray-500">
+
+                            Aún no hay actividades.
+
+                        </p>
+
+                        <p class="text-xs text-gray-400 mt-1">
+
+                            Agrega las tareas que forman parte
+                            de este mantenimiento.
+
+                        </p>
+
+                    </div>
+
+
+                    <!-- ===================================== -->
+                    <!-- AGREGAR -->
+                    <!-- ===================================== -->
+
+                    <button type="button" class="btn-primary mt-4" (click)="agregarActividad()">
+
+                        <i class="fas fa-plus"></i>
+
+                        Agregar actividad
+
+                    </button>
+
+                </div>
+
+
+                <!-- ========================================= -->
+                <!-- CONFIGURACIÓN GENERAL -->
+                <!-- ========================================= -->
+
+                <div class="form-section">
+
+                    <div class="form-grid">
+
                         <div class="form-field">
 
                             <label>
@@ -501,12 +1006,15 @@
 
                         </div>
 
-
                     </div>
 
                 </div>
 
-                <!-- DESCRIPCION -->
+
+                <!-- ========================================= -->
+                <!-- DESCRIPCIÓN -->
+                <!-- ========================================= -->
+
                 <div class="form-section">
 
                     <div class="form-section-title">
@@ -517,15 +1025,19 @@
 
                     </div>
 
-                    <textarea formControlName="descripcion" class="textarea" rows="5"
+                    <textarea formControlName="descripcion" class="textarea" rows="4"
                         placeholder="Descripción del mantenimiento..."></textarea>
 
                 </div>
 
 
-
+                <!-- ========================================= -->
                 <!-- ACTIONS -->
-                <div class="modal-actions" *ngIf="modalMode !== 'ver'">
+                <!-- ========================================= -->
+
+                <div class="modal-actions" *ngIf="
+                    modalMode !== 'ver'
+                ">
 
                     <button type="button" class="btn-cancel" (click)="cerrarModal()">
                         Cancelar
@@ -545,14 +1057,24 @@
 
                 </div>
 
+
+                <!-- ========================================= -->
                 <!-- VIEW -->
-                <div class="modal-actions" *ngIf="modalMode === 'ver'">
+                <!-- ========================================= -->
+
+                <div class="modal-actions" *ngIf="
+                    modalMode === 'ver'
+                ">
 
                     <button type="button" class="btn-cancel" (click)="cerrarModal()">
                         Cerrar
                     </button>
 
-                    <button type="button" class="btn-primary" (click)="abrirEditar(itemSeleccionado)">
+                    <button type="button" class="btn-primary" (click)="
+                        abrirEditar(
+                            itemSeleccionado
+                        )
+                    ">
                         Editar
                     </button>
 
@@ -563,7 +1085,6 @@
         </div>
 
     </div>
-
     <!-- ═════════════════════════════ -->
     <!-- CONFIRM DELETE -->
     <!-- ═════════════════════════════ -->

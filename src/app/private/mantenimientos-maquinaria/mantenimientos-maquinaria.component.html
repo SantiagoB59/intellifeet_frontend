@@ -9,27 +9,25 @@
   <!-- ========================= -->
   <!-- HEADER -->
   <!-- ========================= -->
-  <div class="page-header">
+    <div class="page-header">
 
     <div class="header-content">
 
-      <h1>Gestión de Mantenimientos de Maquinaria</h1>
+      <h1>Registrar mantenimientos de maquinaria realizados</h1>
 
       <p class="page-subtitle">
-        Registro de mantenimientos realizados para maquinaria.
+        Aqui podras registrar los mantenimientos realizados a las maquinas incluyendo detalles como fecha, tipo de mantenimiento, kilometraje, proveedor, costo y soporte.
       </p>
 
     </div>
 
     <button class="btn-primary" (click)="abrirModal()">
-
       <span>＋</span>
-
       Nuevo mantenimiento
-
     </button>
 
   </div>
+
 
   <!-- ========================= -->
   <!-- FILTROS -->
@@ -201,7 +199,7 @@
     <td>
 
       <a *ngIf="m.soporte"
-         [href]="'https://transmenasmart.com/' + m.soporte"
+         [href]="'http://localhost:5000/' + m.soporte"
          target="_blank"
          class="action-link">
 

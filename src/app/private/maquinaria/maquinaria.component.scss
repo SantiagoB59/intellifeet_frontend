@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════
-// vehiculos.component.scss  —  Transmena Smart · Industrial Fleet Style
+// vehiculos.component.scss  —  · Industrial Fleet Style
 // ═══════════════════════════════════════════════════════════════════════
 
 /* Layout general */
@@ -39,7 +39,7 @@ app-sidebar {
 }
 
 // ═══════════════════════════════════════════════════════════════════════
-// vehiculos.component.scss  —  Transmena Smart · Industrial Fleet Style
+// vehiculos.component.scss  · Industrial Fleet Style
 // ═══════════════════════════════════════════════════════════════════════
 
 $red:      #e02020;
@@ -51,6 +51,8 @@ $border:   #e5e7eb;
 $green:    #059669;
 $orange:   #d97706;
 $blue:     #2563eb;
+$blue_light:  #3b82f6;
+$blue_dark:   #172033;
 $radius:   1.5rem;
 $radius-sm: 0.75rem;
 
@@ -103,7 +105,7 @@ $radius-sm: 0.75rem;
 
 // ── Buttons ─────────────────────────────────────────────────────────────
 .btn-primary {
-  background: $red;
+  background: $blue;
   color: #fff;
   border: none;
   padding: 0.75rem 1.5rem;
@@ -116,7 +118,7 @@ $radius-sm: 0.75rem;
   gap: 0.5rem;
   transition: background 0.2s, transform 0.15s;
   white-space: nowrap;
-  &:hover { background: darken($red, 8%); transform: translateY(-1px); }
+  &:hover { background: darken($blue, 8%); transform: translateY(-1px); }
 }
 .btn-save {
   @extend .btn-primary;
@@ -205,10 +207,10 @@ $radius-sm: 0.75rem;
   outline: none;
   cursor: pointer;
   @media (max-width: 600px) { width: 100%; }
-  &:focus { border-color: $red; }
+  &:focus { border-color: $blue; }
 }
 // ─────────────────────────────────────────────────────────────
-// TABLA CORPORATIVA TRANSMENA SMART
+// TABLA CORPORATIVA
 // ─────────────────────────────────────────────────────────────
 
 .table-card {
@@ -518,7 +520,7 @@ tbody td {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  i { color: $red; }
+  i { color: $blue; }
 }
 .form-grid {
   padding: 1.25rem;

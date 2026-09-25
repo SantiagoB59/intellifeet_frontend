@@ -50,6 +50,7 @@ export class LoginComponent {
   }
 
   onSubmit() {
+
     this.isLoginFailed = false;
 
     if (this.loginForm.invalid) {
@@ -68,35 +69,68 @@ export class LoginComponent {
         })
       )
       .subscribe({
+
         next: (res) => {
-          // 🔐 el token ya se guarda en el service
-          if (res?.token) {
-            this.router.navigate(['/dashboard']);
-            // 👇 luego validas verificación km
-            this.verificarKmPendientes();
-          } else {
+
+          if (!res?.token) {
             this.isLoginFailed = true;
+            return;
           }
+
+          const usuario = this.authService.getUser();
+
+          switch (usuario?.rol?.toLowerCase()) {
+
+            case 'operador':
+
+              this.router.navigate(['/dashboard/preoperacional']);
+              break;
+
+            case 'mecanico':
+
+              this.router.navigate(['/dashboard/mantenimientos']);
+              break;
+
+            case 'supervisor':
+
+              this.router.navigate(['/dashboard']);
+              this.verificarKmPendientes();
+              break;
+
+            case 'admin':
+
+              this.router.navigate(['/dashboard']);
+              this.verificarKmPendientes();
+              break;
+
+            default:
+
+              this.router.navigate(['/dashboard']);
+              break;
+          }
+
         },
+
         error: () => {
           this.isLoginFailed = true;
         }
+
       });
+
   }
-
   verificarKmPendientes() {
-  this.vehiculoService.getVehiculosVerificacionKm().subscribe({
-    next: (res: any[]) => {
+    this.vehiculoService.getVehiculosVerificacionKm().subscribe({
+      next: (res: any[]) => {
 
-      if (res.length > 0) {
-        // SOLO ALERTA o bandera global
-        alert(`⚠ Hay ${res.length} vehículos pendientes de verificación de km`);
+        if (res.length > 0) {
+          // SOLO ALERTA o bandera global
+          alert(`⚠ Hay ${res.length} vehículos pendientes de verificación de km`);
+        }
+
+      },
+      error: (err: any) => {
+        console.error(err);
       }
-
-    },
-    error: (err: any) => {
-      console.error(err);
-    }
-  });
-}
+    });
+  }
 }

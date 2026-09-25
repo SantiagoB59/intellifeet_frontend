@@ -1,342 +1,791 @@
-// VARIABLES (copiar de tu archivo principal)
-$red:      #e02020;
-$dark:     #111827;
-$mid:      #374151;
-$slate:    #6b7280;
-$light:    #f9fafb;
-$border:   #e5e7eb;
-$green:    #059669;
-$orange:   #d97706;
-$blue:     #2563eb;
-$red:        #DC2626;
-$radius:   1.5rem;
+// ============================================================
+// MANTENIMIENTOS - ESTILOS COMPLETOS
+// ============================================================
+
+// ============================================================
+// VARIABLES
+// ============================================================
+
+$red: #dc2626;
+$dark: #111827;
+$mid: #374151;
+$slate: #6b7280;
+$light: #f9fafb;
+$border: #e5e7eb;
+
+$green: #059669;
+$orange: #d97706;
+
+$blue: #2563eb;
+$blue_light: #3b82f6;
+$blue_dark: #172033;
+
+$radius: 1.5rem;
 $radius-sm: 0.75rem;
 
-// CONTAINER PRINCIPAL
+
+// ============================================================
+// CONTENEDOR PRINCIPAL
+// ============================================================
+
 .mantenimiento-container {
-  padding: 2rem;
-  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+
   min-height: 100vh;
+
+  padding: 24px;
+
+  background: #f5f7fa;
 }
 
+
+// ============================================================
 // HEADER
+// ============================================================
+
 .page-header {
-  background: white;
-  padding: 2.5rem;
-  border-radius: $radius;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-  margin-bottom: 2rem;
+
   display: flex;
-  justify-content: space-between;
+
   align-items: center;
-  gap: 2rem;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding: 20px 24px;
+
+  margin-bottom: 18px;
+
+  background: #ffffff;
+
+  border: 1px solid $border;
+
+  border-radius: 12px;
+
+  box-shadow:
+    0 2px 6px rgba(15, 23, 42, 0.04);
 }
+
+
+.header-content {
+
+  min-width: 0;
+
+}
+
 
 .header-content h1 {
-  font-size: 2.5rem;
-  font-weight: 900;
-  background: linear-gradient(135deg, $dark, $mid);
-  -webkit-background-clip: text;
-  background-clip: text;
-  margin: 0 0 0.5rem 0;
+
+  margin: 0;
+
+  color: $dark;
+
+  font-size: 1.55rem;
+
+  line-height: 1.2;
+
+  font-weight: 750;
+
 }
+
 
 .page-subtitle {
+
+  margin: 6px 0 0;
+
   color: $slate;
-  font-size: 1.1rem;
-  margin: 0;
-  font-weight: 500;
+
+  font-size: 0.86rem;
+
+  font-weight: 400;
+
 }
 
-// BOTONES
+
+// ============================================================
+// BOTÓN PRINCIPAL
+// ============================================================
+
 .btn-primary {
-  background: linear-gradient(135deg, $red, #DC2626 );
-  color: white;
-  border: none;
-  padding: 1.25rem 2.5rem;
-  border-radius: $radius;
-  font-weight: 800;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 8px 25px rgba(37, 99, 235, 0.3);
+
   display: inline-flex;
-  align-items: center;
-  gap: 0.75rem;
 
-  &:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 15px 35px rgba(37, 99, 235, 0.4);
-  }
-}
-
-.btn-secondary {
-  padding: 1.25rem 2.5rem;
-  border: 2px solid $border;
-  background: white;
-  color: $slate;
-  border-radius: $radius;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s ease;
-
-  &:hover {
-    background: $light;
-    border-color: $mid;
-  }
-}
-
-.btn-complete {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, #d1fae5, #a7f3d0);
-  color: $green;
-  border: none;
-  cursor: pointer;
-  display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s ease;
 
-  &:hover {
-    background: linear-gradient(135deg, $green, #047857);
-    color: white;
-    transform: scale(1.1);
-  }
+  gap: 8px;
+
+  min-height: 42px;
+
+  padding: 0 17px;
+
+  background: $blue;
+
+  color: white;
+
+  border: none;
+
+  border-radius: 9px;
+
+  font-size: 0.86rem;
+
+  font-weight: 650;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 3px 8px rgba(37, 99, 235, 0.18);
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
-// ─────────────────────────────────────────────────────────────
-// TABLA PREMIUM (ESTILO CORPORATIVO)
-// ─────────────────────────────────────────────────────────────
+
+
+.btn-primary:hover {
+
+  background: #1d4ed8;
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 5px 12px rgba(37, 99, 235, 0.25);
+}
+
+
+.btn-primary:active {
+
+  transform: translateY(0);
+
+}
+
+
+.btn-primary span {
+
+  font-size: 1.05rem;
+
+  line-height: 1;
+
+}
+
+
+// ============================================================
+// BOTÓN SECUNDARIO
+// ============================================================
+
+.btn-secondary {
+
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  min-height: 42px;
+
+  padding: 0 16px;
+
+  background: white;
+
+  color: $mid;
+
+  border: 1px solid $border;
+
+  border-radius: 9px;
+
+  font-size: 0.85rem;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+
+.btn-secondary:hover {
+
+  background: #f8fafc;
+
+  border-color: #cbd5e1;
+
+}
+
+
+// ============================================================
+// BOTÓN COMPLETAR
+// ============================================================
+
+.btn-complete {
+
+  width: 42px;
+
+  height: 42px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background: #ecfdf5;
+
+  color: $green;
+
+  border: 1px solid #d1fae5;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+
+.btn-complete:hover {
+
+  background: $green;
+
+  color: white;
+
+  border-color: $green;
+
+  transform: scale(1.05);
+
+}
+
+
+// ============================================================
+// TARJETAS
+// ============================================================
 
 .table-card {
-  background: #fff;
-  border-radius: 1.5rem;
-  border: 1px solid #e5e7eb;
-  box-shadow: 0 12px 35px rgba(0,0,0,.08);
+
+  background: #ffffff;
+
+  border: 1px solid $border;
+
+  border-radius: 12px;
+
+  box-shadow:
+    0 2px 8px rgba(15, 23, 42, 0.04);
+
   overflow: hidden;
 }
 
-.table-wrapper {
+
+// ============================================================
+// TARJETA DE FILTROS
+// ============================================================
+
+.table-card.p-6.mb-6 {
+
+  padding: 16px !important;
+
+  margin-bottom: 18px !important;
+
+  background: #ffffff;
+
+  border: 1px solid $border;
+
+  border-radius: 12px;
+
+  box-shadow:
+    0 2px 6px rgba(15, 23, 42, 0.035);
+}
+
+
+// ============================================================
+// CONTENEDOR DE FILTROS
+// ============================================================
+
+.table-card.p-6.mb-6 .grid {
+
+  align-items: center;
+
+}
+
+
+// ============================================================
+// INPUTS
+// ============================================================
+
+.form-input {
+
   width: 100%;
+
+  max-width: 100%;
+
+  box-sizing: border-box;
+
+  min-height: 42px;
+
+  padding: 9px 12px;
+
+  background: white;
+
+  color: $dark;
+
+  border: 1px solid #d9dee7;
+
+  border-radius: 8px;
+
+  font-size: 0.84rem;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+.form-input:focus {
+
+  outline: none;
+
+  border-color: $blue;
+
+  box-shadow:
+    0 0 0 3px rgba(37, 99, 235, 0.08);
+}
+
+
+.form-input::placeholder {
+
+  color: #9ca3af;
+
+}
+
+
+textarea.form-input {
+
+  min-height: auto;
+
+  resize: vertical;
+
+}
+
+
+select.form-input {
+
+  cursor: pointer;
+
+}
+
+
+// ============================================================
+// BOTONES DENTRO DE FILTROS
+// ============================================================
+
+.table-card.p-6.mb-6 .btn-primary,
+.table-card.p-6.mb-6 .btn-secondary {
+
+  min-height: 42px;
+
+  padding: 0 14px;
+
+}
+// ============================================================
+// TABLA - ESTILO OSCURO CORPORATIVO
+// ============================================================
+
+.table-card {
+
+  background: #ffffff;
+
+  border: 1px solid $border;
+
+  border-radius: 12px;
+
+  box-shadow:
+    0 2px 8px rgba(15, 23, 42, 0.04);
+
+  overflow: hidden;
+}
+
+
+.table-wrapper {
+
+  width: 100%;
+
   overflow-x: auto;
 }
 
+
 .data-table {
+
   width: 100%;
-  min-width: 1200px;
+
+  min-width: 1000px;
+
   border-collapse: collapse;
 }
 
-/*======================================================
- CABECERA
-======================================================*/
+
+// ============================================================
+// CABECERA OSCURA
+// ============================================================
 
 .data-table thead {
+
   background: #111827;
-  color: #fff;
+
+  color: #ffffff;
+
   position: sticky;
+
   top: 0;
+
   z-index: 5;
 }
 
+
 .data-table thead th {
-  padding: 18px 24px;
-  font-size: .80rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: .05em;
-  white-space: nowrap;
+
+  padding: 15px 18px;
+
   text-align: left;
+
+  color: #ffffff;
+
+  font-size: 0.72rem;
+
+  font-weight: 700;
+
+  letter-spacing: 0.045em;
+
+  text-transform: uppercase;
+
+  white-space: nowrap;
+
+  border-bottom: 1px solid #1f2937;
 }
 
-/*======================================================
- FILAS
-======================================================*/
+
+// ============================================================
+// FILAS
+// ============================================================
 
 .data-table tbody tr {
-  transition: .25s;
-  border-bottom: 1px solid #f1f5f9;
+
+  background: #ffffff;
+
+  border-bottom: 1px solid #eef0f3;
+
+  transition:
+    background 0.15s ease;
 }
+
 
 .data-table tbody tr:nth-child(even) {
+
   background: #f9fafb;
+
 }
+
 
 .data-table tbody tr:nth-child(odd) {
-  background: #fff;
+
+  background: #ffffff;
+
 }
+
 
 .data-table tbody tr:hover {
-  background: #fef2f2;
+
+  background: #eff6ff;
+
 }
+
+
+.data-table tbody tr:last-child {
+
+  border-bottom: none;
+
+}
+
+
+// ============================================================
+// CELDAS
+// ============================================================
 
 .data-table td {
-  padding: 18px 24px;
+
+  padding: 14px 18px;
+
   vertical-align: middle;
+
+  color: $mid;
+
+  font-size: 0.84rem;
 }
 
-/*======================================================
- INFORMACIÓN
-======================================================*/
 
-.placa{
-  font-size:15px;
-  font-weight:700;
-  color:#111827;
+// ============================================================
+// VEHÍCULO
+// ============================================================
+
+.placa {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  margin-bottom: 4px;
+
+  padding: 3px 7px;
+
+  background: #f1f5f9;
+
+  color: #111827;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 5px;
+
+  font-size: 0.74rem;
+
+  font-weight: 750;
+
+  letter-spacing: 0.02em;
 }
 
-.vin{
-  margin-top:4px;
-  font-size:12px;
-  color:#6b7280;
-}
 
-.tipo,
-.conductor{
-  font-size:14px;
-  color:#374151;
-}
+.vin {
 
-.km{
-  font-size:15px;
-  font-weight:700;
-  color:#111827;
-}
+  margin-top: 2px;
 
-.text-muted{
-  font-size:12px;
-  color:#9ca3af;
-}
-
-/*======================================================
- BADGES
-======================================================*/
-
-.badge{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  padding:6px 14px;
-  border-radius:999px;
-  font-size:11px;
-  font-weight:700;
-}
-
-.badge-preventivo{
-  background:#dcfce7;
-  color:#15803d;
-}
-
-.badge-correctivo{
-  background:#fee2e2;
-  color:#dc2626;
-}
-
-.badge-predictivo{
-  background:#dbeafe;
-  color:#2563eb;
-}
-
-.badge-inspeccion{
-  background:#fef3c7;
-  color:#b45309;
-}
-
-/*======================================================
- COSTO CRÍTICO
-======================================================*/
-
-.km-critico{
-  color:#dc2626;
-  font-weight:700;
-}
-
-/*======================================================
- EMPTY / LOADING
-======================================================*/
-
-.empty-state{
-  padding:60px;
-  text-align:center;
-  color:#6b7280;
-  font-size:.95rem;
-}
-
-.empty-state i{
-  display:block;
-  font-size:48px;
-  margin-bottom:15px;
-}
-
-/*======================================================
- LINKS
-======================================================*/
-
-.action-link{
-  display:inline-flex;
-  align-items:center;
-  gap:6px;
-  color:#2563eb;
-  font-weight:600;
-  text-decoration:none;
-  transition:.25s;
-}
-
-.action-link:hover{
-  color:#1d4ed8;
-}
-
-.action-link i{
-  font-size:13px;
-}
-
-.loading-row,
-.empty-row {
-  text-align: center;
-  padding: 4rem 2rem;
   color: #6b7280;
-  font-size: .95rem;
-  font-weight: 500;
 
-  i {
-    display: block;
-    font-size: 2.8rem;
-    color: #9ca3af;
-    margin-bottom: 1rem;
-  }
+  font-size: 0.73rem;
 }
+
+
+// ============================================================
+// INFORMACIÓN
+// ============================================================
+
+.tipo {
+
+  color: #111827;
+
+  font-size: 0.83rem;
+
+  font-weight: 600;
+}
+
+
+.conductor {
+
+  color: #374151;
+
+  font-size: 0.82rem;
+}
+
+
+.km {
+
+  color: #111827;
+
+  font-size: 0.82rem;
+
+  font-weight: 700;
+}
+
+
+.text-muted {
+
+  color: #9ca3af;
+
+  font-size: 0.76rem;
+
+  font-style: italic;
+}
+
+
+// ============================================================
+// BADGES
+// ============================================================
+
+.badge {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 5px 10px;
+
+  border-radius: 999px;
+
+  font-size: 0.65rem;
+
+  font-weight: 750;
+
+  letter-spacing: 0.02em;
+
+  text-transform: uppercase;
+}
+
+
+.badge-preventivo {
+
+  background: #dcfce7;
+
+  color: #15803d;
+}
+
+
+.badge-correctivo {
+
+  background: #fee2e2;
+
+  color: #dc2626;
+}
+
+
+.badge-predictivo {
+
+  background: #dbeafe;
+
+  color: #2563eb;
+}
+
+
+.badge-inspeccion {
+
+  background: #fef3c7;
+
+  color: #b45309;
+}
+
+
+// ============================================================
+// SOPORTE
+// ============================================================
+
+.action-link {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  color: #2563eb;
+
+  font-size: 0.78rem;
+
+  font-weight: 600;
+
+  text-decoration: none;
+
+  transition: color 0.2s ease;
+}
+
+
+.action-link:hover {
+
+  color: #1d4ed8;
+
+}
+
+
+.action-link i {
+
+  font-size: 0.75rem;
+
+}
+
+
+// ============================================================
+// EMPTY STATE
+// ============================================================
+
+.empty-row {
+
+  padding: 55px 20px !important;
+
+  text-align: center;
+
+  color: #6b7280;
+
+  font-size: 0.86rem;
+}
+
+
+.empty-row i {
+
+  display: block;
+
+  margin-bottom: 12px;
+
+  color: #cbd5e1;
+
+  font-size: 38px;
+}
+
+// ============================================================
+// LOADING
+// ============================================================
+
+.loading-row {
+
+  padding: 50px;
+
+  text-align: center;
+
+  color: $slate;
+}
+
 
 .spinner {
+
   display: inline-block;
+
   width: 18px;
+
   height: 18px;
+
   margin-right: 8px;
-  border: 3px solid #e5e7eb;
-  border-top-color: #dc2626;
+
+  border: 2px solid #e5e7eb;
+
+  border-top-color: $blue;
+
   border-radius: 50%;
-  animation: spin .8s linear infinite;
+
+  animation: spin 0.8s linear infinite;
 }
+
 
 @keyframes spin {
+
   to {
+
     transform: rotate(360deg);
+
   }
+
 }
 
-// =========================
+
+// ============================================================
 // MODAL
-// =========================
+// ============================================================
 
 .modal-backdrop {
+
   position: fixed;
+
   inset: 0;
 
   background: rgba(0, 0, 0, 0.7);
+
   backdrop-filter: blur(10px);
 
   display: flex;
+
   align-items: center;
+
   justify-content: center;
 
   padding: 2rem;
@@ -346,31 +795,46 @@ $radius-sm: 0.75rem;
   z-index: 9999;
 }
 
+
 .modal-box {
+
   background: white;
 
   border-radius: $radius;
 
-  width: 100%;
-  max-width: 650px;
+  width: min(650px, 100%);
+
+  max-width: 100%;
 
   max-height: 95vh;
 
   display: flex;
+
   flex-direction: column;
 
-  box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+  overflow: hidden;
+
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.4);
 
   animation: modalSlide 0.4s ease;
 }
 
+
+// ============================================================
+// MODAL HEADER
+// ============================================================
+
 .modal-header {
+
   padding: 2rem 2rem 1.5rem;
 
   border-bottom: 1px solid $border;
 
   display: flex;
+
   justify-content: space-between;
+
   align-items: center;
 
   flex-shrink: 0;
@@ -378,20 +842,29 @@ $radius-sm: 0.75rem;
   background: white;
 }
 
+
 .modal-title {
+
   font-size: 1.75rem;
+
   font-weight: 800;
+
   color: $dark;
 
   margin: 0;
 
   display: flex;
+
   align-items: center;
+
   gap: 1rem;
 }
 
+
 .modal-close {
+
   width: 44px;
+
   height: 44px;
 
   border-radius: 12px;
@@ -403,7 +876,9 @@ $radius-sm: 0.75rem;
   cursor: pointer;
 
   display: flex;
+
   align-items: center;
+
   justify-content: center;
 
   color: $slate;
@@ -411,15 +886,26 @@ $radius-sm: 0.75rem;
   transition: all 0.2s ease;
 
   flex-shrink: 0;
-
-  &:hover {
-    background: $red;
-    color: white;
-    transform: rotate(90deg);
-  }
 }
 
+
+.modal-close:hover {
+
+  background: $red;
+
+  color: white;
+
+  transform: rotate(90deg);
+
+}
+
+
+// ============================================================
+// MODAL BODY
+// ============================================================
+
 .modal-body {
+
   padding: 2rem;
 
   overflow-y: auto;
@@ -427,18 +913,23 @@ $radius-sm: 0.75rem;
   flex: 1;
 }
 
-// =========================
-// FORMULARIOS
-// =========================
+
+// ============================================================
+// FORMULARIOS DEL MODAL
+// ============================================================
 
 .form-group {
+
   margin-bottom: 2rem;
 }
 
+
 .form-group label {
+
   display: block;
 
   font-weight: 700;
+
   color: $mid;
 
   margin-bottom: 0.75rem;
@@ -446,30 +937,54 @@ $radius-sm: 0.75rem;
   font-size: 0.95rem;
 }
 
-.form-input {
-  width: 100%;
-  max-width: 100%; /* Agrega esto para asegurar que no crezca más que el padre */
-  padding: 1.25rem;
-  border: 2px solid $border;
-  border-radius: $radius-sm;
-  font-size: 1rem;
-  transition: all 0.25s ease;
-  background: white;
-  
-  // Agrega esto específicamente para los select
-  overflow: hidden;
-  text-overflow: ellipsis; 
-  white-space: nowrap;
 
-  &:focus {
-    outline: none;
-    border-color: $red;
-    box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.12);
-    transform: translateY(-2px);
-  }
+// ============================================================
+// FORM INPUT DEL MODAL
+// ============================================================
+
+.modal-body .form-input {
+
+  width: 100%;
+
+  max-width: 100%;
+
+  box-sizing: border-box;
+
+  padding: 1.25rem;
+
+  border: 2px solid $border;
+
+  border-radius: $radius-sm;
+
+  font-size: 1rem;
+
+  transition: all 0.25s ease;
+
+  background: white;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
 }
 
+
+.modal-body .form-input:focus {
+
+  outline: none;
+
+  border-color: $red;
+
+  box-shadow:
+    0 0 0 4px rgba(220, 38, 38, 0.12);
+
+  transform: translateY(-2px);
+}
+
+
 .form-help {
+
   display: block;
 
   margin-top: 0.65rem;
@@ -481,17 +996,21 @@ $radius-sm: 0.75rem;
   line-height: 1.5;
 }
 
-// =========================
-// FOOTER
-// =========================
+
+// ============================================================
+// FOOTER MODAL
+// ============================================================
 
 .modal-footer {
+
   padding: 1.5rem 2rem 2rem;
 
   border-top: 1px solid $border;
 
   display: flex;
+
   justify-content: flex-end;
+
   gap: 1rem;
 
   flex-shrink: 0;
@@ -499,78 +1018,259 @@ $radius-sm: 0.75rem;
   background: white;
 }
 
-// =========================
-// ANIMACIÓN
-// =========================
+
+// ============================================================
+// ANIMACIÓN MODAL
+// ============================================================
 
 @keyframes modalSlide {
 
   from {
+
     opacity: 0;
-    transform: scale(0.92) translateY(-30px);
+
+    transform:
+      scale(0.92)
+      translateY(-30px);
+
   }
 
   to {
+
     opacity: 1;
-    transform: scale(1) translateY(0);
+
+    transform:
+      scale(1)
+      translateY(0);
+
   }
 
 }
 
-// =========================
-// RESPONSIVE
-// =========================
+
+// ============================================================
+// RESPONSIVE TABLET / MOBILE
+// ============================================================
 
 @media (max-width: 768px) {
 
   .mantenimiento-container {
-    padding: 1rem;
+
+    padding: 14px 14px 90px 14px !important;
+
   }
+
+
+  // ----------------------------------------------------------
+  // HEADER
+  // ----------------------------------------------------------
 
   .page-header {
+
     flex-direction: column;
 
-    gap: 2rem;
+    align-items: stretch;
 
-    padding: 2rem 1.5rem;
+    gap: 14px;
 
-    text-align: center;
+    padding: 18px;
+
+    text-align: left;
+
   }
 
-  // =========================
-  // MODAL MOBILE
-  // =========================
+
+  .header-content h1 {
+
+    font-size: 1.35rem;
+
+  }
+
+
+  .page-subtitle {
+
+    font-size: 0.8rem;
+
+  }
+
+
+  .page-header .btn-primary {
+
+    width: 100%;
+
+  }
+
+
+  // ----------------------------------------------------------
+  // FILTROS
+  // ----------------------------------------------------------
+
+  .table-card.p-6.mb-6 {
+
+    padding: 12px !important;
+
+  }
+
+
+  .table-card.p-6.mb-6 .flex {
+
+    flex-direction: column;
+
+  }
+
+
+  .table-card.p-6.mb-6 .btn-primary,
+  .table-card.p-6.mb-6 .btn-secondary {
+
+    width: 100%;
+
+  }
+
+
+  // ----------------------------------------------------------
+  // TABLA
+  // ----------------------------------------------------------
+
+  .table-card {
+
+    border-radius: 10px;
+
+  }
+
+
+  .data-table {
+
+    min-width: 900px;
+
+  }
+
+
+  // ----------------------------------------------------------
+  // MODAL
+  // ----------------------------------------------------------
 
   .modal-backdrop {
+
     padding: 1rem;
+
   }
 
+
   .modal-box {
+
     max-height: 98vh;
 
     border-radius: 1.25rem;
+
   }
+
 
   .modal-header {
+
     padding: 1.5rem;
+
   }
+
 
   .modal-title {
+
     font-size: 1.3rem;
+
   }
+
 
   .modal-body {
+
     padding: 1.5rem;
+
   }
 
+
   .modal-footer {
+
     padding: 1.5rem;
 
     flex-direction: column;
+
   }
 
+
   .modal-footer button {
+
     width: 100%;
+
   }
 
 }
+
+
+// ============================================================
+// MOBILE PEQUEÑO
+// ============================================================
+
+@media (max-width: 480px) {
+
+  .mantenimiento-container {
+
+    padding: 10px;
+
+  }
+
+
+  .page-header {
+
+    padding: 16px;
+
+  }
+
+
+  .header-content h1 {
+
+    font-size: 1.2rem;
+
+  }
+
+
+  .table-card.p-6.mb-6 {
+
+    padding: 10px !important;
+
+  }
+
+
+  .modal-backdrop {
+
+    padding: 8px;
+
+  }
+
+
+  .modal-box {
+
+    border-radius: 12px;
+
+  }
+
+
+  .modal-header {
+
+    padding: 14px;
+
+  }
+
+
+  .modal-body {
+
+    padding: 14px;
+
+  }
+
+
+  .modal-footer {
+
+    padding: 14px;
+
+  }
+
+}
+
