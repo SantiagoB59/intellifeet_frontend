@@ -1,229 +1,1202 @@
-/* =========================
-   CONTENT VIEW
-========================= */
+/* =========================================================
+   VARIABLES
+========================================================= */
+
+$dark: #111827;
+$mid: #374151;
+$slate: #64748b;
+
+$blue: #2563eb;
+$blue-dark: #1d4ed8;
+$blue-light: #eff6ff;
+
+$green: #16a34a;
+$green-dark: #15803d;
+
+$red: #dc2626;
+
+$white: #ffffff;
+$background: #f5f7fa;
+$light: #f8fafc;
+$border: #e2e8f0;
+
+$radius: 12px;
+$radius-sm: 8px;
+
+
+/* =========================================================
+   CONTENEDOR PRINCIPAL
+========================================================= */
+
 .content-view {
   width: 100%;
   min-height: 100vh;
-  background: #f8fafc;
+  background: $background;
+  padding-bottom: 80px;
   overflow-x: hidden;
-  padding-bottom: 90px;
 }
 
-/* =========================
-   CONTENEDOR PRINCIPAL
-========================= */
-.content-view > div {
-  padding: 2rem;
-}
-
-/* =========================
-   TABLA
-========================= */
-table {
+.page-container {
   width: 100%;
-  min-width: 850px;
-  border-collapse: collapse;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 24px;
+  box-sizing: border-box;
 }
 
-/* =========================
-   HEADERS
-========================= */
-thead tr {
-  border-bottom: 1px solid #e2e8f0;
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+/* =========================================================
+   HEADER AZUL INTELLIFEET
+========================================================= */
+
+.page-header {
+  background: #172033;
+  border: 1px solid #172033;
+  border-radius: 12px;
+
+  padding: 22px 24px;
+  margin-bottom: 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.12);
 }
 
-th {
+.page-title {
+  margin: 0;
+
+  color: #ffffff;
+
+  font-size: 1.55rem;
+  line-height: 1.2;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+}
+
+.page-subtitle {
+  margin: 7px 0 0;
+
+  color: #cbd5e1;
+
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+
+/* =========================================================
+   BOTONES DEL HEADER
+========================================================= */
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  flex-shrink: 0;
+}
+
+.header-actions .btn-secondary {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+}
+
+.header-actions .btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.header-actions .btn-primary {
+  background: #2563eb;
+  border-color: #2563eb;
+  color: #ffffff;
+}
+
+.header-actions .btn-primary:hover {
+  background: #1d4ed8;
+  border-color: #1d4ed8;
+}
+
+/* =========================================================
+   BOTONES
+========================================================= */
+
+.btn-primary,
+.btn-secondary {
+  min-height: 42px;
+
+  border-radius: $radius-sm;
+
+  padding: 0 16px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+
   white-space: nowrap;
-  font-size: 11px;
-  letter-spacing: 0.08em;
 }
 
-/* =========================
-   CELDAS
-========================= */
-td {
-  white-space: nowrap;
+.btn-primary {
+  background: $blue;
+  border: 1px solid $blue;
+  color: $white;
+
+  box-shadow: 0 2px 5px rgba(37, 99, 235, 0.15);
+
+  &:hover {
+    background: $blue-dark;
+    border-color: $blue-dark;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
 }
 
-/* =========================
-   HOVER
-========================= */
-tbody tr {
-  transition: all 0.2s ease;
+.btn-secondary {
+  background: $white;
+  border: 1px solid $border;
+  color: $mid;
+
+  &:hover {
+    background: $light;
+    border-color: #cbd5e1;
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
 }
 
-tbody tr:hover {
-  background: #f8fafc;
+
+/* =========================================================
+   INFORMACIÓN DEL EQUIPO
+========================================================= */
+
+.equipment-card {
+  background: $white;
+
+  border: 1px solid $border;
+  border-radius: $radius;
+
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+
+  padding: 20px 24px;
+
+  margin-bottom: 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
 }
 
-/* =========================
-   BOTÓN TABLA
-========================= */
-td button {
-  white-space: nowrap;
-  transition: all 0.2s ease;
+.equipment-info {
+  min-width: 0;
 }
 
-td button:hover {
-  transform: translateY(-1px);
+.equipment-label,
+.counter-label {
+  display: block;
+
+  color: #94a3b8;
+
+  font-size: 0.68rem;
+  font-weight: 800;
+
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
 }
 
-/* =========================
-   SCROLL TABLA
-========================= */
-.overflow-x-auto {
+.equipment-name {
+  margin: 6px 0 2px;
+
+  color: $dark;
+
+  font-size: 1.35rem;
+  line-height: 1.2;
+  font-weight: 800;
+}
+
+.equipment-description {
+  margin: 0;
+
+  color: $slate;
+
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.inspection-counter {
+  min-width: 110px;
+
+  text-align: right;
+
+  padding-left: 20px;
+
+  border-left: 1px solid $border;
+}
+
+.counter-value {
+  display: block;
+
+  margin-top: 3px;
+
+  color: $blue;
+
+  font-size: 2rem;
+  line-height: 1;
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   TARJETA DE TABLA
+========================================================= */
+
+.table-card {
+  background: $white;
+
+  border: 1px solid $border;
+  border-radius: $radius;
+
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+
+  overflow: hidden;
+}
+
+.table-card-header {
+  min-height: 70px;
+
+  padding: 16px 20px;
+
+  display: flex;
+  align-items: center;
+
+  background: $white;
+
+  border-bottom: 1px solid $border;
+}
+
+.table-card-title {
+  margin: 0;
+
+  color: $dark;
+
+  font-size: 0.95rem;
+  font-weight: 800;
+}
+
+.table-card-subtitle {
+  margin: 4px 0 0;
+
+  color: $slate;
+
+  font-size: 0.78rem;
+}
+
+
+/* =========================================================
+   CONTENEDOR TABLA
+========================================================= */
+
+.table-wrapper {
+  width: 100%;
+
   overflow-x: auto;
   overflow-y: hidden;
 
   scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
 }
 
-.overflow-x-auto::-webkit-scrollbar {
+.table-wrapper::-webkit-scrollbar {
   height: 7px;
 }
 
-.overflow-x-auto::-webkit-scrollbar-thumb {
+.table-wrapper::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb {
   background: #cbd5e1;
   border-radius: 999px;
 }
 
-/* =========================
+
+/* =========================================================
+   TABLA
+========================================================= */
+
+.data-table {
+  width: 100%;
+  min-width: 800px;
+
+  border-collapse: collapse;
+
+  text-align: left;
+}
+
+
+/* =========================================================
+   HEADER TABLA
+========================================================= */
+
+.data-table thead {
+  background: $dark;
+}
+
+.data-table thead th {
+  padding: 13px 16px;
+
+  color: $white;
+
+  font-size: 0.68rem;
+  font-weight: 800;
+
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+
+  white-space: nowrap;
+
+  border: none;
+}
+
+
+/* =========================================================
+   CUERPO TABLA
+========================================================= */
+
+.data-table tbody tr {
+  background: $white;
+
+  transition:
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.data-table tbody tr:nth-child(even) {
+  background: #f9fafb;
+}
+
+.data-table tbody tr:hover {
+  background: $blue-light;
+  box-shadow: inset 3px 0 0 $blue;
+}
+
+.data-table tbody td {
+  padding: 14px 16px;
+
+  color: $mid;
+
+  font-size: 0.84rem;
+
+  vertical-align: middle;
+
+  border-bottom: 1px solid #eef2f7;
+
+  white-space: nowrap;
+}
+
+.data-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+
+/* =========================================================
+   FECHA
+========================================================= */
+
+.date-cell {
+  color: $dark !important;
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   ARCHIVO
+========================================================= */
+
+.file-info {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  min-width: 240px;
+}
+
+.file-icon {
+  width: 36px;
+  height: 36px;
+
+  border-radius: 8px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: $blue-light;
+  color: $blue;
+
+  flex-shrink: 0;
+}
+
+.file-icon i {
+  font-size: 1rem;
+}
+
+.file-content {
+  min-width: 0;
+}
+
+.file-name {
+  max-width: 280px;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  color: $dark;
+
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.file-description {
+  margin-top: 2px;
+
+  color: #94a3b8;
+
+  font-size: 0.72rem;
+}
+
+
+/* =========================================================
+   OBSERVACIONES
+========================================================= */
+
+.observations-cell {
+  max-width: 420px;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  color: $slate !important;
+}
+
+
+/* =========================================================
+   ACCIONES
+========================================================= */
+
+.actions-cell {
+  width: 100px;
+
+  text-align: center;
+}
+
+.table-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 6px;
+}
+
+.btn-view {
+  width: 34px;
+  height: 34px;
+
+  padding: 0;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #bbf7d0;
+  border-radius: $radius-sm;
+
+  background: #f0fdf4;
+  color: $green;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+
+  &:hover {
+    background: $green;
+    border-color: $green;
+    color: $white;
+
+    transform: translateY(-1px);
+  }
+}
+
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.loading-state {
+  min-height: 260px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 12px;
+
+  color: $slate;
+
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.loading-spinner {
+  width: 32px;
+  height: 32px;
+
+  border: 3px solid #dbeafe;
+  border-top-color: $blue;
+
+  border-radius: 50%;
+
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.empty-state {
+  min-height: 300px;
+
+  padding: 50px 24px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+}
+
+.empty-icon {
+  width: 64px;
+  height: 64px;
+
+  margin-bottom: 14px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: $light;
+  color: #cbd5e1;
+
+  font-size: 1.8rem;
+}
+
+.empty-title {
+  margin: 0 0 6px;
+
+  color: $dark;
+
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+
+.empty-text {
+  max-width: 430px;
+
+  margin: 0 0 20px;
+
+  color: $slate;
+
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   MODAL BACKDROP
+========================================================= */
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+
+  z-index: 9999;
+
+  padding: 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(15, 23, 42, 0.55);
+
+  backdrop-filter: blur(4px);
+
+  overflow-y: auto;
+}
+
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+.modal-box {
+  width: 100%;
+  max-width: 600px;
+  max-height: calc(100vh - 40px);
+
+  display: flex;
+  flex-direction: column;
+
+  background: $white;
+
+  border: 1px solid $border;
+  border-radius: 14px;
+
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.25);
+
+  overflow: hidden;
+
+  animation: modalAppear 0.2s ease-out;
+}
+
+@keyframes modalAppear {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+
+/* =========================================================
+   MODAL HEADER
+========================================================= */
+
+.modal-header {
+  padding: 18px 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 16px;
+
+  border-bottom: 1px solid $border;
+
+  background: $white;
+}
+
+.modal-title-wrapper {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  min-width: 0;
+}
+
+.modal-icon {
+  width: 38px;
+  height: 38px;
+
+  border-radius: 9px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: $blue-light;
+  color: $blue;
+
+  flex-shrink: 0;
+}
+
+.modal-title {
+  margin: 0;
+
+  color: $dark;
+
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+
+.modal-subtitle {
+  margin: 3px 0 0;
+
+  color: $slate;
+
+  font-size: 0.75rem;
+}
+
+.modal-close {
+  width: 34px;
+  height: 34px;
+
+  padding: 0;
+
+  border: 1px solid transparent;
+  border-radius: 8px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: transparent;
+  color: #94a3b8;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+
+  &:hover {
+    background: #fef2f2;
+    color: $red;
+  }
+}
+
+
+/* =========================================================
+   MODAL BODY
+========================================================= */
+
+.modal-body {
+  padding: 22px;
+
+  overflow-y: auto;
+}
+
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-group:last-child {
+  margin-bottom: 0;
+}
+
+.form-group label {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: $mid;
+
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.form-input {
+  width: 100%;
+
+  box-sizing: border-box;
+
+  padding: 10px 12px;
+
+  border: 1px solid $border;
+  border-radius: $radius-sm;
+
+  background: $white;
+
+  color: $dark;
+
+  font-family: inherit;
+  font-size: 0.875rem;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+
+  &:focus {
+    outline: none;
+
+    border-color: $blue;
+
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  }
+}
+
+textarea.form-input {
+  min-height: 100px;
+
+  resize: vertical;
+
+  line-height: 1.5;
+}
+
+.file-input {
+  cursor: pointer;
+
+  padding: 8px;
+}
+
+.form-help {
+  display: block;
+
+  margin-top: 6px;
+
+  color: #94a3b8;
+
+  font-size: 0.72rem;
+  line-height: 1.4;
+}
+
+
+/* =========================================================
+   MODAL FOOTER
+========================================================= */
+
+.modal-footer {
+  padding: 16px 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  gap: 8px;
+
+  border-top: 1px solid $border;
+
+  background: $white;
+}
+
+
+/* =========================================================
    TABLET
-========================= */
+========================================================= */
+
 @media (max-width: 1024px) {
 
-  .content-view > div {
-    padding: 1.5rem;
+  .page-container {
+    padding: 18px;
   }
 
-  table {
-    min-width: 750px;
+  .page-header {
+    padding: 20px;
   }
 
-  th,
-  td {
-    padding: 1rem !important;
+  .data-table {
+    min-width: 760px;
   }
+
+  .data-table thead th,
+  .data-table tbody td {
+    padding: 12px 14px;
+  }
+
 }
 
-/* =========================
+
+/* =========================================================
    MOBILE
-========================= */
-/* =========================
-   MOBILE
-========================= */
+========================================================= */
+
 @media (max-width: 768px) {
 
-  .content-view{
-    width: 100%;
-    max-width: 100%;
-    margin: 0;
+  .content-view {
+    padding-bottom: 50px;
   }
 
-  .content-view > div {
-    width: 100%;
-    max-width: none;
-    padding: 0.5rem;
+  .page-container {
+    padding: 12px;
   }
+
 
   /* HEADER */
-  header h2 {
-    font-size: 1.7rem !important;
-    line-height: 1.2;
+
+  .page-header {
+    flex-direction: column;
+    align-items: stretch;
+
+    padding: 18px;
+
+    gap: 16px;
   }
 
-  header p {
-    font-size: 0.9rem;
+  .page-title {
+    font-size: 1.3rem;
   }
 
-  /* FILTROS */
-  .grid.grid-cols-1.md\:grid-cols-4 {
-    grid-template-columns: 1fr !important;
+  .page-subtitle {
+    font-size: 0.82rem;
   }
 
-  /* CARDS */
-  .rounded-\[2rem\] {
-    border-radius: 1.3rem !important;
+  .header-actions {
+    width: 100%;
   }
+
+  .header-actions .btn-primary,
+  .header-actions .btn-secondary {
+    flex: 1;
+  }
+
+
+  /* EQUIPO */
+
+  .equipment-card {
+    padding: 18px;
+
+    align-items: flex-start;
+  }
+
+  .equipment-name {
+    font-size: 1.15rem;
+  }
+
+  .inspection-counter {
+    min-width: 80px;
+
+    padding-left: 14px;
+  }
+
+  .counter-value {
+    font-size: 1.7rem;
+  }
+
 
   /* TABLA */
-  table {
-    min-width: 700px;
+
+  .table-card-header {
+    padding: 15px 16px;
   }
 
-  th {
-    font-size: 10px !important;
-    padding: 0.9rem !important;
+  .table-card-title {
+    font-size: 0.88rem;
   }
 
-  td {
-    font-size: 0.85rem !important;
-    padding: 0.9rem !important;
+  .table-card-subtitle {
+    font-size: 0.72rem;
   }
 
-  /* BOTÓN */
-  td button {
+  .data-table {
+    min-width: 720px;
+  }
+
+  .data-table thead th {
+    padding: 11px 12px;
+
+    font-size: 0.62rem;
+  }
+
+  .data-table tbody td {
+    padding: 11px 12px;
+
     font-size: 0.78rem;
-    padding: 0.7rem 1rem !important;
   }
+
+
+  /* MODAL */
+
+  .modal-backdrop {
+    padding: 12px;
+  }
+
+  .modal-box {
+    max-height: calc(100vh - 24px);
+    border-radius: 12px;
+  }
+
+  .modal-header {
+    padding: 16px;
+  }
+
+  .modal-body {
+    padding: 18px 16px;
+  }
+
+  .modal-footer {
+    padding: 14px 16px;
+  }
+
 }
 
-/* =========================
+
+/* =========================================================
    MOBILE PEQUEÑO
-========================= */
+========================================================= */
+
 @media (max-width: 480px) {
 
-  .content-view > div {
-    padding: 0.25rem;
+  .page-container {
+    padding: 8px;
   }
 
-  header h2 {
-    font-size: 1.35rem !important;
+
+  /* HEADER */
+
+  .page-header {
+    padding: 16px;
+
+    border-radius: 10px;
   }
 
-  header p {
-    font-size: 0.8rem;
+  .page-title {
+    font-size: 1.15rem;
   }
 
-  table {
+  .page-subtitle {
+    font-size: 0.78rem;
+  }
+
+  .header-actions {
+    flex-direction: column;
+  }
+
+  .header-actions .btn-primary,
+  .header-actions .btn-secondary {
+    width: 100%;
+    flex: none;
+  }
+
+
+  /* EQUIPO */
+
+  .equipment-card {
+    padding: 16px;
+
+    border-radius: 10px;
+  }
+
+  .equipment-label,
+  .counter-label {
+    font-size: 0.6rem;
+  }
+
+  .equipment-name {
+    font-size: 1rem;
+  }
+
+  .equipment-description {
+    font-size: 0.78rem;
+  }
+
+  .inspection-counter {
+    min-width: 65px;
+  }
+
+  .counter-value {
+    font-size: 1.5rem;
+  }
+
+
+  /* TABLA */
+
+  .table-card {
+    border-radius: 10px;
+  }
+
+  .data-table {
+    min-width: 680px;
+  }
+
+
+  /* MODAL */
+
+  .modal-title {
+    font-size: 0.95rem;
+  }
+
+  .modal-subtitle {
+    font-size: 0.68rem;
+  }
+
+  .modal-footer {
+    flex-direction: column-reverse;
+  }
+
+  .modal-footer .btn-primary,
+  .modal-footer .btn-secondary {
+    width: 100%;
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE MUY PEQUEÑO
+========================================================= */
+
+@media (max-width: 360px) {
+
+  .page-container {
+    padding: 6px;
+  }
+
+  .page-title {
+    font-size: 1.05rem;
+  }
+
+  .equipment-card {
+    gap: 10px;
+  }
+
+  .equipment-name {
+    font-size: 0.95rem;
+  }
+
+  .counter-value {
+    font-size: 1.35rem;
+  }
+
+  .data-table {
     min-width: 650px;
   }
 
-  th {
-    font-size: 9px !important;
-    padding: 0.75rem !important;
+  .data-table thead th,
+  .data-table tbody td {
+    padding: 9px 10px;
   }
 
-  td {
-    font-size: 0.78rem !important;
-    padding: 0.75rem !important;
-  }
-
-  td button {
-    font-size: 0.72rem !important;
-    padding: 0.65rem 0.8rem !important;
-  }
-
-  .rounded-full {
-    font-size: 9px !important;
-  }
-}
-
-/* =========================
-   MOBILE MUY PEQUEÑO
-========================= */
-@media (max-width: 360px) {
-
-  table {
-    min-width: 600px;
-  }
-
-  header h2 {
-    font-size: 1.1rem !important;
-  }
-
-  td,
-  th {
-    padding: 0.65rem !important;
-  }
 }

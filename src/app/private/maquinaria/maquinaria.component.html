@@ -63,8 +63,36 @@
       </button>
     </div>
 
-    <!-- TABLA -->
+    <!-- ============================================================
+     TABLA MAQUINARIA
+============================================================ -->
+
     <div class="table-card">
+
+      <!-- CABECERA DE LA TABLA -->
+      <div class="table-card-header">
+
+        <div class="table-card-title">
+
+          <div>
+            <h2>
+              Flota de maquinaria
+            </h2>
+
+            <p>
+              Administración de la maquinaria registrada en el sistema.
+            </p>
+          </div>
+
+          <div class="table-count">
+            {{ maquinaria.length }} registros
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- TABLA -->
       <div class="table-wrapper">
 
         <table>
@@ -74,7 +102,6 @@
               <th>Código</th>
               <th>Tipo / Marca</th>
               <th>Modelo</th>
-              <th>Operador</th>
               <th>Horómetro</th>
               <th>Estado</th>
               <th class="text-center">Acciones</th>
@@ -83,65 +110,127 @@
 
           <tbody>
 
+            <!-- LOADING -->
             <tr *ngIf="loading">
               <td colspan="7" class="loading-row">
-                <div class="spinner"></div>
-                Cargando maquinaria...
+
+                <div class="loading-content">
+                  <div class="spinner"></div>
+                  <span>Cargando maquinaria...</span>
+                </div>
+
               </td>
             </tr>
 
+            <!-- SIN REGISTROS -->
             <tr *ngIf="!loading && maquinaria.length === 0">
               <td colspan="7" class="empty-row">
-                <i class="fas fa-tools"></i><br>
-                No hay maquinaria registrada
+
+                <i class="fas fa-tools"></i>
+
+                <div class="empty-title">
+                  No hay maquinaria registrada
+                </div>
+
+                <div class="empty-description">
+                  No se encontraron unidades con los filtros seleccionados.
+                </div>
+
               </td>
             </tr>
 
+            <!-- MAQUINARIA -->
             <tr *ngFor="let m of maquinaria" class="table-row">
 
-              <!-- Código -->
+              <!-- ==================================================
+               CÓDIGO
+          ================================================== -->
+
               <td>
-                <div class="placa">{{ m.codigo }}</div>
+
+                <div class="placa">
+                  {{ m.codigo }}
+                </div>
+
               </td>
 
-              <!-- Tipo / Marca -->
+
+              <!-- ==================================================
+               TIPO / MARCA
+          ================================================== -->
+
               <td>
-                <div class="tipo">{{ m.tipo }}</div>
-                <div class="marca">{{ m.marca }}</div>
+
+                <div class="tipo">
+                  {{ m.tipo }}
+                </div>
+
+                <div class="marca">
+                  {{ m.marca || 'Sin marca' }}
+                </div>
+
               </td>
 
-              <!-- Modelo -->
-              <td>{{ m.modelo }}</td>
 
-              <!-- Operador -->
-              <td class="conductor">
-                {{ m.operador || 'Sin operador asignado' }}
-              </td>
+              <!-- ==================================================
+               MODELO
+          ================================================== -->
 
-              <!-- Horómetro -->
-              <td class="km">
-                {{ m.horometro_actual | number:'1.0-0' }} h
-              </td>
-
-              <!-- Estado -->
               <td>
+
+                <div class="modelo">
+                  {{ m.modelo || '—' }}
+                </div>
+
+              </td>
+
+
+            
+
+
+              <!-- ==================================================
+               HORÓMETRO
+          ================================================== -->
+
+              <td>
+
+                <div class="km">
+                  {{ m.horometro_actual | number:'1.0-0' }} h
+                </div>
+
+              </td>
+
+
+              <!-- ==================================================
+               ESTADO
+          ================================================== -->
+
+              <td>
+
                 <span class="badge" [ngClass]="estadoClass(m.estado)">
                   {{ m.estado }}
                 </span>
+
               </td>
 
-              <!-- Acciones -->
+
+              <!-- ==================================================
+               ACCIONES
+          ================================================== -->
+
               <td class="actions">
 
-                <button class="action-btn action-btn--view" (click)="abrirVer(m)" title="Ver">
+                <button type="button" class="action-btn action-btn--view" (click)="abrirVer(m)" title="Ver maquinaria">
                   <i class="fas fa-eye"></i>
                 </button>
 
-                <button class="action-btn action-btn--edit" (click)="abrirEditar(m)" title="Editar">
+                <button type="button" class="action-btn action-btn--edit" (click)="abrirEditar(m)"
+                  title="Editar maquinaria">
                   <i class="fas fa-edit"></i>
                 </button>
 
-                <button class="action-btn action-btn--delete" (click)="confirmarEliminar(m.id)" title="Eliminar">
+                <button type="button" class="action-btn action-btn--delete" (click)="confirmarEliminar(m.id)"
+                  title="Eliminar maquinaria">
                   <i class="fas fa-trash-alt"></i>
                 </button>
 
@@ -154,6 +243,7 @@
         </table>
 
       </div>
+
     </div>
   </section>
 

@@ -1,0 +1,1351 @@
+/* =========================================================
+   REPORTES PREOPERACIONALES
+   ========================================================= */
+
+$navy: #172033;
+$navy-dark: #0f172a;
+$navy-mid: #172554;
+$navy-light: #1e293b;
+
+$blue: #2563eb;
+$blue-dark: #1d4ed8;
+
+$slate-900: #0f172a;
+$slate-800: #1e293b;
+$slate-700: #334155;
+$slate-600: #475569;
+$slate-500: #64748b;
+$slate-400: #94a3b8;
+$slate-300: #cbd5e1;
+$slate-200: #e2e8f0;
+$slate-100: #f1f5f9;
+$slate-50: #f8fafc;
+
+$white: #ffffff;
+
+$red: #dc2626;
+$red-dark: #b91c1c;
+
+$green: #16a34a;
+$green-dark: #15803d;
+
+$indigo: #4f46e5;
+$indigo-dark: #4338ca;
+
+$amber: #f59e0b;
+
+
+/* =========================================================
+   CONTENEDOR PRINCIPAL
+   ========================================================= */
+
+.reportes-page {
+    min-height: 100vh;
+    width: 100%;
+    background: #f5f7fa;
+    color: $slate-800;
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   ALERTA DE ERROR
+   ========================================================= */
+
+.error-alert {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    z-index: 1000;
+
+    width: min(100% - 32px, 430px);
+
+    background: $white;
+    border-left: 4px solid $red;
+
+    border-radius: 10px;
+
+    box-shadow:
+        0 12px 30px rgba(15, 23, 42, 0.16),
+        0 4px 10px rgba(15, 23, 42, 0.08);
+
+    overflow: hidden;
+}
+
+.error-alert-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+
+    padding: 18px;
+}
+
+.error-alert-icon {
+    width: 40px;
+    height: 40px;
+
+    flex: 0 0 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #fee2e2;
+    color: $red;
+
+    border-radius: 50%;
+
+    i {
+        font-size: 0.95rem;
+    }
+}
+
+.error-alert-message {
+    flex: 1;
+    min-width: 0;
+
+    h3 {
+        margin: 0;
+
+        color: #b91c1c;
+
+        font-size: 0.98rem;
+        line-height: 1.3;
+        font-weight: 800;
+    }
+
+    p {
+        margin: 5px 0 0;
+
+        color: $slate-600;
+
+        font-size: 0.82rem;
+        line-height: 1.5;
+    }
+}
+
+.error-alert-close {
+    width: 30px;
+    height: 30px;
+
+    flex: 0 0 30px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+    background: transparent;
+
+    color: $slate-400;
+
+    border-radius: 6px;
+
+    cursor: pointer;
+
+    transition:
+        background 0.18s ease,
+        color 0.18s ease;
+
+    &:hover {
+        background: $slate-100;
+        color: $slate-700;
+    }
+}
+
+
+/* =========================================================
+   LOADING
+   ========================================================= */
+
+.loading-overlay {
+    position: fixed;
+    inset: 0;
+
+    z-index: 900;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(255, 255, 255, 0.86);
+
+    backdrop-filter: blur(3px);
+
+    i {
+        margin-bottom: 18px;
+
+        color: $blue;
+
+        font-size: 42px;
+    }
+
+    h2 {
+        margin: 0;
+
+        color: $slate-700;
+
+        font-size: 1.05rem;
+        font-weight: 700;
+    }
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.page-header {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding: 22px 24px;
+
+    margin-bottom: 18px;
+
+    /*
+      DEGRADADO ORIGINAL CONSERVADO
+    */
+    background:
+        linear-gradient(
+            90deg,
+            #0f172a 0%,
+            #172554 50%,
+            #1e293b 100%
+        );
+
+    border: 1px solid #172033;
+    border-radius: 12px;
+
+    box-shadow:
+        0 4px 14px rgba(15, 23, 42, 0.12);
+
+    box-sizing: border-box;
+}
+
+.page-header-info {
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+
+    min-width: 0;
+}
+
+.page-header-icon {
+    width: 52px;
+    height: 52px;
+
+    flex: 0 0 52px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(255, 255, 255, 0.14);
+
+    border: 1px solid rgba(255, 255, 255, 0.12);
+
+    border-radius: 12px;
+
+    color: $white;
+
+    i {
+        font-size: 1.35rem;
+    }
+}
+
+.page-title {
+    margin: 0;
+
+    color: $white;
+
+    font-size: 1.55rem;
+    line-height: 1.2;
+    font-weight: 800;
+
+    letter-spacing: -0.025em;
+}
+
+.page-subtitle {
+    margin: 7px 0 0;
+
+    color: #cbd5e1;
+
+    font-size: 0.86rem;
+    line-height: 1.5;
+    font-weight: 500;
+}
+
+
+/* =========================================================
+   CONTENIDO
+   ========================================================= */
+
+.reportes-content {
+    width: 100%;
+    max-width: 1400px;
+
+    margin: 0 auto;
+
+    padding: 0 24px 30px;
+
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   FILTROS
+   ========================================================= */
+
+.filters-card {
+    width: 100%;
+
+    padding: 22px;
+
+    background: $white;
+
+    border: 1px solid $slate-200;
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 4px 14px rgba(15, 23, 42, 0.06);
+
+    box-sizing: border-box;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 20px;
+}
+
+.section-title {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    margin: 0;
+
+    color: $slate-800;
+
+    font-size: 1.05rem;
+    line-height: 1.3;
+    font-weight: 800;
+
+    i {
+        color: $blue;
+        font-size: 0.95rem;
+    }
+}
+
+.section-description {
+    margin: 5px 0 0;
+
+    color: $slate-500;
+
+    font-size: 0.76rem;
+    line-height: 1.4;
+}
+
+.filters-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 18px;
+}
+
+
+/* =========================================================
+   FORMULARIOS
+   ========================================================= */
+
+.form-field {
+    min-width: 0;
+
+    label {
+        display: block;
+
+        margin-bottom: 7px;
+
+        color: $slate-700;
+
+        font-size: 0.78rem;
+        line-height: 1.3;
+        font-weight: 700;
+    }
+
+    input,
+    select {
+        width: 100%;
+        min-height: 44px;
+
+        padding: 10px 13px;
+
+        background: $white;
+
+        border: 1px solid $slate-300;
+        border-radius: 8px;
+
+        color: $slate-800;
+
+        font-family: inherit;
+        font-size: 0.83rem;
+
+        outline: none;
+
+        box-sizing: border-box;
+
+        transition:
+            border-color 0.18s ease,
+            box-shadow 0.18s ease,
+            background 0.18s ease;
+    }
+
+    input:hover,
+    select:hover {
+        border-color: #94a3b8;
+    }
+
+    input:focus,
+    select:focus {
+        border-color: $blue;
+
+        box-shadow:
+            0 0 0 3px rgba(37, 99, 235, 0.10);
+
+        background: #ffffff;
+    }
+
+    input::placeholder {
+        color: $slate-400;
+    }
+}
+
+.field-help {
+    margin: 7px 0 0;
+
+    color: $slate-500;
+
+    font-size: 0.72rem;
+    line-height: 1.4;
+}
+
+
+/* =========================================================
+   REPORTES
+   ========================================================= */
+
+.reports-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 18px;
+
+    margin-top: 20px;
+}
+
+.report-card {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 22px;
+
+    background: $white;
+
+    border: 1px solid $slate-200;
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 4px 14px rgba(15, 23, 42, 0.06);
+
+    transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease,
+        border-color 0.18s ease;
+
+    box-sizing: border-box;
+
+    &:hover {
+        transform: translateY(-2px);
+
+        border-color: #d7dee8;
+
+        box-shadow:
+            0 8px 22px rgba(15, 23, 42, 0.09);
+    }
+
+    h3 {
+        margin: 17px 0 0;
+
+        color: $slate-800;
+
+        font-size: 1rem;
+        line-height: 1.35;
+        font-weight: 800;
+
+        text-align: center;
+    }
+
+    p {
+        margin: 8px 0 0;
+
+        min-height: 44px;
+
+        color: $slate-500;
+
+        font-size: 0.78rem;
+        line-height: 1.55;
+
+        text-align: center;
+    }
+}
+
+
+/* =========================================================
+   REPORTE SEMANAL
+   ========================================================= */
+
+.report-card-weekly {
+    grid-column: 1 / -1;
+}
+
+
+/* =========================================================
+   ICONOS DE REPORTES
+   ========================================================= */
+
+.report-icon {
+    width: 60px;
+    height: 60px;
+
+    margin: 0 auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    i {
+        font-size: 1.65rem;
+    }
+}
+
+.report-icon-pdf {
+    background: #fee2e2;
+    color: $red;
+}
+
+.report-icon-detail {
+    background: #dbeafe;
+    color: $blue;
+}
+
+.report-icon-excel {
+    background: #dcfce7;
+    color: $green;
+}
+
+.report-icon-weekly {
+    background: #e0e7ff;
+    color: $indigo;
+}
+
+
+/* =========================================================
+   BOTONES DE REPORTES
+   ========================================================= */
+
+.report-button {
+    width: 100%;
+
+    min-height: 44px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    margin-top: 18px;
+
+    padding: 11px 16px;
+
+    border: none;
+    border-radius: 8px;
+
+    color: $white;
+
+    font-family: inherit;
+
+    font-size: 0.80rem;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.18s ease,
+        transform 0.18s ease,
+        box-shadow 0.18s ease;
+
+    &:hover {
+        transform: translateY(-1px);
+    }
+
+    &:active {
+        transform: translateY(0);
+    }
+}
+
+.report-button-pdf {
+    background: $red;
+
+    &:hover {
+        background: $red-dark;
+    }
+}
+
+.report-button-detail {
+    background: $blue;
+
+    &:hover {
+        background: $blue-dark;
+    }
+}
+
+.report-button-excel {
+    background: $green;
+
+    &:hover {
+        background: $green-dark;
+    }
+}
+
+.report-button-weekly {
+    background: $indigo;
+
+    &:hover {
+        background: $indigo-dark;
+    }
+}
+
+
+/* =========================================================
+   MODAL SEMANAL
+   ========================================================= */
+
+.weekly-modal-backdrop {
+    position: fixed;
+    inset: 0;
+
+    z-index: 1100;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    background: rgba(15, 23, 42, 0.68);
+
+    backdrop-filter: blur(3px);
+
+    box-sizing: border-box;
+
+    overflow-y: auto;
+}
+
+.weekly-modal {
+    width: 100%;
+    max-width: 520px;
+
+    max-height: calc(100vh - 40px);
+
+    display: flex;
+    flex-direction: column;
+
+    background: $white;
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 20px 50px rgba(15, 23, 42, 0.25);
+
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   HEADER MODAL
+   ========================================================= */
+
+.weekly-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 16px;
+
+    padding: 20px 22px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #0f172a 0%,
+            #172554 50%,
+            #1e3a8a 100%
+        );
+
+    color: $white;
+}
+
+.weekly-modal-header-info {
+    min-width: 0;
+
+    h2 {
+        margin: 0;
+
+        color: $white;
+
+        font-size: 1.15rem;
+        line-height: 1.3;
+        font-weight: 800;
+    }
+
+    p {
+        margin: 5px 0 0;
+
+        color: #bfdbfe;
+
+        font-size: 0.76rem;
+        line-height: 1.4;
+    }
+}
+
+.weekly-modal-close {
+    width: 34px;
+    height: 34px;
+
+    flex: 0 0 34px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+    border-radius: 8px;
+
+    background: rgba(255, 255, 255, 0.08);
+
+    color: $white;
+
+    cursor: pointer;
+
+    transition:
+        background 0.18s ease,
+        transform 0.18s ease;
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.16);
+        transform: rotate(3deg);
+    }
+}
+
+
+/* =========================================================
+   BODY MODAL
+   ========================================================= */
+
+.weekly-modal-body {
+    padding: 22px;
+
+    overflow-y: auto;
+
+    box-sizing: border-box;
+
+    .form-field {
+        margin-bottom: 18px;
+    }
+}
+
+
+/* =========================================================
+   RANGO DE SEMANA
+   ========================================================= */
+
+.week-range {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    margin-bottom: 18px;
+
+    padding: 13px;
+
+    background: #eff6ff;
+
+    border: 1px solid #bfdbfe;
+
+    border-radius: 9px;
+}
+
+.week-range-icon {
+    width: 38px;
+    height: 38px;
+
+    flex: 0 0 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #dbeafe;
+
+    border-radius: 8px;
+
+    color: $blue;
+
+    i {
+        font-size: 0.9rem;
+    }
+}
+
+.week-range {
+    p {
+        margin: 0 0 3px;
+
+        color: $blue;
+
+        font-size: 0.66rem;
+        line-height: 1.3;
+        font-weight: 800;
+
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    strong {
+        color: $slate-800;
+
+        font-size: 0.82rem;
+        line-height: 1.4;
+        font-weight: 800;
+    }
+}
+
+
+/* =========================================================
+   SEMANA ACTUAL
+   ========================================================= */
+
+.current-week-alert {
+    display: flex;
+    align-items: flex-start;
+
+    gap: 12px;
+
+    margin-bottom: 20px;
+
+    padding: 13px;
+
+    background: #fffbeb;
+
+    border: 1px solid #fde68a;
+
+    border-radius: 9px;
+}
+
+.current-week-icon {
+    flex: 0 0 auto;
+
+    color: $amber;
+
+    padding-top: 2px;
+
+    i {
+        font-size: 0.95rem;
+    }
+}
+
+.current-week-alert {
+    strong {
+        display: block;
+
+        color: #92400e;
+
+        font-size: 0.78rem;
+        line-height: 1.3;
+        font-weight: 800;
+    }
+
+    p {
+        margin: 4px 0 0;
+
+        color: #b45309;
+
+        font-size: 0.73rem;
+        line-height: 1.45;
+    }
+}
+
+
+/* =========================================================
+   FOOTER MODAL
+   ========================================================= */
+
+.weekly-modal-footer {
+    display: flex;
+
+    gap: 10px;
+
+    margin-top: 2px;
+}
+
+.modal-cancel-button,
+.modal-download-button {
+    min-height: 44px;
+
+    flex: 1;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    padding: 10px 16px;
+
+    border-radius: 8px;
+
+    font-family: inherit;
+
+    font-size: 0.79rem;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.18s ease,
+        border-color 0.18s ease,
+        transform 0.18s ease;
+
+    &:hover {
+        transform: translateY(-1px);
+    }
+}
+
+.modal-cancel-button {
+    background: $white;
+
+    border: 1px solid $slate-300;
+
+    color: $slate-700;
+
+    &:hover {
+        background: $slate-100;
+
+        border-color: #94a3b8;
+    }
+}
+
+.modal-download-button {
+    border: 1px solid $indigo;
+
+    background: $indigo;
+
+    color: $white;
+
+    &:hover {
+        background: $indigo-dark;
+
+        border-color: $indigo-dark;
+    }
+
+    &:disabled {
+        background: $slate-300;
+        border-color: $slate-300;
+
+        color: $white;
+
+        cursor: not-allowed;
+
+        transform: none;
+    }
+}
+
+
+/* =========================================================
+   SCROLLBARS
+   ========================================================= */
+
+.reportes-page,
+.weekly-modal-body {
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 transparent;
+}
+
+.reportes-page::-webkit-scrollbar,
+.weekly-modal-body::-webkit-scrollbar {
+    width: 7px;
+}
+
+.reportes-page::-webkit-scrollbar-track,
+.weekly-modal-body::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.reportes-page::-webkit-scrollbar-thumb,
+.weekly-modal-body::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 999px;
+}
+
+.reportes-page::-webkit-scrollbar-thumb:hover,
+.weekly-modal-body::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+
+/* =========================================================
+   RESPONSIVE 1200px
+   ========================================================= */
+
+@media (max-width: 1200px) {
+
+    .reportes-content {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .filters-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .reports-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .report-card-weekly {
+        grid-column: 1 / -1;
+    }
+}
+
+
+/* =========================================================
+   RESPONSIVE 768px
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+    .page-header {
+        flex-direction: column;
+        align-items: stretch;
+
+        padding: 18px;
+
+        gap: 16px;
+    }
+
+    .page-header-info {
+        align-items: flex-start;
+    }
+
+    .page-header-icon {
+        width: 46px;
+        height: 46px;
+
+        flex-basis: 46px;
+
+        border-radius: 10px;
+
+        i {
+            font-size: 1.15rem;
+        }
+    }
+
+    .page-title {
+        font-size: 1.3rem;
+    }
+
+    .page-subtitle {
+        font-size: 0.8rem;
+    }
+
+    .reportes-content {
+        padding:
+            0
+            16px
+            24px;
+    }
+
+    .filters-card {
+        padding: 18px;
+    }
+
+    .filters-grid {
+        grid-template-columns: 1fr;
+
+        gap: 15px;
+    }
+
+    .reports-grid {
+        grid-template-columns: 1fr;
+
+        gap: 15px;
+
+        margin-top: 16px;
+    }
+
+    .report-card-weekly {
+        grid-column: auto;
+    }
+
+    .report-card {
+        padding: 20px;
+    }
+
+    .weekly-modal-backdrop {
+        align-items: flex-start;
+
+        padding:
+            20px
+            16px;
+    }
+
+    .weekly-modal {
+        max-height: calc(100vh - 40px);
+    }
+}
+
+
+/* =========================================================
+   RESPONSIVE 480px
+   ========================================================= */
+
+@media (max-width: 480px) {
+
+    .page-header {
+        padding: 16px;
+
+        border-radius: 10px;
+    }
+
+    .page-header-info {
+        gap: 10px;
+    }
+
+    .page-header-icon {
+        width: 40px;
+        height: 40px;
+
+        flex-basis: 40px;
+
+        border-radius: 9px;
+
+        i {
+            font-size: 1rem;
+        }
+    }
+
+    .page-title {
+        font-size: 1.18rem;
+    }
+
+    .page-subtitle {
+        margin-top: 5px;
+
+        font-size: 0.74rem;
+    }
+
+    .reportes-content {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .filters-card {
+        padding: 15px;
+
+        border-radius: 10px;
+    }
+
+    .section-title {
+        font-size: 0.95rem;
+    }
+
+    .section-description {
+        font-size: 0.70rem;
+    }
+
+    .form-field {
+
+        label {
+            font-size: 0.75rem;
+        }
+
+        input,
+        select {
+            min-height: 42px;
+
+            padding: 9px 11px;
+
+            font-size: 0.78rem;
+        }
+    }
+
+    .report-card {
+        padding: 18px;
+
+        border-radius: 10px;
+
+        h3 {
+            font-size: 0.95rem;
+        }
+
+        p {
+            min-height: auto;
+
+            font-size: 0.74rem;
+        }
+    }
+
+    .report-icon {
+        width: 54px;
+        height: 54px;
+
+        i {
+            font-size: 1.45rem;
+        }
+    }
+
+    .report-button {
+        min-height: 42px;
+
+        font-size: 0.76rem;
+    }
+
+    .weekly-modal-backdrop {
+        padding: 10px;
+    }
+
+    .weekly-modal {
+        max-height: calc(100vh - 20px);
+
+        border-radius: 10px;
+    }
+
+    .weekly-modal-header {
+        padding: 17px;
+    }
+
+    .weekly-modal-header-info {
+
+        h2 {
+            font-size: 1rem;
+        }
+
+        p {
+            font-size: 0.70rem;
+        }
+    }
+
+    .weekly-modal-body {
+        padding: 17px;
+    }
+
+    .weekly-modal-footer {
+        flex-direction: column;
+    }
+
+    .modal-cancel-button,
+    .modal-download-button {
+        width: 100%;
+    }
+
+    .error-alert {
+        top: 12px;
+        right: 12px;
+
+        width: calc(100% - 24px);
+    }
+}
+
+
+/* =========================================================
+   RESPONSIVE 360px
+   ========================================================= */
+
+@media (max-width: 360px) {
+
+    .page-header {
+        padding: 14px;
+    }
+
+    .page-title {
+        font-size: 1.08rem;
+    }
+
+    .page-subtitle {
+        font-size: 0.70rem;
+    }
+
+    .reportes-content {
+        padding-left: 9px;
+        padding-right: 9px;
+    }
+
+    .filters-card {
+        padding: 13px;
+    }
+
+    .report-card {
+        padding: 15px;
+    }
+
+    .weekly-modal-header {
+        padding: 15px;
+    }
+
+    .weekly-modal-body {
+        padding: 15px;
+    }
+
+    .week-range {
+        align-items: flex-start;
+    }
+
+    .current-week-alert {
+        align-items: flex-start;
+    }
+
+    .error-alert-content {
+        padding: 14px;
+    }
+
+    .error-alert-icon {
+        width: 36px;
+        height: 36px;
+
+        flex-basis: 36px;
+    }
+}

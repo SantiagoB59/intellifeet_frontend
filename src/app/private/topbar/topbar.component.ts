@@ -1,4 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
+
 import { VehiculoService } from 'src/app/services/vehiculo.service';
 import { FlotaStats } from 'src/app/shared/models/vehiculo.model';
 import { Router } from '@angular/router';
@@ -7,6 +9,7 @@ import { ThemeService } from 'src/app/services/theme.service';
 import { MaquinariaService } from 'src/app/services/maquinaria.service';
 import { AlertasService } from 'src/app/services/alertas.service';
 import { Alerta } from 'src/app/shared/models/alertas.model';
+
 
 interface Notificacion {
 
@@ -23,8 +26,8 @@ interface Notificacion {
   tipo?: string;
 
   vehiculo?: string;
-}
 
+}
 
 
 @Component({
@@ -32,11 +35,23 @@ interface Notificacion {
   templateUrl: './topbar.component.html',
   styleUrls: ['./topbar.component.scss']
 })
+
+
 export class TopbarComponent implements OnInit, OnDestroy {
+
   esOperador = false;
+
   horaActual: Date = new Date();
 
   private reloj: any;
+
+  // =========================================
+  // 🔄 SUSCRIPCIÓN CAMBIOS ALERTAS
+  // =========================================
+
+  private alertasSubscription?: Subscription;
+
+
   // =========================================
   // 🔔 NOTIFICACIONES
   // =========================================
@@ -44,6 +59,7 @@ export class TopbarComponent implements OnInit, OnDestroy {
   showNotifications: boolean = false;
 
   notificaciones: Notificacion[] = [];
+
 
   // =========================================
   // 📊 VEHÍCULOS
@@ -58,7 +74,9 @@ export class TopbarComponent implements OnInit, OnDestroy {
     en_taller: 0,
 
     inactivos: 0
+
   };
+
 
   // =========================================
   // 🚜 MAQUINARIA
@@ -73,7 +91,9 @@ export class TopbarComponent implements OnInit, OnDestroy {
     en_taller: 0,
 
     inactivos: 0
+
   };
+
 
   // =========================================
   // 🚨 ALERTAS
@@ -88,13 +108,20 @@ export class TopbarComponent implements OnInit, OnDestroy {
     resueltas: 0,
 
     criticas: 0
+
   };
+
 
   // =========================================
   // 👤 USUARIO
   // =========================================
 
   usuarioNombre: string = 'Usuario';
+
+
+  // =========================================
+  // CONSTRUCTOR
+  // =========================================
 
   constructor(
 
@@ -112,24 +139,43 @@ export class TopbarComponent implements OnInit, OnDestroy {
 
   ) { }
 
+
   // =========================================
   // INIT
   // =========================================
 
   ngOnInit(): void {
 
-    this.cargarStats();
-
-    this.cargarMaquinaria();
-
+    // Primero cargamos el usuario
     this.cargarUsuario();
 
+    // Stats generales
+    this.cargarStats();
+
+    // Stats maquinaria
+    this.cargarMaquinaria();
+
+
+    // =========================================
+    // 🚨 ALERTAS
+    // =========================================
 
     if (!this.esOperador) {
+
+      // Cargar inicialmente
       this.cargarAlertas();
+
+      // Escuchar cambios
+      this.escucharCambiosAlertas();
+
     }
+
+
+    // Reloj
     this.iniciarReloj();
+
   }
+
 
   // =========================================
   // 👤 USUARIO
@@ -138,17 +184,56 @@ export class TopbarComponent implements OnInit, OnDestroy {
   cargarUsuario(): void {
 
     const user = this.authService.getUser();
-    console.log('USUARIO:', user);
-    this.usuarioNombre = user?.nombre || 'Usuario';
+
+    console.log(
+      'USUARIO:',
+      user
+    );
+
+
+    this.usuarioNombre =
+      user?.nombre || 'Usuario';
+
 
     this.esOperador =
       user?.tipo === 'operador' ||
       user?.rol === 'operador';
+
   }
+
+
+  // =========================================
+  // 🔄 ESCUCHAR CAMBIOS DE ALERTAS
+  // =========================================
+
+  private escucharCambiosAlertas(): void {
+
+    this.alertasSubscription =
+      this.alertasService
+        .alertasActualizadas$
+        .subscribe(() => {
+
+          console.log(
+            '🔄 Topbar: alertas actualizadas'
+          );
+
+          // Recargar estadísticas
+          // y notificaciones
+          this.cargarAlertas();
+
+        });
+
+  }
+
+
+  // =========================================
+  // 🕐 RELOJ
+  // =========================================
 
   private iniciarReloj(): void {
 
     this.horaActual = new Date();
+
 
     this.reloj = setInterval(() => {
 
@@ -158,13 +243,30 @@ export class TopbarComponent implements OnInit, OnDestroy {
 
   }
 
+
+  // =========================================
+  // DESTROY
+  // =========================================
+
   ngOnDestroy(): void {
 
+    // Detener reloj
     if (this.reloj) {
+
       clearInterval(this.reloj);
+
+    }
+
+
+    // Cancelar suscripción
+    if (this.alertasSubscription) {
+
+      this.alertasSubscription.unsubscribe();
+
     }
 
   }
+
 
   // =========================================
   // 🚛 STATS VEHÍCULOS
@@ -172,22 +274,29 @@ export class TopbarComponent implements OnInit, OnDestroy {
 
   cargarStats(): void {
 
-    this.vehiculoService.getStats().subscribe({
+    this.vehiculoService
+      .getStats()
+      .subscribe({
 
-      next: (data) => {
+        next: (data) => {
 
-        this.stats = data;
-      },
+          this.stats = data;
 
-      error: (err) => {
+        },
 
-        console.error(
-          'Error cargando stats vehículos',
-          err
-        );
-      }
-    });
+        error: (err) => {
+
+          console.error(
+            'Error cargando stats vehículos',
+            err
+          );
+
+        }
+
+      });
+
   }
+
 
   // =========================================
   // 🚜 STATS MAQUINARIA
@@ -195,22 +304,29 @@ export class TopbarComponent implements OnInit, OnDestroy {
 
   cargarMaquinaria(): void {
 
-    this.maquinariaService.getStats().subscribe({
+    this.maquinariaService
+      .getStats()
+      .subscribe({
 
-      next: (data) => {
+        next: (data) => {
 
-        this.statsMaquinaria = data;
-      },
+          this.statsMaquinaria = data;
 
-      error: (err) => {
+        },
 
-        console.error(
-          'Error maquinaria',
-          err
-        );
-      }
-    });
+        error: (err) => {
+
+          console.error(
+            'Error maquinaria',
+            err
+          );
+
+        }
+
+      });
+
   }
+
 
   // =========================================
   // 🚨 ALERTAS + NOTIFICACIONES
@@ -218,9 +334,10 @@ export class TopbarComponent implements OnInit, OnDestroy {
 
   cargarAlertas(): void {
 
-    // =========================
-    // 📊 STATS ALERTAS
-    // =========================
+
+    // =========================================
+    // 📊 ESTADÍSTICAS
+    // =========================================
 
     this.alertasService
       .obtenerEstadisticas()
@@ -229,6 +346,7 @@ export class TopbarComponent implements OnInit, OnDestroy {
         next: (data) => {
 
           this.estadisticasAlertas = data;
+
         },
 
         error: (err) => {
@@ -237,12 +355,15 @@ export class TopbarComponent implements OnInit, OnDestroy {
             'Error estadísticas alertas',
             err
           );
+
         }
+
       });
 
-    // =========================
+
+    // =========================================
     // 🔔 NOTIFICACIONES
-    // =========================
+    // =========================================
 
     this.alertasService
       .obtenerActivas()
@@ -257,6 +378,7 @@ export class TopbarComponent implements OnInit, OnDestroy {
               new Date(b.created_at).getTime()
               -
               new Date(a.created_at).getTime()
+
             )
 
             .slice(0, 10)
@@ -267,17 +389,22 @@ export class TopbarComponent implements OnInit, OnDestroy {
 
               mensaje: a.mensaje,
 
-              fecha: new Date(a.created_at),
+              fecha:
+                new Date(a.created_at),
 
               leida: false,
 
-              prioridad: a.prioridad,
+              prioridad:
+                a.prioridad,
 
-              tipo: a.tipo,
+              tipo:
+                a.tipo,
 
               vehiculo:
                 a.vehiculo?.placa || 'N/A'
+
             }));
+
         },
 
         error: (err) => {
@@ -286,9 +413,13 @@ export class TopbarComponent implements OnInit, OnDestroy {
             'Error cargando alertas',
             err
           );
+
         }
+
       });
+
   }
+
 
   // =========================================
   // 🔔 NO LEÍDAS
@@ -299,7 +430,9 @@ export class TopbarComponent implements OnInit, OnDestroy {
     return this.notificaciones
       .filter(n => !n.leida)
       .length;
+
   }
+
 
   // =========================================
   // 🚜 TOTAL MAQUINARIA
@@ -308,17 +441,21 @@ export class TopbarComponent implements OnInit, OnDestroy {
   get maquinariaTotal(): number {
 
     return this.statsMaquinaria.total || 0;
+
   }
 
+
   // =========================================
-  // 🔔 TOGGLE
+  // 🔔 TOGGLE NOTIFICACIONES
   // =========================================
 
   toggleNotifications(): void {
 
     this.showNotifications =
       !this.showNotifications;
+
   }
+
 
   // =========================================
   // ✅ MARCAR LEÍDA
@@ -329,7 +466,9 @@ export class TopbarComponent implements OnInit, OnDestroy {
   ): void {
 
     n.leida = true;
+
   }
+
 
   // =========================================
   // ✅ MARCAR TODAS
@@ -340,8 +479,11 @@ export class TopbarComponent implements OnInit, OnDestroy {
     this.notificaciones.forEach(n => {
 
       n.leida = true;
+
     });
+
   }
+
 
   // =========================================
   // 🎨 CLASE PRIORIDAD
@@ -354,21 +496,33 @@ export class TopbarComponent implements OnInit, OnDestroy {
     switch (prioridad) {
 
       case 'CRITICA':
+
         return 'bg-red-100 text-red-700';
 
+
       case 'ALTA':
+
         return 'bg-orange-100 text-orange-700';
 
+
       case 'MEDIA':
+
         return 'bg-yellow-100 text-yellow-700';
 
+
       case 'BAJA':
+
         return 'bg-blue-100 text-blue-700';
 
+
       default:
+
         return 'bg-gray-100 text-gray-700';
+
     }
+
   }
+
 
   // =========================================
   // 🚪 LOGOUT
@@ -378,8 +532,10 @@ export class TopbarComponent implements OnInit, OnDestroy {
 
     this.authService.logout();
 
-    this.router.navigate(['/login']);
-  }
+    this.router.navigate([
+      '/login'
+    ]);
 
+  }
 
 }

@@ -34,6 +34,7 @@ export interface Alerta {
 
   metadata?: any;
 
+
   // =========================================
   // VEHÍCULO
   // =========================================
@@ -55,12 +56,21 @@ export interface Alerta {
   viaje?: any;
 
 
-maquinaria_id?: number;
+  maquinaria_id?: number;
 
-maquinaria?: {
+  maquinaria?: {
     id: number;
     codigo: string;
     marca: string;
-}
+  }
+
+
+  usuario_id?: number;
+
+  usuario?: {
+    id: number;
+    nombre: string;
+    username: string;
+  };
 
 }

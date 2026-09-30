@@ -1,14 +1,25 @@
 import { Injectable } from '@angular/core';
 
-import { HttpClient, HttpParams } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpParams
+} from '@angular/common/http';
 
-import { Observable } from 'rxjs';
+import {
+  Observable,
+  Subject
+} from 'rxjs';
 
 import { environment }
   from 'src/environment/environment';
 
-import { Alerta } from '../shared/models/alertas.model';
+import { Alerta }
+  from '../shared/models/alertas.model';
 
+
+// =====================================================
+// 📊 INTERFAZ ESTADÍSTICAS
+// =====================================================
 
 export interface EstadisticasAlertas {
 
@@ -16,8 +27,13 @@ export interface EstadisticasAlertas {
   activas: number;
   resueltas: number;
   criticas: number;
+
 }
 
+
+// =====================================================
+// 🔔 SERVICE
+// =====================================================
 
 @Injectable({
   providedIn: 'root'
@@ -28,9 +44,47 @@ export class AlertasService {
   private readonly base =
     `${environment.apiUrl}/api/alertas`;
 
+
+  // =====================================================
+  // 🔄 EVENTO GLOBAL DE ACTUALIZACIÓN
+  // =====================================================
+
+  private alertasActualizadasSubject =
+    new Subject<void>();
+
+  /**
+   * Observable que pueden escuchar otros componentes
+   * cuando las alertas cambien.
+   *
+   * Ejemplo:
+   *
+   * this.alertasService.alertasActualizadas$
+   *   .subscribe(() => {
+   *      ...
+   *   });
+   */
+  alertasActualizadas$ =
+    this.alertasActualizadasSubject.asObservable();
+
+
+  // =====================================================
+  // CONSTRUCTOR
+  // =====================================================
+
   constructor(
     private http: HttpClient
   ) { }
+
+
+  // =====================================================
+  // 🔄 NOTIFICAR CAMBIO DE ALERTAS
+  // =====================================================
+
+  notificarAlertasActualizadas(): void {
+
+    this.alertasActualizadasSubject.next();
+
+  }
 
 
   // ─────────────────────────────────────────────
@@ -53,13 +107,16 @@ export class AlertasService {
 
     let params = new HttpParams();
 
+
     if (filters?.estado) {
 
       params = params.set(
         'estado',
         filters.estado
       );
+
     }
+
 
     if (filters?.prioridad) {
 
@@ -67,7 +124,9 @@ export class AlertasService {
         'prioridad',
         filters.prioridad
       );
+
     }
+
 
     if (filters?.tipo) {
 
@@ -75,7 +134,9 @@ export class AlertasService {
         'tipo',
         filters.tipo
       );
+
     }
+
 
     if (filters?.categoria) {
 
@@ -83,7 +144,9 @@ export class AlertasService {
         'categoria',
         filters.categoria
       );
+
     }
+
 
     if (filters?.vehiculo_id) {
 
@@ -91,12 +154,15 @@ export class AlertasService {
         'vehiculo_id',
         filters.vehiculo_id
       );
+
     }
+
 
     return this.http.get<Alerta[]>(
       `${this.base}/`,
       { params }
     );
+
   }
 
 
@@ -110,6 +176,7 @@ export class AlertasService {
     return this.http.get<Alerta[]>(
       `${this.base}/activas`
     );
+
   }
 
 
@@ -123,6 +190,7 @@ export class AlertasService {
     return this.http.get<EstadisticasAlertas>(
       `${this.base}/estadisticas`
     );
+
   }
 
 
@@ -136,6 +204,7 @@ export class AlertasService {
       `${this.base}/ejecutar-motor`,
       {}
     );
+
   }
 
 
@@ -149,6 +218,7 @@ export class AlertasService {
       `${this.base}/${id}/resolver`,
       {}
     );
+
   }
 
 
@@ -162,6 +232,7 @@ export class AlertasService {
       `${this.base}/${id}/ignorar`,
       {}
     );
+
   }
 
 
@@ -176,6 +247,7 @@ export class AlertasService {
     return this.http.get<Alerta>(
       `${this.base}/${id}`
     );
+
   }
 
 
@@ -203,10 +275,12 @@ export class AlertasService {
         fechaFin
       );
 
+
     return this.http.get(
       `${this.base}/reportes/rango`,
       { params }
     );
+
   }
 
 
@@ -219,6 +293,7 @@ export class AlertasService {
     return this.http.get(
       `${this.base}/reportes/diario`
     );
+
   }
 
 
@@ -231,6 +306,7 @@ export class AlertasService {
     return this.http.get(
       `${this.base}/reportes/semanal`
     );
+
   }
 
 
@@ -243,17 +319,41 @@ export class AlertasService {
     return this.http.get(
       `${this.base}/reportes/mensual`
     );
+
   }
 
 
-  resolverDocumento(
-  alertaId: number,
-  data: FormData
-) {
+  // ─────────────────────────────────────────────
+  // 📄 RESOLVER DOCUMENTO
+  // ─────────────────────────────────────────────
 
-  return this.http.post(
-    `${this.base}/${alertaId}/resolver-documento`,
-    data
-  );
-}
+  resolverDocumento(
+    alertaId: number,
+    data: FormData
+  ) {
+
+    return this.http.post(
+      `${this.base}/${alertaId}/resolver-documento`,
+      data
+    );
+
+  }
+
+
+  // ─────────────────────────────────────────────
+  // 👤 RESOLVER DOCUMENTO OPERADOR
+  // ─────────────────────────────────────────────
+
+  resolverDocumentoOperador(
+    alertaId: number,
+    data: FormData
+  ) {
+
+    return this.http.post(
+      `${this.base}/${alertaId}/resolver-documento-operador`,
+      data
+    );
+
+  }
+
 }

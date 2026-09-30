@@ -1,0 +1,101 @@
+<!-- ========================================================= -->
+<!-- CONTENEDOR GLOBAL DE ALERTAS -->
+<!-- ========================================================= -->
+
+<div class="alertas-flotantes" *ngIf="alertasVisibles.length > 0" aria-live="polite" aria-atomic="false">
+
+    <!-- ======================================================= -->
+    <!-- ALERTA -->
+    <!-- ======================================================= -->
+
+    <div *ngFor="
+      let alerta of alertasVisibles;
+      trackBy: trackByAlerta
+    " class="alerta-flotante" [ngClass]="getClasePrioridad(alerta)" [class.alerta-critica]="esCritica(alerta)">
+
+        <!-- ===================================================== -->
+        <!-- BARRA LATERAL -->
+        <!-- ===================================================== -->
+
+        <div class="alerta-indicador"></div>
+
+        <!-- ===================================================== -->
+        <!-- CONTENIDO -->
+        <!-- ===================================================== -->
+
+        <div class="alerta-contenido" (click)="abrirAlerta(alerta)">
+
+            <!-- =============================================== -->
+            <!-- ICONO -->
+            <!-- =============================================== -->
+
+            <div class="alerta-icono">
+
+                <i [class]="getIconoAlerta(alerta)"></i>
+
+            </div>
+
+            <!-- =============================================== -->
+            <!-- INFORMACIÓN -->
+            <!-- =============================================== -->
+
+            <div class="alerta-info">
+
+                <div class="alerta-header">
+
+                    <span class="alerta-titulo">
+                        Nueva alerta
+                    </span>
+
+                    <span class="alerta-prioridad">
+
+                        {{ getTextoPrioridad(alerta) }}
+
+                    </span>
+
+                </div>
+
+                <div class="alerta-recurso">
+
+                    {{ getRecurso(alerta) }}
+
+                </div>
+
+                <div class="alerta-descripcion">
+
+                    {{ getDescripcion(alerta) }}
+
+                </div>
+
+                <div class="alerta-footer">
+
+                    <span class="ver-alerta">
+
+                        Ver alerta
+
+                        <i class="fas fa-arrow-right"></i>
+
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ===================================================== -->
+        <!-- BOTÓN CERRAR -->
+        <!-- ===================================================== -->
+
+        <button type="button" class="btn-cerrar" aria-label="Cerrar alerta" (click)="
+        cerrarAlerta(alerta.id);
+        $event.stopPropagation()
+      ">
+
+            <i class="fas fa-times"></i>
+
+        </button>
+
+    </div>
+
+</div>

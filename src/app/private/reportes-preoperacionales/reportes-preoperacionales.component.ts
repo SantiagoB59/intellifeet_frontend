@@ -15,6 +15,8 @@ export class ReportesPreoperacionalesComponent implements OnInit {
   // =========================================================
 
   cargando = false;
+  mensajeError = '';
+  mostrarError = false;
 
   // =========================================================
   // MODAL REPORTE SEMANAL
@@ -80,6 +82,62 @@ export class ReportesPreoperacionalesComponent implements OnInit {
     private maquinariaService: MaquinariaService
   ) { }
 
+
+  // =========================================================
+  // MOSTRAR ERROR
+  // =========================================================
+
+  mostrarAlertaError(error: any, mensajePorDefecto: string): void {
+
+    console.error(error);
+
+    let mensaje = mensajePorDefecto;
+
+    // -------------------------------------------------------
+    // Intentar obtener mensaje enviado por Flask
+    // -------------------------------------------------------
+
+    if (error?.error?.message) {
+
+      mensaje = error.error.message;
+
+    } else if (error?.error?.error) {
+
+      mensaje = error.error.error;
+
+    } else if (error?.message) {
+
+      mensaje = error.message;
+
+    }
+
+    this.mensajeError = mensaje;
+    this.mostrarError = true;
+
+    // -------------------------------------------------------
+    // Ocultar automáticamente después de 8 segundos
+    // -------------------------------------------------------
+
+    setTimeout(() => {
+
+      this.mostrarError = false;
+
+    }, 8000);
+
+  }
+
+
+  // =========================================================
+  // CERRAR ALERTA
+  // =========================================================
+
+  cerrarAlertaError(): void {
+
+    this.mostrarError = false;
+
+    this.mensajeError = '';
+
+  }
   // =========================================================
   // INIT
   // =========================================================

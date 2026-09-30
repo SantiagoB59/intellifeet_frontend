@@ -32,6 +32,7 @@ import { UsuariosComponent } from './usuarios/usuarios.component';
 import { PreoperacionalAdminComponent } from './preoperacional-admin/preoperacional-admin.component';
 import { ReportesPreoperacionalesComponent } from './reportes-preoperacionales/reportes-preoperacionales.component';
 import { AnaliticaComponent } from './analitica/analitica.component';
+import { AlertasFlotantesComponent } from './alertas-flotantes/alertas-flotantes.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +59,8 @@ import { AnaliticaComponent } from './analitica/analitica.component';
     UsuariosComponent,
     PreoperacionalAdminComponent,
     ReportesPreoperacionalesComponent,
-    AnaliticaComponent
+    AnaliticaComponent,
+    AlertasFlotantesComponent
   ],
   imports: [
     CommonModule,

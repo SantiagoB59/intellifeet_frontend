@@ -1,379 +1,439 @@
 <main class="content-view">
 
-    <div>
+  <div class="page-container">
 
-        <header class="mb-6">
+    <!-- ========================================================= -->
+    <!-- HEADER -->
+    <!-- ========================================================= -->
 
-            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+    <header class="page-header">
 
-                <div>
+      <div class="header-content">
 
-                    <h2 class="text-3xl font-black text-slate-800 tracking-tight">
-                        Inspecciones mensuales
-                    </h2>
+        <div>
+          <h2 class="page-title">
+            Inspecciones mensuales
+          </h2>
 
-                    <p class="text-slate-500 italic font-medium">
-                        Gestión documental de inspecciones del equipo.
-                    </p>
-
-                </div>
-
-                <div class="flex gap-3">
-
-                    <button (click)="volver()"
-                        class="bg-slate-200 hover:bg-slate-300 transition rounded-xl px-5 py-3 font-bold text-slate-700">
-
-                        <i class="fas fa-arrow-left mr-2"></i>
-                        Volver
-
-                    </button>
-
-                    <button (click)="abrirModal()"
-                        class="bg-blue-600 hover:bg-blue-700 transition rounded-xl px-5 py-3 font-bold text-white">
-
-                        <i class="fas fa-upload mr-2"></i>
-                        Nueva inspección
-
-                    </button>
-
-                </div>
-
-            </div>
-
-        </header>
-
-        <!-- ========================= -->
-        <!-- INFORMACIÓN DEL EQUIPO -->
-        <!-- ========================= -->
-
-        <div *ngIf="equipo" class="bg-white rounded-[2rem] shadow-xl border border-slate-100 p-6 mb-6">
-
-            <div class="flex justify-between items-center">
-
-                <div>
-
-                    <p class="text-xs uppercase tracking-widest text-slate-400 font-black">
-
-                        {{ tipo == 'vehiculo' ? 'Vehículo' : 'Maquinaria' }}
-
-                    </p>
-
-                    <h3 class="text-2xl font-black text-slate-800 mt-2">
-
-                        {{ equipo.placa || equipo.codigo }}
-
-                    </h3>
-
-                    <p class="text-slate-500">
-
-                        {{ equipo.marca || equipo.tipo }}
-
-                    </p>
-
-                </div>
-
-                <div class="text-right">
-
-                    <p class="text-xs uppercase tracking-widest text-slate-400 font-black">
-
-                        Inspecciones
-
-                    </p>
-
-                    <p class="text-4xl font-black text-blue-600">
-
-                        {{ inspecciones.length }}
-
-                    </p>
-
-                </div>
-
-            </div>
-
+          <p class="page-subtitle">
+            Gestión documental de inspecciones del equipo.
+          </p>
         </div>
-        <!-- ========================= -->
-        <!-- TABLA -->
-        <!-- ========================= -->
 
-        <div class="bg-white rounded-[2rem] shadow-2xl border border-slate-100 overflow-hidden">
+      </div>
 
-            <!-- HEADER CARD -->
-            <div class="p-6 border-b bg-slate-50/50">
+      <div class="header-actions">
 
-                <h3 class="font-bold text-slate-400 text-xs uppercase tracking-widest">
+        <button
+          type="button"
+          (click)="volver()"
+          class="btn-secondary">
 
-                    Historial de inspecciones
+          <i class="fas fa-arrow-left"></i>
+          <span>Volver</span>
 
-                </h3>
+        </button>
 
-            </div>
+        <button
+          type="button"
+          (click)="abrirModal()"
+          class="btn-primary">
 
-            <!-- TABLA -->
-            <div class="overflow-x-auto">
+          <i class="fas fa-upload"></i>
+          <span>Nueva inspección</span>
 
-                <table class="w-full text-left" *ngIf="!loading && inspecciones.length > 0">
+        </button>
 
-                    <thead>
+      </div>
 
-                        <tr class="text-[11px] font-black uppercase text-slate-400 border-b">
+    </header>
 
-                            <th class="p-6">
 
-                                Fecha
+    <!-- ========================================================= -->
+    <!-- INFORMACIÓN DEL EQUIPO -->
+    <!-- ========================================================= -->
 
-                            </th>
+    <section
+      *ngIf="equipo"
+      class="equipment-card">
 
-                            <th class="p-6">
+      <div class="equipment-info">
 
-                                Archivo
+        <span class="equipment-label">
+          {{ tipo == 'vehiculo' ? 'Vehículo' : 'Maquinaria' }}
+        </span>
 
-                            </th>
+        <h3 class="equipment-name">
+          {{ equipo.placa || equipo.codigo }}
+        </h3>
 
-                            <th class="p-6">
+        <p class="equipment-description">
+          {{ equipo.marca || equipo.tipo }}
+        </p>
 
-                                Observaciones
+      </div>
 
-                            </th>
+      <div class="inspection-counter">
 
-                            <th class="p-6 text-center">
+        <span class="counter-label">
+          Inspecciones
+        </span>
 
-                                Acciones
+        <strong class="counter-value">
+          {{ inspecciones.length }}
+        </strong>
 
-                            </th>
+      </div>
 
-                        </tr>
+    </section>
 
-                    </thead>
 
-                    <tbody class="divide-y divide-slate-100">
+    <!-- ========================================================= -->
+    <!-- HISTORIAL -->
+    <!-- ========================================================= -->
 
-                        <tr *ngFor="let item of inspecciones" class="hover:bg-slate-50 transition">
+    <section class="table-card">
 
-                            <!-- FECHA -->
+      <!-- HEADER DE LA TARJETA -->
 
-                            <td class="p-6 font-semibold text-slate-700">
+      <div class="table-card-header">
 
-                                {{ item.fecha | date:'dd/MM/yyyy' }}
+        <div>
 
-                            </td>
+          <h3 class="table-card-title">
+            Historial de inspecciones
+          </h3>
 
-                            <!-- ARCHIVO -->
-
-                            <td class="p-6">
-
-                                <div class="flex items-center gap-3">
-
-                                    <i class="fas fa-file-pdf text-blue-600 text-xl"></i>
-
-                                    <div>
-
-                                        <div class="font-bold text-slate-700">
-
-                                            {{ item.archivo }}
-
-                                        </div>
-
-                                        <div class="text-xs text-slate-400">
-
-                                            Documento cargado
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                            </td>
-
-                            <!-- OBSERVACIONES -->
-
-                            <td class="p-6 text-slate-600">
-
-                                {{ item.observaciones || '-' }}
-
-                            </td>
-
-                            <!-- ACCIONES -->
-
-                            <td class="p-6">
-
-                                <div class="flex justify-center gap-2">
-
-                                    <button (click)="abrir(item)"
-                                        class="bg-green-600 hover:bg-green-700 transition text-white px-3 py-2 rounded-lg">
-
-                                        <i class="fas fa-eye"></i>
-
-                                    </button>
-
-
-                                    
-
-                                </div>
-
-                            </td>
-
-                        </tr>
-
-                    </tbody>
-
-                </table>
-
-                <!-- LOADING -->
-
-                <div *ngIf="loading" class="p-10 flex flex-col justify-center items-center gap-4">
-
-                    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600">
-
-                    </div>
-
-                    <span class="font-semibold text-slate-500">
-
-                        Cargando inspecciones...
-
-                    </span>
-
-                </div>
-
-                <!-- EMPTY -->
-
-                <div *ngIf="!loading && inspecciones.length === 0" class="p-14 text-center">
-
-                    <i class="fas fa-folder-open text-5xl text-slate-300 mb-4"></i>
-
-                    <h3 class="text-xl font-black text-slate-700 mb-2">
-
-                        No existen inspecciones
-
-                    </h3>
-
-                    <p class="text-slate-500 mb-6">
-
-                        Todavía no se ha cargado ninguna inspección para este equipo.
-
-                    </p>
-
-                    <button (click)="abrirModal()"
-                        class="bg-blue-600 hover:bg-blue-700 transition text-white px-6 py-3 rounded-xl font-bold">
-
-                        <i class="fas fa-upload mr-2"></i>
-
-                        Nueva inspección
-
-                    </button>
-
-                </div>
-
-            </div>
+          <p class="table-card-subtitle">
+            Registro documental de las inspecciones realizadas.
+          </p>
 
         </div>
 
-        <!-- ========================= -->
-        <!-- MODAL -->
-        <!-- ========================= -->
+      </div>
 
-        <div *ngIf="showModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
-            (click)="cerrarModal()">
 
-            <div class="bg-white rounded-[2rem] shadow-2xl w-full max-w-xl overflow-hidden"
-                (click)="$event.stopPropagation()">
+      <!-- ======================================================= -->
+      <!-- TABLA -->
+      <!-- ======================================================= -->
 
-                <!-- HEADER -->
+      <div class="table-wrapper">
 
-                <div class="px-8 py-6 border-b flex justify-between items-center">
+        <table
+          class="data-table"
+          *ngIf="!loading && inspecciones.length > 0">
 
-                    <h2 class="text-xl font-black text-slate-800">
+          <thead>
 
-                        <i class="fas fa-file-upload text-blue-600 mr-2"></i>
+            <tr>
 
-                        Nueva inspección
+              <th>
+                Fecha
+              </th>
 
-                    </h2>
+              <th>
+                Archivo
+              </th>
 
-                    <button (click)="cerrarModal()" class="text-slate-400 hover:text-red-600 transition">
+              <th>
+                Observaciones
+              </th>
 
-                        <i class="fas fa-times text-xl"></i>
+              <th class="text-center">
+                Acciones
+              </th>
 
-                    </button>
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+            <tr *ngFor="let item of inspecciones">
+
+              <!-- FECHA -->
+
+              <td class="date-cell">
+
+                {{ item.fecha | date:'dd/MM/yyyy' }}
+
+              </td>
+
+
+              <!-- ARCHIVO -->
+
+              <td>
+
+                <div class="file-info">
+
+                  <div class="file-icon">
+
+                    <i class="fas fa-file-pdf"></i>
+
+                  </div>
+
+                  <div class="file-content">
+
+                    <div class="file-name">
+                      {{ item.archivo }}
+                    </div>
+
+                    <div class="file-description">
+                      Documento cargado
+                    </div>
+
+                  </div>
 
                 </div>
 
-                <!-- BODY -->
+              </td>
 
-                <div class="p-8 space-y-5">
 
-                    <div>
+              <!-- OBSERVACIONES -->
 
-                        <label class="block text-sm font-bold text-slate-700 mb-2">
+              <td class="observations-cell">
 
-                            Fecha de inspección
+                {{ item.observaciones || '-' }}
 
-                        </label>
+              </td>
 
-                        <input type="date" [(ngModel)]="fecha"
-                            class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 focus:outline-none">
 
-                    </div>
+              <!-- ACCIONES -->
 
-                    <div>
+              <td class="actions-cell">
 
-                        <label class="block text-sm font-bold text-slate-700 mb-2">
+                <div class="table-actions">
 
-                            Archivo
+                  <button
+                    type="button"
+                    (click)="abrir(item)"
+                    class="btn-view"
+                    title="Ver inspección">
 
-                        </label>
+                    <i class="fas fa-eye"></i>
 
-                        <input type="file" accept=".pdf,.jpg,.jpeg,.png" (change)="seleccionarArchivo($event)"
-                            class="w-full px-4 py-3 rounded-xl border border-slate-200">
-
-                        <small class="text-slate-400">
-
-                            PDF, JPG, JPEG o PNG
-
-                        </small>
-
-                    </div>
-
-                    <div>
-
-                        <label class="block text-sm font-bold text-slate-700 mb-2">
-
-                            Observaciones
-
-                        </label>
-
-                        <textarea rows="4" [(ngModel)]="observaciones"
-                            class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-red-500 focus:outline-none"
-                            placeholder="Escriba una observación...">
-
-                </textarea>
-
-                    </div>
+                  </button>
 
                 </div>
 
-                <!-- FOOTER -->
+              </td>
 
-                <div class="px-8 py-5 border-t flex justify-end gap-3">
+            </tr>
 
-                    <button (click)="cerrarModal()"
-                        class="bg-slate-200 hover:bg-slate-300 transition px-5 py-3 rounded-xl font-bold">
+          </tbody>
 
-                        Cancelar
+        </table>
 
-                    </button>
 
-                    <button (click)="guardar()"
-                        class="bg-blue-600 hover:bg-blue-700 transition text-white px-6 py-3 rounded-xl font-bold">
+        <!-- ===================================================== -->
+        <!-- LOADING -->
+        <!-- ===================================================== -->
 
-                        <i class="fas fa-save mr-2"></i>
+        <div
+          *ngIf="loading"
+          class="loading-state">
 
-                        Guardar inspección
+          <div class="loading-spinner"></div>
 
-                    </button>
-
-                </div>
-
-            </div>
+          <span>
+            Cargando inspecciones...
+          </span>
 
         </div>
+
+
+        <!-- ===================================================== -->
+        <!-- EMPTY -->
+        <!-- ===================================================== -->
+
+        <div
+          *ngIf="!loading && inspecciones.length === 0"
+          class="empty-state">
+
+          <div class="empty-icon">
+
+            <i class="fas fa-folder-open"></i>
+
+          </div>
+
+          <h3 class="empty-title">
+            No existen inspecciones
+          </h3>
+
+          <p class="empty-text">
+            Todavía no se ha cargado ninguna inspección para este equipo.
+          </p>
+
+          <button
+            type="button"
+            (click)="abrirModal()"
+            class="btn-primary">
+
+            <i class="fas fa-upload"></i>
+            <span>Nueva inspección</span>
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </div>
+
+
+  <!-- ========================================================= -->
+  <!-- MODAL NUEVA INSPECCIÓN -->
+  <!-- ========================================================= -->
+
+  <div
+    *ngIf="showModal"
+    class="modal-backdrop"
+    (click)="cerrarModal()">
+
+    <div
+      class="modal-box"
+      (click)="$event.stopPropagation()">
+
+
+      <!-- ======================================================= -->
+      <!-- MODAL HEADER -->
+      <!-- ======================================================= -->
+
+      <div class="modal-header">
+
+        <div class="modal-title-wrapper">
+
+          <div class="modal-icon">
+
+            <i class="fas fa-file-upload"></i>
+
+          </div>
+
+          <div>
+
+            <h2 class="modal-title">
+              Nueva inspección
+            </h2>
+
+            <p class="modal-subtitle">
+              Cargar documento de inspección
+            </p>
+
+          </div>
+
+        </div>
+
+        <button
+          type="button"
+          (click)="cerrarModal()"
+          class="modal-close"
+          title="Cerrar">
+
+          <i class="fas fa-times"></i>
+
+        </button>
+
+      </div>
+
+
+      <!-- ======================================================= -->
+      <!-- MODAL BODY -->
+      <!-- ======================================================= -->
+
+      <div class="modal-body">
+
+
+        <!-- FECHA -->
+
+        <div class="form-group">
+
+          <label for="fecha-inspeccion">
+            Fecha de inspección
+          </label>
+
+          <input
+            id="fecha-inspeccion"
+            type="date"
+            [(ngModel)]="fecha"
+            class="form-input">
+
+        </div>
+
+
+        <!-- ARCHIVO -->
+
+        <div class="form-group">
+
+          <label for="archivo-inspeccion">
+            Archivo
+          </label>
+
+          <input
+            id="archivo-inspeccion"
+            type="file"
+            accept=".pdf,.jpg,.jpeg,.png"
+            (change)="seleccionarArchivo($event)"
+            class="form-input file-input">
+
+          <small class="form-help">
+            Formatos permitidos: PDF, JPG, JPEG o PNG.
+          </small>
+
+        </div>
+
+
+        <!-- OBSERVACIONES -->
+
+        <div class="form-group">
+
+          <label for="observaciones">
+            Observaciones
+          </label>
+
+          <textarea
+            id="observaciones"
+            rows="4"
+            [(ngModel)]="observaciones"
+            class="form-input textarea-input"
+            placeholder="Escriba una observación..."></textarea>
+
+        </div>
+
+
+      </div>
+
+
+      <!-- ======================================================= -->
+      <!-- MODAL FOOTER -->
+      <!-- ======================================================= -->
+
+      <div class="modal-footer">
+
+        <button
+          type="button"
+          (click)="cerrarModal()"
+          class="btn-secondary">
+
+          Cancelar
+
+        </button>
+
+        <button
+          type="button"
+          (click)="guardar()"
+          class="btn-primary">
+
+          <i class="fas fa-save"></i>
+          <span>Guardar inspección</span>
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</main>

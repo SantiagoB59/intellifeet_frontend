@@ -1,744 +1,1568 @@
-/* =========================
-   HOST CONFIGURATION
-========================= */
+/* =========================================================
+INTELLIFEET — SIDEBAR
+ENTERPRISE DARK / BLUE
+MISMA IDENTIDAD VISUAL DEL LOGIN
+========================================================= */
+
+/* =========================================================
+HOST
+========================================================= */
+
 :host {
-  display: block; /* Cambia flex por block para evitar empujar elementos del padre */
-  height: 100%;
+display: block;
+height: 100%;
 }
 
-@media (max-width: 768px) {
-  :host {
-    height: auto; /* Permite que en móvil solo ocupe el espacio del bottom nav */
-  }
+/* =========================================================
+VARIABLES
+========================================================= */
 
-  .sidebar-container {
-    display: none !important;
-  }
+$if-bg: #050914;
+$if-bg-secondary: #0b1220;
+$if-panel: #0f172a;
 
-  .mobile-bottom-nav {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 72px;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    background: #172033;
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.25);
-    z-index: 9999;
-    padding: 0 0.5rem;
-  }
-}
+$if-blue: #2563eb;
+$if-blue-light: #60a5fa;
+$if-cyan: #38bdf8;
 
-/* =========================
-   SIDEBAR BASE
-========================= */
+$if-text: #e2e8f0;
+$if-muted: white;
+$if-muted-dark: #64748b;
+
+$if-border: rgba(148, 163, 184, 0.10);
+$if-border-light: rgba(148, 163, 184, 0.07);
+
+/* =========================================================
+SIDEBAR BASE
+========================================================= */
+
 .sidebar-container {
-  background: linear-gradient(
-    180deg,
-    #172033 0%,
-    #111827 100%
-  );
 
-  border-right: 1px solid rgba(255,255,255,.06);
+position: relative;
+
+background:
+linear-gradient(
+180deg,
+#080e1b 0%,
+#050914 100%
+);
+
+border-right:
+1px solid
+rgba(148, 163, 184, 0.10);
+
+box-shadow:
+8px 0 35px
+rgba(0, 0, 0, 0.30);
+
+transition:
+width 0.35s ease,
+box-shadow 0.35s ease,
+background 0.35s ease;
+
+overflow: hidden;
+
+z-index: 100;
+
+}
+
+/* =========================================================
+GRID TECNOLÓGICO
+========================================================= */
+
+.sidebar-container::before {
+
+content: "";
+
+position: absolute;
+
+inset: 0;
+
+pointer-events: none;
+
+opacity: 0.10;
+
+background-image:
+linear-gradient(
+rgba(148, 163, 184, 0.06) 1px,
+transparent 1px
+),
+linear-gradient(
+90deg,
+rgba(148, 163, 184, 0.06) 1px,
+transparent 1px
+);
+
+background-size: 55px 55px;
+
+mask-image:
+linear-gradient(
+to bottom,
+rgba(0, 0, 0, 0.9),
+transparent 90%
+);
+
+z-index: 0;
+
+}
+
+/* =========================================================
+GLOW SUPERIOR
+========================================================= */
+
+.sidebar-container::after {
+
+content: "";
+
+position: absolute;
+
+top: -220px;
+left: -220px;
+
+width: 430px;
+height: 430px;
+
+border-radius: 50%;
+
+background: #2563eb;
+
+filter: blur(150px);
+
+opacity: 0.055;
+
+pointer-events: none;
+
+z-index: 0;
+
+}
+
+/* =========================================================
+HEADER
+========================================================= */
+
+.header-section {
+
+position: relative;
+
+z-index: 20;
+
+padding:
+1.25rem 1.5rem !important;
+
+border-bottom:
+1px solid
+rgba(148, 163, 184, 0.08);
+
+background:
+rgba(5, 9, 20, 0.55);
+
+backdrop-filter:
+blur(10px);
+
+}
+
+/* =========================================================
+HEADER TITLE
+========================================================= */
+
+.header-section {
+
+.logo-expanded {
+
+
+transition:
+  opacity 0.3s ease,
+  transform 0.3s ease;
+
+min-width: 0;
+
+span {
+
+  color: #f8fafc;
+
+  font-weight: 600;
+
+  font-size: 18px;
+
+  letter-spacing: -0.01em;
+
+}
+
+
+}
+
+}
+
+/* =========================================================
+HEADER BLUE ACCENT
+========================================================= */
+
+.header-section::after {
+
+content: "";
+
+position: absolute;
+
+bottom: -1px;
+
+left: 15%;
+
+width: 70%;
+
+height: 1px;
+
+background:
+linear-gradient(
+90deg,
+transparent,
+rgba(56, 189, 248, 0.35),
+transparent
+);
+
+}
+
+/* =========================================================
+TOGGLE BUTTON
+========================================================= */
+
+.header-section {
+
+.toggle-btn {
+
+
+padding: .875rem !important;
+
+min-width: 44px;
+
+height: 44px;
+
+display: flex;
+
+align-items: center;
+
+justify-content: center;
+
+border-radius: 8px;
+
+background:
+  rgba(15, 23, 42, 0.75);
+
+color: #94a3b8;
+
+border:
+  1px solid
+  rgba(148, 163, 184, 0.12);
+
+transition:
+  background 0.22s ease,
+  color 0.22s ease,
+  border-color 0.22s ease,
+  transform 0.22s ease,
+  box-shadow 0.22s ease;
+
+cursor: pointer;
+
+
+&:hover {
+
+  background:
+    rgba(37, 99, 235, 0.10);
+
+  color: #60a5fa;
+
+  border-color:
+    rgba(59, 130, 246, 0.28);
+
+  transform:
+    scale(1.04);
 
   box-shadow:
-    8px 0 35px rgba(0,0,0,.22);
-
-  transition: all .35s ease;
-  overflow: hidden;
-  z-index: 100;
-}
-
-/* =========================
-   HEADER
-========================= */
-.header-section {
-  position: relative;
-  z-index: 20;
-
-  padding: 1.25rem 1.5rem !important;
-
-  border-bottom: 1px solid rgba(255,255,255,.08);
-
-  .logo-expanded {
-    transition: all .3s ease;
-    min-width: 0;
-
-    span {
-      color: #ffffff;
-      font-weight: 700;
-    }
-  }
-
-  .toggle-btn {
-
-    padding: .875rem !important;
-
-    min-width: 46px;
-    height: 46px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 12px;
-
-    background: rgba(255,255,255,.05);
-
-    color: #ffffff;
-
-    border: 1px solid rgba(255,255,255,.08);
-
-    transition: all .2s ease;
-
-    cursor: pointer;
-
-    &:hover {
-
-      background: rgba(255,255,255,.12);
-
-      transform: scale(1.05);
-
-      box-shadow: 0 8px 18px rgba(0,0,0,.25);
-
-    }
-
-    &:active {
-
-      transform: scale(.97);
-
-    }
-
-    i {
-      font-size: 15px !important;
-    }
-
-  }
+    0 8px 20px
+    rgba(0, 0, 0, 0.25);
 
 }
 
-/* =========================
-   CONTENT
-========================= */
+
+&:active {
+
+  transform:
+    scale(0.97);
+
+}
+
+
+i {
+
+  font-size: 14px !important;
+
+}
+
+
+}
+
+}
+
+/* =========================================================
+CONTENT
+========================================================= */
 
 .content-section {
 
-  flex: 1;
+position: relative;
 
-  overflow-y: auto;
+z-index: 5;
 
-  overflow-x: hidden;
+flex: 1;
+
+overflow-y: auto;
+
+overflow-x: hidden;
 
 }
 
-/* =========================
-   COLLAPSED
-========================= */
+/* =========================================================
+MENU ITEMS
+========================================================= */
 
-.sidebar-container.collapsed {
+.menu-items {
 
-  .header-section {
+position: relative;
 
-    padding: 1.5rem 1rem !important;
+z-index: 5;
 
-    justify-content: center;
+}
 
-    .logo-expanded {
-
-      opacity: 0;
-
-      transform: translateX(-15px) scale(.9);
-
-      width: 0;
-
-      overflow: hidden;
-
-    }
-
-    .toggle-btn {
-
-      position: absolute;
-
-      right: 1rem;
-
-      top: 50%;
-
-      transform: translateY(-50%);
-
-    }
-
-  }
-
-  .content-section {
-
-    padding: 1.5rem .75rem !important;
-
-    .menu-label,
-    .logout-label {
-
-      opacity: 0 !important;
-
-      width: 0 !important;
-
-      overflow: hidden;
-
-      margin-left: 0 !important;
-
-      transform: translateX(-12px);
-
-    }
-
-  }
+/* =========================================================
+MENU BUTTONS
+========================================================= */
 
 .menu-btn,
 .logout-btn {
 
-  transition:
-    background-color .15s ease,
-    color .15s ease,
-    box-shadow .15s ease;
+position: relative;
+
+height: 3.5rem;
+
+display: flex;
+
+align-items: center;
+
+padding:
+0 1rem;
+
+border-radius: 9px;
+
+border: 1px solid transparent;
+
+color: #94a3b8;
+
+background: transparent;
+
+cursor: pointer;
+
+transition:
+background 0.22s ease,
+color 0.22s ease,
+border-color 0.22s ease,
+box-shadow 0.22s ease,
+transform 0.22s ease;
 
 }
 
-}
+/* =========================================================
+HOVER
+========================================================= */
 
-/* =========================
-   MENU BUTTONS
-========================= */
+.menu-btn:hover,
+.logout-btn:hover {
 
-.menu-btn,
-.logout-btn {
+background:
+rgba(255, 255, 255, 0.035);
 
-  height: 3.5rem;
+color: #f8fafc;
 
-  display: flex;
+border-color:
+rgba(148, 163, 184, 0.07);
 
-  align-items: center;
-
-  padding: 0 1rem;
-
-  border-radius: 14px;
-
-  border: none;
-
-  color: #d1d5db;
-
-  background: transparent;
-
-  cursor: pointer;
-
-  transition: all .22s ease;
-
-  &:hover {
-
-    background: rgba(255,255,255,.07);
-
-    color: #ffffff;
-
-    transform: translateY(-2px);
-
-  }
-
-  &:active {
-
-    transform: scale(.98);
-
-  }
+transform:
+translateX(2px);
 
 }
 
-/* =========================
-   ICONOS
-========================= */
+/* =========================================================
+ACTIVE BLUE BASE
+========================================================= */
+
+.menu-btn.bg-blue-50 {
+
+background:
+linear-gradient(
+90deg,
+rgba(37, 99, 235, 0.92),
+rgba(37, 99, 235, 0.68)
+) !important;
+
+color: #ffffff !important;
+
+border-color:
+rgba(96, 165, 250, 0.35);
+
+box-shadow:
+0 8px 24px
+rgba(37, 99, 235, 0.20);
+
+}
+
+/* =========================================================
+ACTIVE RED
+========================================================= */
+
+.menu-btn.bg-red-50 {
+
+background:
+linear-gradient(
+90deg,
+rgba(220, 38, 38, 0.92),
+rgba(239, 68, 68, 0.72)
+) !important;
+
+color: #ffffff !important;
+
+border-color:
+rgba(248, 113, 113, 0.30);
+
+box-shadow:
+0 8px 24px
+rgba(220, 38, 38, 0.18);
+
+}
+
+/* =========================================================
+ACTIVE ORANGE
+========================================================= */
+
+.menu-btn.bg-orange-50 {
+
+background:
+linear-gradient(
+90deg,
+rgba(234, 88, 12, 0.92),
+rgba(251, 146, 60, 0.72)
+) !important;
+
+color: #ffffff !important;
+
+border-color:
+rgba(251, 146, 60, 0.28);
+
+}
+
+/* =========================================================
+ACTIVE GREEN
+========================================================= */
+
+.menu-btn.bg-green-50 {
+
+background:
+linear-gradient(
+90deg,
+rgba(22, 163, 74, 0.92),
+rgba(34, 197, 94, 0.70)
+) !important;
+
+color: #ffffff !important;
+
+border-color:
+rgba(74, 222, 128, 0.28);
+
+}
+
+/* =========================================================
+ACTIVE PURPLE
+========================================================= */
+
+.menu-btn.bg-purple-50 {
+
+background:
+linear-gradient(
+90deg,
+rgba(124, 58, 237, 0.92),
+rgba(139, 92, 246, 0.70)
+) !important;
+
+color: #ffffff !important;
+
+border-color:
+rgba(167, 139, 250, 0.28);
+
+}
+
+/* =========================================================
+ACTIVE CYAN
+========================================================= */
+
+.menu-btn.bg-cyan-50 {
+
+background:
+linear-gradient(
+90deg,
+rgba(8, 145, 178, 0.92),
+rgba(6, 182, 212, 0.70)
+) !important;
+
+color: #ffffff !important;
+
+border-color:
+rgba(103, 232, 249, 0.28);
+
+}
+
+/* =========================================================
+ACTIVE AMBER
+========================================================= */
+
+.menu-btn.bg-amber-50 {
+
+background:
+linear-gradient(
+90deg,
+rgba(217, 119, 6, 0.92),
+rgba(245, 158, 11, 0.70)
+) !important;
+
+color: #ffffff !important;
+
+border-color:
+rgba(252, 211, 77, 0.28);
+
+}
+
+/* =========================================================
+ACTIVE YELLOW
+========================================================= */
+
+.menu-btn.bg-yellow-50 {
+
+background:
+linear-gradient(
+90deg,
+rgba(202, 138, 4, 0.92),
+rgba(234, 179, 8, 0.70)
+) !important;
+
+color: #ffffff !important;
+
+border-color:
+rgba(250, 204, 21, 0.28);
+
+}
+
+/* =========================================================
+ICONS
+========================================================= */
 
 .menu-btn i,
 .logout-btn i {
 
-  opacity: .9;
+width: 24px;
 
-  transition: all .2s ease;
+flex-shrink: 0;
+
+text-align: center;
+
+color: #64748b;
+
+opacity: 0.95;
+
+transition:
+color 0.22s ease,
+transform 0.22s ease,
+opacity 0.22s ease;
 
 }
 
 .menu-btn:hover i,
 .logout-btn:hover i {
 
-  transform: scale(1.08);
+color: #60a5fa;
 
-  opacity: 1;
+transform:
+scale(1.06);
 
-}
-
-/* =========================
-   ITEMS ACTIVOS
-========================= */
-
-.menu-btn.bg-red-50 {
-
-  background: linear-gradient(
-      90deg,
-      #dc2626,
-      #ef4444
-  ) !important;
-
-  color: white !important;
-
-  box-shadow:
-      0 10px 25px rgba(220,38,38,.35);
+opacity: 1;
 
 }
 
-.menu-btn.bg-orange-50 {
+/* ICON ACTIVE */
 
-  background: linear-gradient(
-      90deg,
-      #ea580c,
-      #fb923c
-  ) !important;
+.menu-btn.bg-blue-50 i,
+.menu-btn.bg-red-50 i,
+.menu-btn.bg-orange-50 i,
+.menu-btn.bg-green-50 i,
+.menu-btn.bg-purple-50 i,
+.menu-btn.bg-cyan-50 i,
+.menu-btn.bg-yellow-50 i,
+.menu-btn.bg-amber-50 i {
 
-  color: white !important;
-
-}
-
-.menu-btn.bg-blue-50 {
-
-  background: linear-gradient(
-      90deg,
-      #2563eb,
-      #3b82f6
-  ) !important;
-
-  color: white !important;
+color: #ffffff !important;
 
 }
 
-.menu-btn.bg-green-50 {
-
-  background: linear-gradient(
-      90deg,
-      #16a34a,
-      #22c55e
-  ) !important;
-
-  color: white !important;
-
-}
-
-.menu-btn.bg-purple-50 {
-
-  background: linear-gradient(
-      90deg,
-      #7c3aed,
-      #8b5cf6
-  ) !important;
-
-  color: white !important;
-
-}
-
-.menu-btn.bg-cyan-50 {
-
-  background: linear-gradient(
-      90deg,
-      #0891b2,
-      #06b6d4
-  ) !important;
-
-  color: white !important;
-
-}
-
-.menu-btn.bg-amber-50 {
-
-  background: linear-gradient(
-      90deg,
-      #d97706,
-      #f59e0b
-  ) !important;
-
-  color: white !important;
-
-}
-
-.menu-btn.bg-yellow-50 {
-
-  background: linear-gradient(
-      90deg,
-      #ca8a04,
-      #eab308
-  ) !important;
-
-  color: white !important;
-
-}
-
-/* =========================
-   LABELS
-========================= */
+/* =========================================================
+LABELS
+========================================================= */
 
 .menu-label,
 .logout-label {
 
-  color: inherit;
+color: inherit;
 
-  font-weight: 600;
+font-weight: 500;
 
-  white-space: nowrap;
+font-size: 13px;
 
-  transition: all .3s ease;
+white-space: nowrap;
+
+transition:
+opacity 0.3s ease,
+width 0.3s ease,
+margin 0.3s ease,
+transform 0.3s ease;
 
 }
 
-/* =========================
-   SUBMENU
-========================= */
+/* =========================================================
+SUBMENU
+========================================================= */
 
 .submenu {
 
-  overflow: hidden;
+position: relative;
 
-  animation: fadeSlide .18s ease;
+overflow: hidden;
+
+animation:
+fadeSlide 0.18s ease;
 
 }
+
+/* Línea vertical del submenu */
+
+.submenu::before {
+
+content: "";
+
+position: absolute;
+
+left: 20px;
+
+top: 0;
+
+bottom: 0;
+
+width: 1px;
+
+background:
+rgba(96, 165, 250, 0.12);
+
+}
+
+/* =========================================================
+SUBMENU BUTTONS
+========================================================= */
+
+.submenu .menu-btn {
+
+height: 3rem;
+
+padding-left: 1.1rem;
+
+border-radius: 8px;
+
+color: #64748b;
+
+font-size: 12px;
+
+}
+
+.submenu .menu-btn:hover {
+
+color: #e2e8f0;
+
+background:
+rgba(37, 99, 235, 0.06);
+
+}
+
+.submenu .menu-btn i {
+
+font-size: 15px !important;
+
+}
+
+/* =========================================================
+SUBMENU ANIMATION
+========================================================= */
 
 @keyframes fadeSlide {
 
-  from {
+from {
 
-    opacity: 0;
 
-    transform: translateY(-6px);
+opacity: 0;
 
-  }
+transform:
+  translateY(-6px);
 
-  to {
-
-    opacity: 1;
-
-    transform: translateY(0);
-
-  }
 
 }
 
-/* =========================
-   DIVIDER
-========================= */
+to {
+
+
+opacity: 1;
+
+transform:
+  translateY(0);
+
+
+}
+
+}
+
+/* =========================================================
+DIVIDER
+========================================================= */
 
 .border-t {
 
-  height: 1px;
+height: 1px;
 
-  background: rgba(255,255,255,.08);
-
-}
-
-/* =========================
-   SCROLLBAR
-========================= */
-
-::-webkit-scrollbar {
-
-  width: 7px;
+background:
+rgba(148, 163, 184, 0.08) !important;
 
 }
 
-::-webkit-scrollbar-thumb {
+/* =========================================================
+LOGOUT
+========================================================= */
 
-  background: rgba(255,255,255,.18);
+.logout-btn {
 
-  border-radius: 999px;
-
-}
-
-::-webkit-scrollbar-thumb:hover {
-
-  background: rgba(255,255,255,.28);
+color: #94a3b8;
 
 }
 
-::-webkit-scrollbar-track {
+.logout-btn:hover {
 
-  background: transparent;
+color: #f87171;
 
-}
+background:
+rgba(239, 68, 68, 0.06);
 
-/* =========================
-   TABLET
-========================= */
-
-@media (max-width:1024px){
-
-  .sidebar-container.expanded{
-
-    width:260px !important;
-
-  }
-
-  .menu-btn,
-  .logout-btn{
-
-    height:3.25rem;
-
-  }
+border-color:
+rgba(239, 68, 68, 0.10);
 
 }
 
-/* =========================
-   MOBILE NAV
-========================= */
+.logout-btn:hover i {
 
-.mobile-bottom-nav{
-
-  display:none;
+color: #f87171;
 
 }
 
-/* =========================
-   MOBILE
-========================= */
+/* =========================================================
+COLLAPSED
+========================================================= */
 
-@media (max-width:768px){
+.sidebar-container.collapsed {
 
-  .sidebar-container{
-    display:none;
-  }
+.header-section {
 
-  .mobile-bottom-nav{
 
-    position:fixed;
-    left:0;
-    right:0;
-    bottom:0;
+padding:
+  1.5rem 1rem !important;
 
-    height:72px;
+justify-content: center;
 
-    display:flex;
-    align-items:center;
-    justify-content:space-around;
 
-    background:#172033;
+.logo-expanded {
 
-    border-top:1px solid rgba(255,255,255,.08);
+  opacity: 0;
 
-    box-shadow:
-      0 -8px 30px rgba(0,0,0,.25);
+  transform:
+    translateX(-15px)
+    scale(0.9);
 
-    z-index:9999;
+  width: 0;
 
-    padding:0 .5rem;
-
-  }
-
-  .bottom-btn{
-
-    flex:1;
-
-    height:60px;
-
-    border:none;
-    background:transparent;
-
-    color:#cbd5e1;
-
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-
-    gap:.3rem;
-
-    border-radius:12px;
-
-    transition:.2s;
-
-    cursor:pointer;
-
-    i{
-
-      font-size:20px;
-
-    }
-
-    span{
-
-      font-size:11px;
-
-      font-weight:600;
-
-      line-height:1;
-
-    }
-
-    &:hover{
-
-      background:rgba(255,255,255,.08);
-
-      color:#fff;
-
-    }
-
-  }
-
-  /* Item activo */
-
-  .bottom-btn.bg-red-50,
-  .bottom-btn.bg-orange-50,
-  .bottom-btn.bg-blue-50,
-  .bottom-btn.bg-green-50,
-  .bottom-btn.bg-purple-50,
-  .bottom-btn.bg-cyan-50,
-  .bottom-btn.bg-yellow-50,
-  .bottom-btn.bg-amber-50{
-
-      color:#fff !important;
-
-  }
-
-  .bottom-btn.bg-red-50{
-      background:#dc2626 !important;
-  }
-
-  .bottom-btn.bg-orange-50{
-      background:#ea580c !important;
-  }
-
-  .bottom-btn.bg-blue-50{
-      background:#2563eb !important;
-  }
-
-  .bottom-btn.bg-green-50{
-      background:#16a34a !important;
-  }
-
-  .bottom-btn.bg-purple-50{
-      background:#7c3aed !important;
-  }
-
-  .bottom-btn.bg-cyan-50{
-      background:#0891b2 !important;
-  }
-
-  .bottom-btn.bg-yellow-50{
-      background:#ca8a04 !important;
-  }
-
-  .bottom-btn.bg-amber-50{
-      background:#d97706 !important;
-  }
-
-  /* Logout */
-
-  .logout-mobile{
-
-    color:#ef4444;
-
-  }
-
-  .logout-mobile:hover{
-
-    background:rgba(239,68,68,.15);
-
-  }
-
-  /* Padre */
-
-  .mobile-parent {
-  flex: 1;
-  position: relative;
-  display: flex;
-  justify-content: center; /* Centra el contenido internamente */
-}
-
-  /* Submenú */
-
- .mobile-submenu {
-  position: absolute;
-  bottom: 80px; /* Eleva el submenú por encima del bottom nav */
-  left: 0;
-  right: auto;
-  min-width: 200px;
-  max-width: 240px;
-  background: #172033;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.5);
-  z-index: 10000; /* Asegura estar sobre cualquier botón flotante de la vista */
-  
+
 }
 
-/* Ajuste del Keyframe para eliminar la aceleración horizontal extra */
+
+.toggle-btn {
+
+  position: absolute;
+
+  right: 1rem;
+
+  top: 50%;
+
+  transform:
+    translateY(-50%);
+
+}
+
+
+}
+
+.content-section {
+
+
+padding:
+  1.5rem 0.75rem !important;
+
+
+.menu-label,
+.logout-label {
+
+  opacity: 0 !important;
+
+  width: 0 !important;
+
+  overflow: hidden;
+
+  margin-left: 0 !important;
+
+  transform:
+    translateX(-12px);
+
+}
+
+
+}
+
+.menu-btn,
+.logout-btn {
+
+
+justify-content: center;
+
+padding:
+  0 0.5rem;
+
+
+}
+
+.menu-btn:hover,
+.logout-btn:hover {
+
+
+transform:
+  translateY(-1px);
+
+
+}
+
+}
+
+/* =========================================================
+SCROLLBAR
+========================================================= */
+
+.content-section::-webkit-scrollbar {
+
+width: 5px;
+
+}
+
+.content-section::-webkit-scrollbar-thumb {
+
+background:
+rgba(148, 163, 184, 0.16);
+
+border-radius: 999px;
+
+}
+
+.content-section::-webkit-scrollbar-thumb:hover {
+
+background:
+rgba(96, 165, 250, 0.25);
+
+}
+
+.content-section::-webkit-scrollbar-track {
+
+background: transparent;
+
+}
+
+/* =========================================================
+MOBILE NAV — DEFAULT
+========================================================= */
+
+.mobile-bottom-nav {
+
+display: none;
+
+}
+
+/* =========================================================
+TABLET
+========================================================= */
+
+@media (max-width: 1024px) {
+
+.sidebar-container.expanded {
+
+
+width: 260px !important;
+
+
+}
+
+.menu-btn,
+.logout-btn {
+
+
+height:
+  3.25rem;
+
+
+}
+
+}
+
+/* =========================================================
+MOBILE
+========================================================= */
+
+@media (max-width: 768px) {
+
+:host {
+
+
+height: auto;
+
+
+}
+
+.sidebar-container {
+
+
+display: none !important;
+
+
+}
+
+/* =====================================================
+BOTTOM NAV
+====================================================== */
+
+.mobile-bottom-nav {
+
+
+position: fixed;
+
+left: 0;
+right: 0;
+bottom: 0;
+
+height: 72px;
+
+display: flex;
+
+align-items: center;
+
+justify-content: space-around;
+
+padding:
+  0 0.5rem;
+
+box-sizing: border-box;
+
+background:
+  linear-gradient(
+    180deg,
+    #080e1b,
+    #050914
+  );
+
+border-top:
+  1px solid
+  rgba(148, 163, 184, 0.10);
+
+box-shadow:
+  0 -10px 35px
+  rgba(0, 0, 0, 0.38);
+
+z-index: 9999;
+
+backdrop-filter:
+  blur(14px);
+
+
+}
+
+/* =====================================================
+BOTTOM GRID
+====================================================== */
+
+.mobile-bottom-nav::before {
+
+
+content: "";
+
+position: absolute;
+
+inset: 0;
+
+pointer-events: none;
+
+opacity: 0.08;
+
+background-image:
+  linear-gradient(
+    rgba(148, 163, 184, 0.06) 1px,
+    transparent 1px
+  ),
+  linear-gradient(
+    90deg,
+    rgba(148, 163, 184, 0.06) 1px,
+    transparent 1px
+  );
+
+background-size: 45px 45px;
+
+
+}
+
+/* =====================================================
+BOTTOM BUTTON
+====================================================== */
+
+.bottom-btn {
+
+
+position: relative;
+
+z-index: 2;
+
+flex: 1;
+
+max-width: 105px;
+
+height: 58px;
+
+border:
+  1px solid transparent;
+
+background: transparent;
+
+color: #64748b;
+
+display: flex;
+
+flex-direction: column;
+
+align-items: center;
+
+justify-content: center;
+
+gap: 0.3rem;
+
+border-radius: 9px;
+
+transition:
+  background 0.20s ease,
+  color 0.20s ease,
+  border-color 0.20s ease,
+  transform 0.20s ease;
+
+cursor: pointer;
+
+
+}
+
+.bottom-btn i {
+
+
+font-size: 18px;
+
+transition:
+  transform 0.20s ease,
+  color 0.20s ease;
+
+
+}
+
+.bottom-btn span {
+
+
+font-size: 9px;
+
+font-weight: 600;
+
+line-height: 1;
+
+white-space: nowrap;
+
+
+}
+
+.bottom-btn:hover {
+
+
+background:
+  rgba(255, 255, 255, 0.035);
+
+color: #e2e8f0;
+
+border-color:
+  rgba(148, 163, 184, 0.07);
+
+
+}
+
+.bottom-btn:hover i {
+
+
+transform:
+  translateY(-1px);
+
+
+}
+
+/* =====================================================
+ACTIVE MOBILE — BLUE
+====================================================== */
+
+.bottom-btn.bg-blue-50 {
+
+
+background:
+  rgba(37, 99, 235, 0.16) !important;
+
+color: #60a5fa !important;
+
+border-color:
+  rgba(59, 130, 246, 0.18);
+
+
+}
+
+.bottom-btn.bg-blue-50 i {
+
+
+color: #60a5fa !important;
+
+
+}
+
+/* =====================================================
+ACTIVE MOBILE — RED
+====================================================== */
+
+.bottom-btn.bg-red-50 {
+
+
+background:
+  rgba(220, 38, 38, 0.14) !important;
+
+color: #f87171 !important;
+
+border-color:
+  rgba(239, 68, 68, 0.16);
+
+
+}
+
+.bottom-btn.bg-red-50 i {
+
+
+color: #f87171 !important;
+
+
+}
+
+/* =====================================================
+ACTIVE MOBILE — OTHER COLORS
+====================================================== */
+
+.bottom-btn.bg-orange-50 {
+
+
+background:
+  rgba(234, 88, 12, 0.14) !important;
+
+color: #fb923c !important;
+
+
+}
+
+.bottom-btn.bg-green-50 {
+
+
+background:
+  rgba(22, 163, 74, 0.14) !important;
+
+color: #4ade80 !important;
+
+
+}
+
+.bottom-btn.bg-purple-50 {
+
+
+background:
+  rgba(124, 58, 237, 0.14) !important;
+
+color: #a78bfa !important;
+
+
+}
+
+.bottom-btn.bg-cyan-50 {
+
+
+background:
+  rgba(8, 145, 178, 0.14) !important;
+
+color: #22d3ee !important;
+
+
+}
+
+.bottom-btn.bg-yellow-50 {
+
+
+background:
+  rgba(202, 138, 4, 0.14) !important;
+
+color: #facc15 !important;
+
+
+}
+
+.bottom-btn.bg-amber-50 {
+
+
+background:
+  rgba(217, 119, 6, 0.14) !important;
+
+color: #fbbf24 !important;
+
+
+}
+
+/* =====================================================
+LOGOUT MOBILE
+====================================================== */
+
+.logout-mobile {
+
+
+color: #94a3b8;
+
+
+}
+
+.logout-mobile:hover {
+
+
+color: #f87171;
+
+background:
+  rgba(239, 68, 68, 0.08);
+
+
+}
+
+/* =====================================================
+MOBILE PARENT
+====================================================== */
+
+.mobile-parent {
+
+
+position: relative;
+
+flex: 1;
+
+display: flex;
+
+justify-content: center;
+
+min-width: 0;
+
+
+}
+
+/* =====================================================
+MOBILE SUBMENU
+====================================================== */
+
+.mobile-submenu {
+
+
+position: absolute;
+
+bottom: 80px;
+
+left: 50%;
+
+min-width: 205px;
+
+max-width: 240px;
+
+transform:
+  translateX(-50%);
+
+background:
+  linear-gradient(
+    145deg,
+    #0f172a,
+    #080e1b
+  );
+
+border:
+  1px solid
+  rgba(148, 163, 184, 0.12);
+
+border-radius: 11px;
+
+overflow: hidden;
+
+box-shadow:
+  0 18px 45px
+  rgba(0, 0, 0, 0.55);
+
+z-index: 10000;
+
+animation:
+  fadeUp 0.18s ease;
+
+backdrop-filter:
+  blur(14px);
+
+
+}
+
+/* =====================================================
+MOBILE SUBMENU TOP ACCENT
+====================================================== */
+
+.mobile-submenu::before {
+
+
+content: "";
+
+position: absolute;
+
+top: 0;
+
+left: 15%;
+
+width: 70%;
+
+height: 1px;
+
+background:
+  linear-gradient(
+    90deg,
+    transparent,
+    #38bdf8,
+    transparent
+  );
+
+opacity: 0.55;
+
+
+}
+
+/* =====================================================
+MOBILE SUBMENU BUTTON
+====================================================== */
+
+.mobile-submenu-btn {
+
+
+width: 100%;
+
+display: flex;
+
+align-items: center;
+
+gap: 0.8rem;
+
+padding:
+  13px 17px;
+
+border: none;
+
+background: transparent;
+
+color: #94a3b8;
+
+cursor: pointer;
+
+transition:
+  background 0.20s ease,
+  color 0.20s ease;
+
+
+}
+
+.mobile-submenu-btn:hover {
+
+
+background:
+  rgba(37, 99, 235, 0.08);
+
+color: #f8fafc;
+
+
+}
+
+.mobile-submenu-btn i {
+
+
+width: 20px;
+
+text-align: center;
+
+font-size: 14px;
+
+
+}
+
+.mobile-submenu-btn span {
+
+
+font-size: 11px;
+
+font-weight: 500;
+
+
+}
+
+}
+
+/* =========================================================
+MOBILE SUBMENU ANIMATION
+========================================================= */
+
 @keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  } 
-}
 
-  .mobile-submenu-btn{
+from {
 
-    width:100%;
 
-    display:flex;
+opacity: 0;
 
-    align-items:center;
+transform:
+  translate(-50%, 10px);
 
-    gap:.8rem;
-
-    padding:14px 18px;
-
-    border:none;
-
-    background:transparent;
-
-    color:#cbd5e1;
-
-    cursor:pointer;
-
-    transition:.2s;
-
-    &:hover{
-
-      background:rgba(255,255,255,.08);
-
-      color:white;
-
-    }
-
-    i{
-
-      width:20px;
-
-      text-align:center;
-
-    }
-
-  }
 
 }
 
-@keyframes fadeUp{
+to {
 
-  from{
 
-    opacity:0;
-    transform:translate(-50%,10px);
+opacity: 1;
 
-  }
+transform:
+  translate(-50%, 0);
 
-  to{
 
-    opacity:1;
-    transform:translate(-50%,0);
+}
 
-  }
+}
+
+/* =========================================================
+SMALL MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+
+.mobile-bottom-nav {
+
+
+height: 68px;
+
+padding:
+  0 0.25rem;
+
+
+}
+
+.bottom-btn {
+
+
+height: 55px;
+
+border-radius: 8px;
+
+
+}
+
+.bottom-btn i {
+
+
+font-size: 17px;
+
+
+}
+
+.bottom-btn span {
+
+
+font-size: 8px;
+
+
+}
+
+.mobile-submenu {
+
+
+bottom: 76px;
+
+min-width: 190px;
+
+
+}
+
+}
+
+/* =========================================================
+ACCESSIBILITY
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+.sidebar-container,
+.menu-btn,
+.logout-btn,
+.toggle-btn,
+.menu-btn i,
+.logout-btn i,
+.bottom-btn,
+.bottom-btn i {
+
+
+transition: none !important;
+
+
+}
+
+.submenu,
+.mobile-submenu {
+
+
+animation: none !important;
+
+
+}
 
 }

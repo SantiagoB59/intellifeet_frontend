@@ -1,468 +1,1560 @@
-// VARIABLES (copiar de tu archivo principal)
-$red:      #e02020;
-$dark:     #111827;
-$mid:      #374151;
-$slate:    #6b7280;
-$light:    #f9fafb;
-$border:   #e5e7eb;
-$green:    #059669;
-$orange:   #d97706;
-$blue:     #2563eb;
-$red:        #DC2626;
-$blue_light:  #3b82f6;
-$blue_dark:   #172033;
-$radius:   1.5rem;
-$radius-sm: 0.75rem;
+/* ============================================================
+   MANTENIMIENTO PLAN
+   Estilo: Corporativo / Limpio / Responsive
+============================================================ */
 
-// CONTAINER PRINCIPAL
+
+/* ============================================================
+   VARIABLES
+============================================================ */
+
+$dark: #111827;
+$mid: #374151;
+$slate: #6b7280;
+
+$light: #f9fafb;
+$background: #f5f7fa;
+
+$border: #e5e7eb;
+
+$blue: #2563eb;
+$blue-dark: #1d4ed8;
+
+$red: #dc2626;
+
+$green: #059669;
+$orange: #d97706;
+
+$radius: 12px;
+$radius-sm: 9px;
+
+
+/* ============================================================
+   CONTENEDOR PRINCIPAL
+============================================================ */
+
 .mantenimiento-container {
-  padding: 2rem;
-  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+
+  width: 100%;
   min-height: 100vh;
+
+  padding: 24px;
+
+  background: $background;
+
+  box-sizing: border-box;
+
 }
 
-// HEADER
+
+/* =========================================================
+   HEADER AZUL INTELLIFEET
+========================================================= */
+
 .page-header {
-  background: white;
-  padding: 2.5rem;
-  border-radius: $radius;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-  margin-bottom: 2rem;
+  background: #172033;
+  border: 1px solid #172033;
+  border-radius: 12px;
+
+  padding: 22px 24px;
+  margin-bottom: 18px;
+
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  gap: 2rem;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.12);
 }
 
-.header-content h1 {
-  font-size: 2.5rem;
-  font-weight: 900;
-  background: linear-gradient(135deg, $dark, $mid);
-  -webkit-background-clip: text;
-  background-clip: text;
-  margin: 0 0 0.5rem 0;
+.page-title {
+  margin: 0;
+
+  color: #ffffff;
+
+  font-size: 1.55rem;
+  line-height: 1.2;
+  font-weight: 800;
+  letter-spacing: -0.025em;
 }
 
 .page-subtitle {
-  color: $slate;
-  font-size: 1.1rem;
-  margin: 0;
+  margin: 7px 0 0;
+
+  color: #cbd5e1;
+
+  font-size: 0.9rem;
   font-weight: 500;
 }
 
-// BOTONES
-.btn-primary {
-  background: linear-gradient(135deg, $blue_dark, #172033 );
-  color: white;
-  border: none;
-  padding: 1.25rem 2.5rem;
-  border-radius: $radius;
-  font-weight: 800;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 8px 25px rgba(37, 99, 235, 0.3);
-  display: inline-flex;
-  align-items: center;
-  gap: 0.75rem;
 
-  &:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 15px 35px rgba(37, 99, 235, 0.4);
-  }
-}
+/* =========================================================
+   BOTONES DEL HEADER
+========================================================= */
 
-.btn-secondary {
-  padding: 1.25rem 2.5rem;
-  border: 2px solid $border;
-  background: white;
-  color: $slate;
-  border-radius: $radius;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s ease;
-
-  &:hover {
-    background: $light;
-    border-color: $mid;
-  }
-}
-
-.btn-complete {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, #d1fae5, #a7f3d0);
-  color: $green;
-  border: none;
-  cursor: pointer;
+.header-actions {
   display: flex;
   align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
-
-  &:hover {
-    background: linear-gradient(135deg, $green, #047857);
-    color: white;
-    transform: scale(1.1);
-  }
-}
-
-// TABLA
-.table-card {
-  background: white;
-  border-radius: $radius;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.12);
-  overflow: hidden;
-  border: 1px solid $border;
-}
-
-.table-wrapper {
-  overflow-x: auto;
-}
-
-.data-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.data-table thead th {
-  padding: 1.5rem 1.75rem;
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  color: $slate;
-  font-weight: 900;
-  background: linear-gradient(90deg, $light 0%, white 100%);
-  border-bottom: 3px solid $border;
-}
-
-.data-table tbody tr {
-  transition: all 0.25s ease;
-}
-
-.data-table tbody tr:hover {
-  background: linear-gradient(90deg, #f0fdf4 0%, white 100%);
-  box-shadow: inset 5px 0 0 $red;
-}
-
-.data-table td {
-  padding: 1.5rem 1.75rem;
-  vertical-align: middle;
-  border-bottom: 1px solid #f3f4f6;
-}
-
-// BADGES
-.badge-operativo {
-  background: linear-gradient(135deg, #d1fae5, #a7f3d0);
-  color: $green;
-  padding: 0.5rem 1.25rem;
-  border-radius: 999px;
-  font-size: 0.75rem;
-  font-weight: 900;
-  text-transform: uppercase;
-}
-
-.badge-taller {
-  background: linear-gradient(135deg, #ffedd5, #fed7aa);
-  color: $orange;
-  padding: 0.5rem 1.25rem;
-  border-radius: 999px;
-  font-size: 0.75rem;
-  font-weight: 900;
-  text-transform: uppercase;
-}
-
-.badge-inactivo {
-  background: linear-gradient(135deg, #fee2e2, #fecaca);
-  color: $red;
-  padding: 0.5rem 1.25rem;
-  border-radius: 999px;
-  font-size: 0.75rem;
-  font-weight: 900;
-  text-transform: uppercase;
-}
-
-.km-critico {
-  color: $red !important;
-  font-weight: 900 !important;
-}
-
-// EMPTY STATE
-.empty-state {
-  padding: 6rem 3rem;
-  text-align: center;
-
-  .empty-icon {
-    font-size: 5rem;
-    margin-bottom: 2rem;
-  }
-
-  .empty-title {
-    font-size: 1.75rem;
-    font-weight: 800;
-    color: $dark;
-    margin-bottom: 1rem;
-  }
-
-  .empty-text {
-    font-size: 1.125rem;
-    color: $slate;
-    margin-bottom: 2.5rem;
-    max-width: 400px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-}
-
-
-// =========================
-// MODAL
-// =========================
-
-.modal-backdrop {
-  position: fixed;
-  inset: 0;
-
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(10px);
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  padding: 2rem;
-
-  overflow-y: auto;
-
-  z-index: 9999;
-}
-
-.modal-box {
-  background: white;
-
-  border-radius: $radius;
-
-  width: 100%;
-  max-width: 650px;
-
-  max-height: 95vh;
-
-  display: flex;
-  flex-direction: column;
-
-  box-shadow: 0 30px 80px rgba(0,0,0,0.4);
-
-  animation: modalSlide 0.4s ease;
-}
-
-.modal-header {
-  padding: 2rem 2rem 1.5rem;
-
-  border-bottom: 1px solid $border;
-
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  gap: 10px;
 
   flex-shrink: 0;
-
-  background: white;
 }
 
-.modal-title {
-  font-size: 1.75rem;
-  font-weight: 800;
-  color: $dark;
+.header-actions .btn-secondary {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+}
 
-  margin: 0;
+.header-actions .btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+}
 
-  display: flex;
+.header-actions .btn-primary {
+  background: #2563eb;
+  border-color: #2563eb;
+  color: #ffffff;
+}
+
+.header-actions .btn-primary:hover {
+  background: #1d4ed8;
+  border-color: #1d4ed8;
+}
+
+/* ============================================================
+   BOTONES
+============================================================ */
+
+.btn-primary,
+.btn-secondary {
+
+  min-height: 42px;
+
+  padding: 0 18px;
+
+  border-radius: $radius-sm;
+
+  font-size: .82rem;
+
+  font-weight: 700;
+
+  display: inline-flex;
+
   align-items: center;
-  gap: 1rem;
+
+  justify-content: center;
+
+  gap: 8px;
+
+  cursor: pointer;
+
+  transition:
+    background .15s ease,
+    border-color .15s ease,
+    box-shadow .15s ease,
+    transform .15s ease;
+
+  white-space: nowrap;
+
 }
 
-.modal-close {
-  width: 44px;
-  height: 44px;
 
-  border-radius: 12px;
+.btn-primary {
+
+  color: #ffffff;
+
+  background: $blue;
+
+  border: 1px solid $blue;
+
+  box-shadow:
+    0 2px 6px rgba(37, 99, 235, .18);
+
+}
+
+
+.btn-primary:hover {
+
+  background: $blue-dark;
+
+  border-color: $blue-dark;
+
+  box-shadow:
+    0 4px 10px rgba(37, 99, 235, .22);
+
+  transform: translateY(-1px);
+
+}
+
+
+.btn-secondary {
+
+  color: $mid;
+
+  background: #ffffff;
+
+  border: 1px solid $border;
+
+}
+
+
+.btn-secondary:hover {
 
   background: #f8fafc;
 
-  border: none;
+  border-color: #cbd5e1;
 
-  cursor: pointer;
+  transform: translateY(-1px);
+
+}
+
+
+/* ============================================================
+   TARJETA DEL EQUIPO
+============================================================ */
+
+.equipo-card {
+
+  width: 100%;
 
   display: flex;
+
   align-items: center;
+
+  justify-content: space-between;
+
+  gap: 24px;
+
+  padding: 20px 22px;
+
+  margin-bottom: 20px;
+
+  background: #ffffff;
+
+  border: 1px solid $border;
+
+  border-radius: $radius;
+
+  box-shadow:
+    0 2px 8px rgba(15, 23, 42, .04);
+
+  box-sizing: border-box;
+
+}
+
+
+.equipo-info {
+
+  min-width: 0;
+
+}
+
+
+.equipo-label {
+
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: $slate;
+
+  font-size: .74rem;
+
+  font-weight: 600;
+
+  text-transform: uppercase;
+
+  letter-spacing: .05em;
+
+}
+
+
+.equipo-title {
+
+  margin: 0;
+
+  color: $dark;
+
+  font-size: 1.1rem;
+
+  line-height: 1.3;
+
+  font-weight: 800;
+
+}
+
+
+.equipo-subtitle {
+
+  margin: 3px 0 0;
+
+  color: $slate;
+
+  font-size: .82rem;
+
+  font-weight: 500;
+
+}
+
+
+.control-actual {
+
+  min-width: 190px;
+
+  padding-left: 24px;
+
+  border-left: 1px solid $border;
+
+  text-align: right;
+
+}
+
+
+.control-value {
+
+  display: block;
+
+  color: $blue;
+
+  font-size: 1.25rem;
+
+  line-height: 1.2;
+
+  font-weight: 800;
+
+}
+
+
+.control-value small {
+
+  font-size: .78rem;
+
+  font-weight: 700;
+
+  color: $slate;
+
+}
+
+
+/* ============================================================
+   TABLA
+============================================================ */
+
+.table-card {
+
+  width: 100%;
+
+  background: #ffffff;
+
+  border: 1px solid $border;
+
+  border-radius: $radius;
+
+  box-shadow:
+    0 2px 8px rgba(15, 23, 42, .04);
+
+  overflow: hidden;
+
+}
+
+
+.table-wrapper {
+
+  width: 100%;
+
+  overflow-x: auto;
+
+  overflow-y: hidden;
+
+  scrollbar-width: thin;
+
+  scrollbar-color:
+    #cbd5e1
+    transparent;
+
+}
+
+
+.table-wrapper::-webkit-scrollbar {
+
+  height: 7px;
+
+}
+
+
+.table-wrapper::-webkit-scrollbar-track {
+
+  background: #f8fafc;
+
+}
+
+
+.table-wrapper::-webkit-scrollbar-thumb {
+
+  background: #cbd5e1;
+
+  border-radius: 999px;
+
+}
+
+
+.data-table {
+
+  width: 100%;
+
+  min-width: 1050px;
+
+  border-collapse: collapse;
+
+  background: #ffffff;
+
+}
+
+
+/* ============================================================
+   CABECERA
+============================================================ */
+
+.data-table thead {
+
+  background: $dark;
+
+  color: #ffffff;
+
+}
+
+
+.data-table thead tr {
+
+  border-bottom: 1px solid #1f2937;
+
+}
+
+
+.data-table thead th {
+
+  padding: 15px 18px;
+
+  color: #ffffff;
+
+  background: $dark;
+
+  border: none;
+
+  border-bottom: 1px solid #1f2937;
+
+  font-size: .72rem;
+
+  font-weight: 700;
+
+  text-transform: uppercase;
+
+  letter-spacing: .045em;
+
+  text-align: left;
+
+  white-space: nowrap;
+
+}
+
+
+/* ============================================================
+   FILAS
+============================================================ */
+
+.data-table tbody tr {
+
+  background: #ffffff;
+
+  border-bottom: 1px solid #eef0f3;
+
+  transition:
+    background .15s ease;
+
+}
+
+
+.data-table tbody tr:nth-child(even) {
+
+  background: #f9fafb;
+
+}
+
+
+.data-table tbody tr:hover {
+
+  background: #eff6ff;
+
+}
+
+
+.data-table tbody tr:last-child {
+
+  border-bottom: none;
+
+}
+
+
+.data-table td {
+
+  padding: 14px 18px;
+
+  vertical-align: middle;
+
+  color: $mid;
+
+  font-size: .82rem;
+
+  white-space: nowrap;
+
+}
+
+
+/* ============================================================
+   TEXTO DE TABLA
+============================================================ */
+
+.plan-name {
+
+  color: $dark;
+
+  font-size: .84rem;
+
+  font-weight: 750;
+
+}
+
+
+.text-primary {
+
+  color: $mid;
+
+  font-size: .82rem;
+
+  font-weight: 600;
+
+}
+
+
+.text-secondary {
+
+  color: $slate;
+
+  font-size: .8rem;
+
+  font-weight: 500;
+
+}
+
+
+.unit {
+
+  margin-left: 3px;
+
+  color: $slate;
+
+  font-size: .74rem;
+
+  font-weight: 500;
+
+}
+
+
+.date-value {
+
+  color: $mid;
+
+  font-size: .8rem;
+
+  font-weight: 600;
+
+}
+
+
+/* ============================================================
+   CONTROL BADGE
+============================================================ */
+
+.control-badge {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 5px 9px;
+
+  color: $mid;
+
+  background: #f1f5f9;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 5px;
+
+  font-size: .68rem;
+
+  font-weight: 750;
+
+  letter-spacing: .03em;
+
+}
+
+
+/* ============================================================
+   ESTADOS
+============================================================ */
+
+.status-badge {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  min-width: 72px;
+
+  padding: 5px 10px;
+
+  border-radius: 999px;
+
+  font-size: .65rem;
+
+  font-weight: 750;
+
+  text-transform: uppercase;
+
+  letter-spacing: .02em;
+
+}
+
+
+/* ACTIVO */
+
+.badge-operativo {
+
+  color: #15803d;
+
+  background: #dcfce7;
+
+}
+
+
+/* TALLER */
+
+.badge-taller {
+
+  color: #c2410c;
+
+  background: #ffedd5;
+
+}
+
+
+/* INACTIVO */
+
+.badge-inactivo {
+
+  color: #b91c1c;
+
+  background: #fee2e2;
+
+}
+
+
+/* ============================================================
+   VALOR CRÍTICO
+============================================================ */
+
+.km-critico {
+
+  color: $red !important;
+
+  font-weight: 800 !important;
+
+}
+
+
+/* ============================================================
+   EMPTY STATE
+============================================================ */
+
+.empty-state {
+
+  min-height: 360px;
+
+  padding: 50px 24px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  text-align: center;
+
+  box-sizing: border-box;
+
+}
+
+
+.empty-icon {
+
+  width: 64px;
+
+  height: 64px;
+
+  margin-bottom: 16px;
+
+  display: flex;
+
+  align-items: center;
+
   justify-content: center;
 
   color: $slate;
 
-  transition: all 0.2s ease;
+  background: #f1f5f9;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 16px;
+
+  font-size: 1.6rem;
+
+}
+
+
+.empty-state h3 {
+
+  margin: 0 0 8px;
+
+  color: $dark;
+
+  font-size: 1.1rem;
+
+  font-weight: 800;
+
+}
+
+
+.empty-state p {
+
+  max-width: 420px;
+
+  margin: 0 0 22px;
+
+  color: $slate;
+
+  font-size: .84rem;
+
+  line-height: 1.5;
+
+}
+
+
+/* ============================================================
+   MODAL BACKDROP
+============================================================ */
+
+.modal-backdrop {
+
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 9999;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 20px;
+
+  background: rgba(15, 23, 42, .55);
+
+  backdrop-filter: blur(5px);
+
+  overflow-y: auto;
+
+  box-sizing: border-box;
+
+}
+
+
+/* ============================================================
+   MODAL
+============================================================ */
+
+.modal-box {
+
+  width: 100%;
+
+  max-width: 650px;
+
+  max-height: calc(100vh - 40px);
+
+  display: flex;
+
+  flex-direction: column;
+
+  background: #ffffff;
+
+  border: 1px solid $border;
+
+  border-radius: 14px;
+
+  box-shadow:
+    0 20px 60px rgba(15, 23, 42, .25);
+
+  overflow: hidden;
+
+  animation:
+    modalSlide .2s ease;
+
+}
+
+
+/* ============================================================
+   MODAL HEADER
+============================================================ */
+
+.modal-header {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding: 20px 22px;
+
+  background: #ffffff;
+
+  border-bottom: 1px solid $border;
 
   flex-shrink: 0;
 
-  &:hover {
-    background: $red;
-    color: white;
-    transform: rotate(90deg);
-  }
 }
 
+
+.modal-title {
+
+  margin: 0;
+
+  color: $dark;
+
+  font-size: 1.2rem;
+
+  line-height: 1.3;
+
+  font-weight: 800;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+}
+
+
+.modal-title i {
+
+  color: $blue;
+
+}
+
+
+.modal-subtitle {
+
+  margin: 5px 0 0;
+
+  color: $slate;
+
+  font-size: .78rem;
+
+}
+
+
+.modal-close {
+
+  width: 38px;
+
+  height: 38px;
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  color: $slate;
+
+  background: #f8fafc;
+
+  border: 1px solid $border;
+
+  border-radius: 8px;
+
+  cursor: pointer;
+
+  transition:
+    background .15s ease,
+    color .15s ease,
+    border-color .15s ease;
+
+}
+
+
+.modal-close:hover {
+
+  color: $dark;
+
+  background: #f1f5f9;
+
+  border-color: #cbd5e1;
+
+}
+
+
+/* ============================================================
+   MODAL BODY
+============================================================ */
+
 .modal-body {
-  padding: 2rem;
+
+  padding: 22px;
 
   overflow-y: auto;
 
   flex: 1;
+
 }
 
-// =========================
-// FORMULARIOS
-// =========================
+
+/* ============================================================
+   FORMULARIOS
+============================================================ */
 
 .form-group {
-  margin-bottom: 2rem;
+
+  margin-bottom: 20px;
+
 }
+
 
 .form-group label {
+
   display: block;
 
-  font-weight: 700;
+  margin-bottom: 7px;
+
   color: $mid;
 
-  margin-bottom: 0.75rem;
+  font-size: .82rem;
 
-  font-size: 0.95rem;
+  font-weight: 700;
+
 }
+
 
 .form-input {
-  width: 100%;
-  max-width: 100%; /* Agrega esto para asegurar que no crezca más que el padre */
-  padding: 1.25rem;
-  border: 2px solid $border;
-  border-radius: $radius-sm;
-  font-size: 1rem;
-  transition: all 0.25s ease;
-  background: white;
-  
-  // Agrega esto específicamente para los select
-  overflow: hidden;
-  text-overflow: ellipsis; 
-  white-space: nowrap;
 
-  &:focus {
-    outline: none;
-    border-color: $red;
-    box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.12);
-    transform: translateY(-2px);
-  }
+  width: 100%;
+
+  min-height: 42px;
+
+  padding: 0 12px;
+
+  box-sizing: border-box;
+
+  color: $dark;
+
+  background: #ffffff;
+
+  border: 1px solid #d1d5db;
+
+  border-radius: $radius-sm;
+
+  outline: none;
+
+  font-family: inherit;
+
+  font-size: .84rem;
+
+  transition:
+    border-color .15s ease,
+    box-shadow .15s ease;
+
 }
 
-.form-help {
-  display: block;
 
-  margin-top: 0.65rem;
+.form-input:focus {
+
+  border-color: $blue;
+
+  box-shadow:
+    0 0 0 3px rgba(37, 99, 235, .10);
+
+}
+
+
+.form-input:disabled {
+
+  background: #f8fafc;
 
   color: $slate;
 
-  font-size: 0.85rem;
+  cursor: not-allowed;
 
-  line-height: 1.5;
 }
 
-// =========================
-// FOOTER
-// =========================
+
+.form-textarea {
+
+  min-height: 90px;
+
+  padding: 11px 12px;
+
+  resize: vertical;
+
+  line-height: 1.5;
+
+}
+
+
+.form-help {
+
+  display: block;
+
+  margin-top: 6px;
+
+  color: $slate;
+
+  font-size: .74rem;
+
+  line-height: 1.5;
+
+}
+
+
+/* ============================================================
+   RESUMEN DE PROGRAMACIÓN
+============================================================ */
+
+.programacion-resumen {
+
+  margin: 4px 0 20px;
+
+  padding: 14px 16px;
+
+  background: #f8fafc;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 9px;
+
+}
+
+
+.resumen-header {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  margin-bottom: 10px;
+
+  color: $mid;
+
+  font-size: .78rem;
+
+  font-weight: 750;
+
+}
+
+
+.resumen-header i {
+
+  color: $blue;
+
+}
+
+
+.resumen-content {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 7px;
+
+  color: $mid;
+
+  font-size: .78rem;
+
+  line-height: 1.5;
+
+}
+
+
+.resumen-content strong {
+
+  color: $dark;
+
+  font-weight: 750;
+
+}
+
+
+.highlight-value {
+
+  color: $blue !important;
+
+}
+
+
+/* ============================================================
+   MODAL FOOTER
+============================================================ */
 
 .modal-footer {
-  padding: 1.5rem 2rem 2rem;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: flex-end;
+
+  gap: 10px;
+
+  padding: 16px 22px;
+
+  background: #ffffff;
 
   border-top: 1px solid $border;
 
-  display: flex;
-  justify-content: flex-end;
-  gap: 1rem;
-
   flex-shrink: 0;
 
-  background: white;
 }
 
-// =========================
-// ANIMACIÓN
-// =========================
+
+/* ============================================================
+   ANIMACIÓN
+============================================================ */
 
 @keyframes modalSlide {
 
   from {
+
     opacity: 0;
-    transform: scale(0.92) translateY(-30px);
+
+    transform: translateY(10px) scale(.98);
+
   }
 
   to {
+
     opacity: 1;
-    transform: scale(1) translateY(0);
+
+    transform: translateY(0) scale(1);
+
   }
 
 }
 
-// =========================
-// RESPONSIVE
-// =========================
+
+/* ============================================================
+   RESPONSIVE - TABLET
+============================================================ */
 
 @media (max-width: 768px) {
 
   .mantenimiento-container {
-    padding: 1rem;
+
+    padding: 14px;
+
   }
+
 
   .page-header {
+
     flex-direction: column;
 
-    gap: 2rem;
+    align-items: stretch;
 
-    padding: 2rem 1.5rem;
+    padding: 18px;
 
-    text-align: center;
   }
 
-  // =========================
-  // MODAL MOBILE
-  // =========================
+
+  .header-actions {
+
+    width: 100%;
+
+    justify-content: stretch;
+
+  }
+
+
+  .header-actions .btn-primary,
+  .header-actions .btn-secondary {
+
+    flex: 1;
+
+  }
+
+
+  .page-title {
+
+    font-size: 1.35rem;
+
+  }
+
+
+  .equipo-card {
+
+    align-items: stretch;
+
+    flex-direction: column;
+
+    gap: 16px;
+
+    padding: 18px;
+
+  }
+
+
+  .control-actual {
+
+    min-width: 0;
+
+    padding: 14px 0 0;
+
+    border-left: none;
+
+    border-top: 1px solid $border;
+
+    text-align: left;
+
+  }
+
+
+  .data-table {
+
+    min-width: 950px;
+
+  }
+
+
+  .data-table thead th {
+
+    padding: 13px 14px;
+
+    font-size: .68rem;
+
+  }
+
+
+  .data-table td {
+
+    padding: 13px 14px;
+
+    font-size: .78rem;
+
+  }
+
 
   .modal-backdrop {
-    padding: 1rem;
+
+    padding: 12px;
+
   }
+
 
   .modal-box {
-    max-height: 98vh;
 
-    border-radius: 1.25rem;
+    max-height: calc(100vh - 24px);
+
+    border-radius: 12px;
+
   }
+
 
   .modal-header {
-    padding: 1.5rem;
+
+    padding: 16px;
+
   }
 
-  .modal-title {
-    font-size: 1.3rem;
-  }
 
   .modal-body {
-    padding: 1.5rem;
+
+    padding: 16px;
+
   }
+
 
   .modal-footer {
-    padding: 1.5rem;
 
-    flex-direction: column;
+    padding: 14px 16px;
+
   }
 
-  .modal-footer button {
+}
+
+
+/* ============================================================
+   RESPONSIVE - MOBILE
+============================================================ */
+
+@media (max-width: 480px) {
+
+  .mantenimiento-container {
+
+    padding: 10px;
+
+  }
+
+
+  .page-header {
+
+    padding: 16px;
+
+    border-radius: 10px;
+
+  }
+
+
+  .page-title {
+
+    font-size: 1.2rem;
+
+  }
+
+
+  .page-subtitle {
+
+    font-size: .78rem;
+
+  }
+
+
+  .header-actions {
+
+    flex-direction: column;
+
+  }
+
+
+  .header-actions .btn-primary,
+  .header-actions .btn-secondary {
+
     width: 100%;
+
+    flex: none;
+
+  }
+
+
+  .equipo-card {
+
+    border-radius: 10px;
+
+  }
+
+
+  .equipo-title {
+
+    font-size: 1rem;
+
+  }
+
+
+  .control-value {
+
+    font-size: 1.1rem;
+
+  }
+
+
+  .table-card {
+
+    border-radius: 10px;
+
+  }
+
+
+  .data-table {
+
+    min-width: 900px;
+
+  }
+
+
+  .data-table thead th {
+
+    padding: 11px 12px;
+
+    font-size: .63rem;
+
+  }
+
+
+  .data-table td {
+
+    padding: 11px 12px;
+
+    font-size: .74rem;
+
+  }
+
+
+  .status-badge {
+
+    padding: 4px 8px;
+
+    font-size: .6rem;
+
+  }
+
+
+  .control-badge {
+
+    padding: 4px 7px;
+
+    font-size: .62rem;
+
+  }
+
+
+  .modal-backdrop {
+
+    padding: 8px;
+
+  }
+
+
+  .modal-box {
+
+    max-height: calc(100vh - 16px);
+
+    border-radius: 10px;
+
+  }
+
+
+  .modal-title {
+
+    font-size: 1rem;
+
+  }
+
+
+  .modal-subtitle {
+
+    font-size: .7rem;
+
+  }
+
+
+  .modal-body {
+
+    padding: 14px;
+
+  }
+
+
+  .modal-footer {
+
+    flex-direction: column-reverse;
+
+    align-items: stretch;
+
+    padding: 14px;
+
+  }
+
+
+  .modal-footer .btn-primary,
+  .modal-footer .btn-secondary {
+
+    width: 100%;
+
+  }
+
+
+  .empty-state {
+
+    min-height: 300px;
+
+    padding: 40px 18px;
+
+  }
+
+}
+
+
+/* ============================================================
+   MOBILE MUY PEQUEÑO
+============================================================ */
+
+@media (max-width: 360px) {
+
+  .mantenimiento-container {
+
+    padding: 8px;
+
+  }
+
+
+  .page-header {
+
+    padding: 14px;
+
+  }
+
+
+  .equipo-card {
+
+    padding: 14px;
+
+  }
+
+
+  .data-table {
+
+    min-width: 850px;
+
+  }
+
+
+  .data-table thead th {
+
+    padding: 10px;
+
+  }
+
+
+  .data-table td {
+
+    padding: 10px;
+
   }
 
 }

@@ -39,64 +39,67 @@ $radius-sm: 0.75rem;
 
 
 // ============================================================
-// HEADER
+// HEADER - AZUL INTELLIFEET
 // ============================================================
 
 .page-header {
 
-  display: flex;
+display: flex;
 
-  align-items: center;
-  justify-content: space-between;
+align-items: center;
+justify-content: space-between;
 
-  gap: 20px;
+gap: 20px;
 
-  padding: 20px 24px;
+padding: 22px 24px;
 
-  margin-bottom: 18px;
+margin-bottom: 18px;
 
-  background: #ffffff;
+background: #172033;
 
-  border: 1px solid $border;
+border: 1px solid #172033;
 
-  border-radius: 12px;
+border-radius: 12px;
 
-  box-shadow:
-    0 2px 6px rgba(15, 23, 42, 0.04);
+box-shadow:
+0 4px 14px rgba(15, 23, 42, 0.12);
+
+box-sizing: border-box;
 }
-
 
 .header-content {
 
-  min-width: 0;
+min-width: 0;
 
 }
-
 
 .header-content h1 {
 
-  margin: 0;
+margin: 0;
 
-  color: $dark;
+color: #ffffff;
 
-  font-size: 1.55rem;
+font-size: 1.55rem;
 
-  line-height: 1.2;
+line-height: 1.2;
 
-  font-weight: 750;
+font-weight: 800;
+
+letter-spacing: -0.025em;
 
 }
 
-
 .page-subtitle {
 
-  margin: 6px 0 0;
+margin: 7px 0 0;
 
-  color: $slate;
+color: #cbd5e1;
 
-  font-size: 0.86rem;
+font-size: 0.86rem;
 
-  font-weight: 400;
+font-weight: 500;
+
+line-height: 1.5;
 
 }
 

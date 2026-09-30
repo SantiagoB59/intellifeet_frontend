@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { AnaliticaService } from '../../services/analitica.service';
 
 @Component({
   selector: 'app-analitica',
@@ -8,6 +9,13 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./analitica.component.scss']
 })
 export class AnaliticaComponent implements OnInit {
+
+  // =========================================================
+  // ESTADO
+  // =========================================================
+
+  cargando = false;
+  error = '';
 
   // =========================================================
   // FILTROS
@@ -26,243 +34,42 @@ export class AnaliticaComponent implements OnInit {
   // ACTIVOS
   // =========================================================
 
-  activos = [
-    {
-      id: 1,
-      nombre: 'TRK-001'
-    },
-    {
-      id: 2,
-      nombre: 'TRK-002'
-    },
-    {
-      id: 3,
-      nombre: 'TRK-003'
-    },
-    {
-      id: 4,
-      nombre: 'VOL-001'
-    },
-    {
-      id: 5,
-      nombre: 'RET-001'
-    },
-    {
-      id: 6,
-      nombre: 'EXC-001'
-    }
-  ];
+  activos: any[] = [];
 
 
   // =========================================================
-  // MÉTRICAS PRINCIPALES
+  // MÉTRICAS
   // =========================================================
 
   metricas = {
-
-    totalActivos: 24,
-
-    activosOperativos: 21,
-
-    kmRecorridos: 48760,
-
-    crecimientoKm: 8.4,
-
-    consumoPromedio: 3.72,
-
-    eficienciaCombustible: 6.8,
-
-    costoMantenimiento: 18450000,
-
-    mantenimientosPendientes: 7,
-
-    disponibilidad: 91.8,
-
-    alertasActivas: 12,
-
-    alertasCriticas: 3
-
+    totalActivos: 0,
+    activosOperativos: 0,
+    kmRecorridos: 0,
+    crecimientoKm: 0,
+    consumoPromedio: 0,
+    eficienciaCombustible: 0,
+    litrosCombustible: 0,
+    costoCombustible: 0,
+    costoMantenimiento: 0,
+    mantenimientosPendientes: 0,
+    disponibilidad: 0,
+    alertasActivas: 0,
+    alertasCriticas: 0
   };
 
 
   // =========================================================
-  // CONSUMO DE COMBUSTIBLE
+  // COMBUSTIBLE
   // =========================================================
 
-  consumoCombustible = [
-
-    {
-      nombre: 'TRK-001',
-      consumo: 4.15,
-      porcentaje: 92
-    },
-
-    {
-      nombre: 'TRK-002',
-      consumo: 3.98,
-      porcentaje: 88
-    },
-
-    {
-      nombre: 'TRK-003',
-      consumo: 3.76,
-      porcentaje: 83
-    },
-
-    {
-      nombre: 'VOL-001',
-      consumo: 3.45,
-      porcentaje: 76
-    },
-
-    {
-      nombre: 'RET-001',
-      consumo: 3.21,
-      porcentaje: 71
-    }
-
-  ];
+  consumoCombustible: any[] = [];
 
 
   // =========================================================
-  // RENDIMIENTO DE ACTIVOS
+  // RENDIMIENTO
   // =========================================================
 
-  rendimientoActivos = [
-
-    {
-      nombre: 'TRK-001',
-      marca: 'Volvo FH',
-      tipo: 'Vehículo',
-      icono: '🚛',
-
-      uso: 12580,
-      unidad: 'km',
-
-      consumo: 4.15,
-      unidadConsumo: 'km/L',
-      consumoPorcentaje: 92,
-
-      costoMantenimiento: 2850000,
-
-      disponibilidad: 96,
-
-      eficiencia: 94,
-
-      estado: 'OPERATIVO'
-    },
-
-    {
-      nombre: 'TRK-002',
-      marca: 'Kenworth T800',
-      tipo: 'Vehículo',
-      icono: '🚛',
-
-      uso: 10840,
-      unidad: 'km',
-
-      consumo: 3.98,
-      unidadConsumo: 'km/L',
-      consumoPorcentaje: 88,
-
-      costoMantenimiento: 3250000,
-
-      disponibilidad: 91,
-
-      eficiencia: 87,
-
-      estado: 'OPERATIVO'
-    },
-
-    {
-      nombre: 'TRK-003',
-      marca: 'Freightliner',
-      tipo: 'Vehículo',
-      icono: '🚛',
-
-      uso: 9840,
-      unidad: 'km',
-
-      consumo: 3.76,
-      unidadConsumo: 'km/L',
-      consumoPorcentaje: 83,
-
-      costoMantenimiento: 4100000,
-
-      disponibilidad: 84,
-
-      eficiencia: 79,
-
-      estado: 'MANTENIMIENTO'
-    },
-
-    {
-      nombre: 'VOL-001',
-      marca: 'Volvo FMX',
-      tipo: 'Vehículo',
-      icono: '🚚',
-
-      uso: 8650,
-      unidad: 'km',
-
-      consumo: 3.45,
-      unidadConsumo: 'km/L',
-      consumoPorcentaje: 76,
-
-      costoMantenimiento: 2150000,
-
-      disponibilidad: 89,
-
-      eficiencia: 75,
-
-      estado: 'OPERATIVO'
-    },
-
-    {
-      nombre: 'RET-001',
-      marca: 'Caterpillar',
-      tipo: 'Maquinaria',
-      icono: '🚜',
-
-      uso: 684,
-      unidad: 'h',
-
-      consumo: 3.21,
-      unidadConsumo: 'km/L',
-      consumoPorcentaje: 71,
-
-      costoMantenimiento: 4900000,
-
-      disponibilidad: 72,
-
-      eficiencia: 58,
-
-      estado: 'MANTENIMIENTO'
-    },
-
-    {
-      nombre: 'EXC-001',
-      marca: 'Caterpillar 320',
-      tipo: 'Maquinaria',
-      icono: '🏗️',
-
-      uso: 542,
-      unidad: 'h',
-
-      consumo: 2.95,
-      unidadConsumo: 'km/L',
-      consumoPorcentaje: 65,
-
-      costoMantenimiento: 3800000,
-
-      disponibilidad: 68,
-
-      eficiencia: 52,
-
-      estado: 'DETENIDO'
-    }
-
-  ];
+  rendimientoActivos: any[] = [];
 
 
   // =========================================================
@@ -270,21 +77,13 @@ export class AnaliticaComponent implements OnInit {
   // =========================================================
 
   costos = {
-
-    costoTotal: 48500000,
-
-    combustible: 27800000,
-
-    porcentajeCombustible: 57.3,
-
-    mantenimiento: 18450000,
-
-    porcentajeMantenimiento: 38.0,
-
-    otros: 2250000,
-
-    porcentajeOtros: 4.7
-
+    costoTotal: 0,
+    combustible: 0,
+    porcentajeCombustible: 0,
+    mantenimiento: 0,
+    porcentajeMantenimiento: 0,
+    otros: 0,
+    porcentajeOtros: 0
   };
 
 
@@ -293,70 +92,18 @@ export class AnaliticaComponent implements OnInit {
   // =========================================================
 
   mantenimiento = {
-
-    porcentajeCumplimiento: 82,
-
-    completados: 41,
-
-    pendientes: 7,
-
-    vencidos: 2
-
+    porcentajeCumplimiento: 0,
+    completados: 0,
+    pendientes: 0,
+    vencidos: 0
   };
 
 
   // =========================================================
-  // ALERTAS DE MANTENIMIENTO
+  // ALERTAS MANTENIMIENTO
   // =========================================================
 
-  alertasMantenimiento = [
-
-    {
-      titulo: 'Cambio de aceite próximo',
-
-      activo: 'TRK-003',
-
-      prioridad: 'ALTA'
-
-    },
-
-    {
-      titulo: 'Mantenimiento preventivo vencido',
-
-      activo: 'RET-001',
-
-      prioridad: 'CRITICA'
-
-    },
-
-    {
-      titulo: 'Revisión de frenos',
-
-      activo: 'EXC-001',
-
-      prioridad: 'CRITICA'
-
-    },
-
-    {
-      titulo: 'Cambio de filtros',
-
-      activo: 'TRK-002',
-
-      prioridad: 'MEDIA'
-
-    },
-
-    {
-      titulo: 'Revisión sistema eléctrico',
-
-      activo: 'VOL-001',
-
-      prioridad: 'ALTA'
-
-    }
-
-  ];
+  alertasMantenimiento: any[] = [];
 
 
   // =========================================================
@@ -364,23 +111,14 @@ export class AnaliticaComponent implements OnInit {
   // =========================================================
 
   operacion = {
-
-    utilizacion: 87,
-
-    horasOperativas: 4860,
-
-    promedioHoras: 8.6,
-
-    metaHoras: 10,
-
-    viajes: 384,
-
-    viajesFinalizados: 362,
-
-    viajesCancelados: 22,
-
-    cargaTransportada: 8450
-
+    utilizacion: 0,
+    horasOperativas: 0,
+    promedioHoras: 0,
+    metaHoras: 0,
+    viajes: 0,
+    viajesFinalizados: 0,
+    viajesCancelados: 0,
+    cargaTransportada: 0
   };
 
 
@@ -389,17 +127,12 @@ export class AnaliticaComponent implements OnInit {
   // =========================================================
 
   rentabilidad = {
-
-    porcentaje: 28.6,
-
-    ingresos: 68000000,
-
-    costos: 48500000,
-
-    utilidad: 19500000,
-
-    porcentajeCostos: 71.4
-
+    disponible: false,
+    porcentaje: 0,
+    ingresos: null as number | null,
+    costos: 0,
+    utilidad: null as number | null,
+    porcentajeCostos: 0
   };
 
 
@@ -408,185 +141,50 @@ export class AnaliticaComponent implements OnInit {
   // =========================================================
 
   inspecciones = {
-
-    total: 286,
-
-    sinNovedades: 231,
-
-    conAnomalias: 42,
-
-    criticas: 13
-
+    total: 0,
+    sinNovedades: 0,
+    conAnomalias: 0,
+    criticas: 0
   };
 
 
   // =========================================================
-  // RANKING - MEJORES
+  // RANKINGS
   // =========================================================
 
-  rankingMejores = [
+  rankingMejores: any[] = [];
 
-    {
-      nombre: 'TRK-001',
-      tipo: 'Vehículo',
-      icono: '🚛',
-      valor: 94
-    },
-
-    {
-      nombre: 'TRK-002',
-      tipo: 'Vehículo',
-      icono: '🚛',
-      valor: 87
-    },
-
-    {
-      nombre: 'VOL-001',
-      tipo: 'Vehículo',
-      icono: '🚚',
-      valor: 75
-    },
-
-    {
-      nombre: 'TRK-003',
-      tipo: 'Vehículo',
-      icono: '🚛',
-      valor: 79
-    },
-
-    {
-      nombre: 'RET-001',
-      tipo: 'Maquinaria',
-      icono: '🚜',
-      valor: 58
-    }
-
-  ];
+  rankingPeores: any[] = [];
 
 
   // =========================================================
-  // RANKING - PEORES
+  // ALERTAS
   // =========================================================
 
-  rankingPeores = [
-
-    {
-      nombre: 'EXC-001',
-      tipo: 'Maquinaria',
-      icono: '🏗️',
-      valor: 52
-    },
-
-    {
-      nombre: 'RET-001',
-      tipo: 'Maquinaria',
-      icono: '🚜',
-      valor: 58
-    },
-
-    {
-      nombre: 'VOL-001',
-      tipo: 'Vehículo',
-      icono: '🚚',
-      valor: 75
-    },
-
-    {
-      nombre: 'TRK-003',
-      tipo: 'Vehículo',
-      icono: '🚛',
-      valor: 79
-    },
-
-    {
-      nombre: 'TRK-002',
-      tipo: 'Vehículo',
-      icono: '🚛',
-      valor: 87
-    }
-
-  ];
+  ultimasAlertas: any[] = [];
 
 
   // =========================================================
-  // ÚLTIMAS ALERTAS
+  // GRÁFICA KM
   // =========================================================
 
-  ultimasAlertas = [
-
-    {
-      titulo: 'Mantenimiento preventivo vencido',
-
-      descripcion:
-        'El activo requiere mantenimiento preventivo inmediato.',
-
-      activo: 'RET-001',
-
-      fecha: '20 Ago 2026 - 10:32',
-
-      prioridad: 'CRITICA'
-    },
-
-    {
-      titulo: 'Revisión de frenos',
-
-      descripcion:
-        'Se requiere revisión del sistema de frenos.',
-
-      activo: 'EXC-001',
-
-      fecha: '20 Ago 2026 - 09:45',
-
-      prioridad: 'CRITICA'
-    },
-
-    {
-      titulo: 'Cambio de aceite próximo',
-
-      descripcion:
-        'El vehículo se encuentra próximo al kilometraje programado.',
-
-      activo: 'TRK-003',
-
-      fecha: '19 Ago 2026 - 16:20',
-
-      prioridad: 'ALTA'
-    },
-
-    {
-      titulo: 'Revisión sistema eléctrico',
-
-      descripcion:
-        'Se recomienda realizar inspección preventiva.',
-
-      activo: 'VOL-001',
-
-      fecha: '19 Ago 2026 - 11:15',
-
-      prioridad: 'ALTA'
-    },
-
-    {
-      titulo: 'Cambio de filtros',
-
-      descripcion:
-        'El mantenimiento está próximo a su fecha programada.',
-
-      activo: 'TRK-002',
-
-      fecha: '18 Ago 2026 - 15:40',
-
-      prioridad: 'MEDIA'
-    }
-
-  ];
+  graficaKm: any[] = [];
 
 
   // =========================================================
-  // FECHA DE ACTUALIZACIÓN
+  // FECHA ACTUALIZACIÓN
   // =========================================================
 
-  ultimaActualizacion: string = '20 Ago 2026 - 14:05';
+  ultimaActualizacion = '';
+
+
+  // =========================================================
+  // CONSTRUCTOR
+  // =========================================================
+
+  constructor(
+    private analiticaService: AnaliticaService
+  ) {}
 
 
   // =========================================================
@@ -594,9 +192,7 @@ export class AnaliticaComponent implements OnInit {
   // =========================================================
 
   ngOnInit(): void {
-
-    this.actualizarDashboard();
-
+    this.cargarDashboard();
   }
 
 
@@ -610,8 +206,29 @@ export class AnaliticaComponent implements OnInit {
 
     this.tipoActivo = tipo;
 
-    console.log('Tipo de activo:', tipo);
+    // Cuando cambia el tipo, volvemos a mostrar todos
+    // los activos de ese tipo.
+    this.activoSeleccionado = 'TODOS';
 
+    this.cargarDashboard();
+  }
+
+
+  // =========================================================
+  // CAMBIAR PERIODO
+  // =========================================================
+
+  cambiarPeriodo(): void {
+    this.cargarDashboard();
+  }
+
+
+  // =========================================================
+  // CAMBIAR ACTIVO
+  // =========================================================
+
+  cambiarActivo(): void {
+    this.cargarDashboard();
   }
 
 
@@ -620,6 +237,245 @@ export class AnaliticaComponent implements OnInit {
   // =========================================================
 
   actualizarDashboard(): void {
+    this.cargarDashboard();
+  }
+
+
+  // =========================================================
+  // CARGAR DASHBOARD
+  // =========================================================
+
+  cargarDashboard(): void {
+
+    this.cargando = true;
+    this.error = '';
+
+    this.analiticaService
+      .obtenerDashboard(
+        this.periodoSeleccionado,
+        this.tipoActivo,
+        this.activoSeleccionado
+      )
+      .subscribe({
+
+        next: (respuesta) => {
+
+          console.log('Respuesta analítica:', respuesta);
+
+          this.procesarRespuesta(respuesta);
+
+          this.cargando = false;
+
+          this.actualizarFecha();
+
+        },
+
+        error: (error) => {
+
+          console.error(
+            'Error cargando analítica:',
+            error
+          );
+
+          this.error =
+            error?.error?.message ||
+            error?.error?.error ||
+            'No fue posible cargar la información de analítica.';
+
+          this.cargando = false;
+
+        }
+
+      });
+  }
+
+
+  // =========================================================
+  // PROCESAR RESPUESTA
+  // =========================================================
+
+  private procesarRespuesta(respuesta: any): void {
+
+    if (!respuesta) {
+      return;
+    }
+
+
+    // =======================================================
+    // ACTIVOS
+    // =======================================================
+
+    if (respuesta.activos) {
+      this.activos = respuesta.activos;
+    }
+
+
+    // =======================================================
+    // MÉTRICAS
+    // =======================================================
+
+    if (respuesta.metricas) {
+
+      this.metricas = {
+        ...this.metricas,
+        ...respuesta.metricas
+      };
+
+    }
+
+
+    // =======================================================
+    // COMBUSTIBLE
+    // =======================================================
+
+    if (respuesta.consumoCombustible) {
+      this.consumoCombustible =
+        respuesta.consumoCombustible;
+    }
+
+
+    // =======================================================
+    // RENDIMIENTO
+    // =======================================================
+
+    if (respuesta.rendimientoActivos) {
+      this.rendimientoActivos =
+        respuesta.rendimientoActivos;
+    }
+
+
+    // =======================================================
+    // COSTOS
+    // =======================================================
+
+    if (respuesta.costos) {
+
+      this.costos = {
+        ...this.costos,
+        ...respuesta.costos
+      };
+
+    }
+
+
+    // =======================================================
+    // MANTENIMIENTO
+    // =======================================================
+
+    if (respuesta.mantenimiento) {
+
+      this.mantenimiento = {
+        ...this.mantenimiento,
+        ...respuesta.mantenimiento
+      };
+
+    }
+
+
+    // =======================================================
+    // ALERTAS DE MANTENIMIENTO
+    // =======================================================
+
+    if (respuesta.alertasMantenimiento) {
+
+      this.alertasMantenimiento =
+        respuesta.alertasMantenimiento;
+
+    }
+
+
+    // =======================================================
+    // OPERACIÓN
+    // =======================================================
+
+    if (respuesta.operacion) {
+
+      this.operacion = {
+        ...this.operacion,
+        ...respuesta.operacion
+      };
+
+    }
+
+
+    // =======================================================
+    // RENTABILIDAD
+    // =======================================================
+
+    if (respuesta.rentabilidad) {
+
+      this.rentabilidad = {
+        ...this.rentabilidad,
+        ...respuesta.rentabilidad
+      };
+
+    }
+
+
+    // =======================================================
+    // INSPECCIONES
+    // =======================================================
+
+    if (respuesta.inspecciones) {
+
+      this.inspecciones = {
+        ...this.inspecciones,
+        ...respuesta.inspecciones
+      };
+
+    }
+
+
+    // =======================================================
+    // RANKINGS
+    // =======================================================
+
+    if (respuesta.rankingMejores) {
+
+      this.rankingMejores =
+        respuesta.rankingMejores;
+
+    }
+
+    if (respuesta.rankingPeores) {
+
+      this.rankingPeores =
+        respuesta.rankingPeores;
+
+    }
+
+
+    // =======================================================
+    // ÚLTIMAS ALERTAS
+    // =======================================================
+
+    if (respuesta.ultimasAlertas) {
+
+      this.ultimasAlertas =
+        respuesta.ultimasAlertas;
+
+    }
+
+
+    // =======================================================
+    // GRÁFICA KM
+    // =======================================================
+
+    if (respuesta.graficaKm) {
+
+      this.graficaKm =
+        respuesta.graficaKm;
+
+    }
+
+  }
+
+
+  // =========================================================
+  // FECHA ACTUALIZACIÓN
+  // =========================================================
+
+  private actualizarFecha(): void {
 
     const ahora = new Date();
 
@@ -634,9 +490,6 @@ export class AnaliticaComponent implements OnInit {
         hour: '2-digit',
         minute: '2-digit'
       });
-
-    console.log('Dashboard actualizado');
-
   }
 
 }

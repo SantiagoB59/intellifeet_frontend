@@ -98,7 +98,9 @@ export class PreoperacionalComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-
+        console.log('==============================');
+        console.log('PREOPERACIONAL INICIANDO');
+        console.log('==============================');
         this.cargarPlantilla();
 
     }

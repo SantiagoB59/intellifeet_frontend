@@ -1,40 +1,110 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Puedes dejar estilos globales */
+
+/* =====================================================
+   FUENTE GLOBAL
+===================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+
+/* =====================================================
+   ESTILOS GLOBALES
+===================================================== */
+
+html,
 body {
-  font-family: 'Inter', sans-serif;
+  margin: 0;
+  padding: 0;
+
+  font-family:
+    'Inter',
+    'Segoe UI',
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
+
+  font-size: 16px;
+  font-weight: 400;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Importar estilos de Leaflet para que las capas se posicionen bien */
+
+/* =====================================================
+   HEREDAR FUENTE EN TODOS LOS ELEMENTOS
+===================================================== */
+
+button,
+input,
+textarea,
+select {
+  font-family: inherit;
+}
+
+
+/* =====================================================
+   IMPORTAR LEAFLET
+===================================================== */
+
 @import "leaflet/dist/leaflet.css";
 
-/* Asegurar que el contenedor del mapa ocupe todo su padre */
+
+/* =====================================================
+   LEAFLET
+===================================================== */
+
 .leaflet-container {
   height: 100%;
   width: 100%;
 }
 
 
+/* =====================================================
+   VARIABLES GLOBALES
+===================================================== */
+
 :root {
+
   --bg: #ffffff;
   --text: #0f172a;
   --card: #f8fafc;
   --border: #e2e8f0;
+
 }
 
-/* 🌙 DARK MODE */
+
+/* =====================================================
+   DARK MODE
+===================================================== */
+
 .dark {
+
   --bg: #0f172a;
   --text: #e2e8f0;
   --card: #1e293b;
   --border: #334155;
+
 }
 
-/* aplicar global */
+
+/* =====================================================
+   BODY GLOBAL
+===================================================== */
+
 body {
+
   background: var(--bg);
+
   color: var(--text);
-  transition: all 0.3s ease;
+
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+
 }

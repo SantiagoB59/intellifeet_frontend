@@ -54,6 +54,16 @@ export class AlertasComponent implements OnInit {
   nuevaFecha = '';
   archivoDocumento!: File;
 
+
+  modalDocumentoOperador = false;
+
+  alertaOperadorSeleccionada!: Alerta;
+
+  nuevaFechaOperador = '';
+
+  archivoDocumentoOperador!: File;
+
+  guardandoDocumentoOperador = false;
   // =====================================================
   // CONSTRUCTOR
   // =====================================================
@@ -155,9 +165,19 @@ export class AlertasComponent implements OnInit {
                 ?.toString()
                 .toLowerCase() || '';
 
+              const nombreOperador = a.usuario?.nombre
+                ?.toString()
+                .toLowerCase() || '';
+
+              const usernameOperador = a.usuario?.username
+                ?.toString()
+                .toLowerCase() || '';
+
               return (
                 placa.includes(busqueda) ||
-                codigo.includes(busqueda)
+                codigo.includes(busqueda) ||
+                nombreOperador.includes(busqueda) ||
+                usernameOperador.includes(busqueda)
               );
 
             });
@@ -265,6 +285,7 @@ export class AlertasComponent implements OnInit {
       .subscribe({
         next: () => {
           this.cargarTodo();
+          this.alertasService.notificarAlertasActualizadas();
         },
         error: (err) => {
           console.error('Error resolviendo alerta:', err);
@@ -281,6 +302,7 @@ export class AlertasComponent implements OnInit {
       .subscribe({
         next: () => {
           this.cargarTodo();
+          this.alertasService.notificarAlertasActualizadas();
         },
         error: (err) => {
           console.error('Error ignorando alerta:', err);
@@ -300,6 +322,8 @@ export class AlertasComponent implements OnInit {
         next: () => {
           this.ejecutandoMotor = false;
           this.cargarTodo();
+          this.alertasService.notificarAlertasActualizadas();
+
           alert('Motor de alertas ejecutado correctamente');
         },
         error: (err) => {
@@ -401,11 +425,40 @@ export class AlertasComponent implements OnInit {
   // FLUJO DE RESOLUCIÓN ESPECÍFICA
   // =====================================================
   abrirResolver(alerta: Alerta): void {
+
+    // =====================================================
+    // ALERTA DE DOCUMENTO
+    // =====================================================
+
     if (alerta.tipo === 'DOCUMENTO') {
+
       this.alertaSeleccionada = alerta;
-      this.modalDocumento = true;
+
+      // ===================================================
+      // DOCUMENTO DE OPERADOR
+      // ===================================================
+
+      if (alerta.usuario_id) {
+
+        this.abrirModalDocumentoOperador(alerta);
+
+        return;
+      }
+
+
+      // ===================================================
+      // DOCUMENTO DE VEHÍCULO / MAQUINARIA
+      // ===================================================
+
+      this.abrirModalDocumentoVehiculo(alerta);
+
       return;
     }
+
+
+    // =====================================================
+    // MANTENIMIENTO
+    // =====================================================
 
     if (alerta.tipo === 'MANTENIMIENTO') {
 
@@ -416,8 +469,8 @@ export class AlertasComponent implements OnInit {
         ]);
 
         return;
-
       }
+
 
       if (alerta.maquinaria_id) {
 
@@ -426,12 +479,165 @@ export class AlertasComponent implements OnInit {
         ]);
 
         return;
-
       }
-
     }
 
+
+    // =====================================================
+    // ALERTA NORMAL
+    // =====================================================
+
     this.resolver(alerta.id);
+  }
+
+
+  abrirModalDocumentoOperador(alerta: Alerta): void {
+
+    this.alertaOperadorSeleccionada = alerta;
+
+    this.nuevaFechaOperador =
+      alerta.metadata?.fecha_vencimiento || '';
+
+    this.archivoDocumentoOperador = undefined as any;
+
+    this.modalDocumentoOperador = true;
+  }
+
+
+  abrirModalDocumentoVehiculo(alerta: Alerta): void {
+
+    this.alertaSeleccionada = alerta;
+
+    this.nuevaFecha = '';
+
+    this.archivoDocumento = undefined as any;
+
+    this.modalDocumento = true;
+  }
+  onFileSelectedOperador(event: any): void {
+
+    const archivo = event.target.files?.[0];
+
+    if (!archivo) {
+      return;
+    }
+
+    this.archivoDocumentoOperador = archivo;
+  }
+
+
+  resolverDocumentoOperador(): void {
+
+    if (!this.alertaOperadorSeleccionada) {
+      return;
+    }
+
+
+    if (!this.nuevaFechaOperador) {
+
+      alert(
+        'Debes seleccionar la nueva fecha de vencimiento.'
+      );
+
+      return;
+    }
+
+
+    if (!this.archivoDocumentoOperador) {
+
+      alert(
+        'Debes subir el nuevo documento.'
+      );
+
+      return;
+    }
+
+
+    const formData = new FormData();
+
+
+    // =====================================================
+    // USUARIO
+    // =====================================================
+
+    formData.append(
+      'usuario_id',
+      this.alertaOperadorSeleccionada.usuario_id!.toString()
+    );
+
+
+    // =====================================================
+    // TIPO DOCUMENTO
+    // =====================================================
+
+    formData.append(
+      'documento',
+      this.alertaOperadorSeleccionada.metadata?.documento
+      || this.alertaOperadorSeleccionada.categoria
+    );
+
+
+    // =====================================================
+    // NUEVA FECHA
+    // =====================================================
+
+    formData.append(
+      'fecha_vencimiento',
+      this.nuevaFechaOperador
+    );
+
+
+    // =====================================================
+    // ARCHIVO
+    // =====================================================
+
+    formData.append(
+      'archivo',
+      this.archivoDocumentoOperador
+    );
+
+
+    this.guardandoDocumentoOperador = true;
+
+
+    this.alertasService
+      .resolverDocumentoOperador(
+        this.alertaOperadorSeleccionada.id,
+        formData
+      )
+      .subscribe({
+
+        next: () => {
+
+          this.guardandoDocumentoOperador = false;
+
+          this.modalDocumentoOperador = false;
+
+          this.cargarTodo();
+
+          this.alertasService.notificarAlertasActualizadas();
+
+          alert(
+            'Documento del operador actualizado correctamente.'
+          );
+        },
+
+        error: (err) => {
+
+          console.error(
+            'Error actualizando documento del operador:',
+            err
+          );
+
+          this.guardandoDocumentoOperador = false;
+
+          alert(
+            err?.error?.message ||
+            'No fue posible actualizar el documento del operador.'
+          );
+        }
+
+      });
   }
 
   onFileSelected(event: any): void {
@@ -476,7 +682,11 @@ export class AlertasComponent implements OnInit {
       .subscribe({
         next: () => {
           this.modalDocumento = false;
+
           this.cargarTodo();
+
+          this.alertasService.notificarAlertasActualizadas();
+
           alert('Documento actualizado correctamente');
         },
         error: (err) => {

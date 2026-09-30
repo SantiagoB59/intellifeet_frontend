@@ -56,4 +56,22 @@ export class UsuarioDocumentoService {
 
   }
 
+  listarOperadoresDocumentos(): Observable<any> {
+  return this.http.get<any>(
+    `${this.base}/documentos/operadores`
+  );
+}
+
+
+
+  crearDocumento(
+  usuarioId: number,
+  data: any
+): Observable<any> {
+
+  return this.http.post<any>(
+    `${this.base}/${usuarioId}/documentos`,
+    data
+  );
+}
 }

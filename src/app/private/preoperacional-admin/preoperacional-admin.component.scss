@@ -1,0 +1,1751 @@
+/* =========================================================
+   GESTIÓN PREOPERACIONAL
+   Estilo corporativo IntelliFeet
+   ========================================================= */
+
+
+/* =========================================================
+   1. VARIABLES
+   ========================================================= */
+
+$navy: #172033;
+$navy-dark: #0f172a;
+
+$blue: #2563eb;
+$blue-hover: #1d4ed8;
+$blue-light: #3b82f6;
+
+$white: #ffffff;
+
+$background: #f3f6fa;
+$surface: #ffffff;
+$surface-soft: #f8fafc;
+
+$text: #1e293b;
+$text-dark: #111827;
+$text-medium: #334155;
+$text-muted: #64748b;
+$text-light: #94a3b8;
+
+$border: #e2e8f0;
+$border-light: #eef2f7;
+
+$green: #16a34a;
+$green-bg: #dcfce7;
+
+$yellow: #d97706;
+$yellow-bg: #fef3c7;
+
+$red: #dc2626;
+$red-bg: #fee2e2;
+
+$gray-bg: #f1f5f9;
+
+$shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.05);
+$shadow-md: 0 4px 16px rgba(15, 23, 42, 0.08);
+$shadow-modal: 0 20px 60px rgba(15, 23, 42, 0.25);
+
+
+/* =========================================================
+   2. CONTENEDOR PRINCIPAL
+   ========================================================= */
+
+.preoperacional-page {
+  width: 100%;
+  min-height: 100vh;
+  padding: 20px;
+  background: $background;
+  box-sizing: border-box;
+}
+
+.preoperacional-content {
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+
+/* =========================================================
+   3. HEADER
+   ========================================================= */
+
+.preoperacional-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  padding: 22px 24px;
+  margin-bottom: 18px;
+
+  background: $navy;
+  border: 1px solid $navy;
+  border-radius: 12px;
+
+  box-shadow: $shadow-md;
+  box-sizing: border-box;
+}
+
+.header-icon {
+  width: 48px;
+  height: 48px;
+
+  flex: 0 0 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(255, 255, 255, 0.10);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 10px;
+
+  color: $white;
+  font-size: 20px;
+}
+
+.header-info {
+  min-width: 0;
+}
+
+.header-info h1 {
+  margin: 0;
+
+  color: $white;
+  font-size: 1.55rem;
+  line-height: 1.2;
+  font-weight: 800;
+
+  letter-spacing: -0.025em;
+}
+
+.header-info p {
+  margin: 7px 0 0;
+
+  color: #cbd5e1;
+  font-size: 0.86rem;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+
+/* =========================================================
+   4. FILTROS
+   ========================================================= */
+
+.filters-section {
+  width: 100%;
+  margin-bottom: 18px;
+}
+
+.filters-card {
+  width: 100%;
+
+  padding: 20px;
+
+  background: $surface;
+  border: 1px solid $border;
+  border-radius: 12px;
+
+  box-shadow: $shadow-sm;
+  box-sizing: border-box;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+
+  margin-bottom: 18px;
+
+  color: $text-dark;
+  font-size: 0.98rem;
+  line-height: 1.3;
+  font-weight: 800;
+}
+
+.section-title-icon {
+  width: 30px;
+  height: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #dbeafe;
+  border-radius: 8px;
+
+  color: $blue;
+  font-size: 0.8rem;
+}
+
+.filters-grid {
+  width: 100%;
+
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.filter-field {
+  min-width: 0;
+}
+
+.filter-field label {
+  display: block;
+
+  margin-bottom: 6px;
+
+  color: $text-medium;
+  font-size: 0.72rem;
+  line-height: 1.3;
+  font-weight: 700;
+}
+
+.filter-field input,
+.filter-field select {
+  width: 100%;
+  height: 40px;
+
+  padding: 0 11px;
+
+  background: $white;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+
+  color: $text;
+  font-family: inherit;
+  font-size: 0.78rem;
+
+  outline: none;
+  box-sizing: border-box;
+
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    background 0.18s ease;
+}
+
+.filter-field input:hover,
+.filter-field select:hover {
+  border-color: #94a3b8;
+}
+
+.filter-field input:focus,
+.filter-field select:focus {
+  border-color: $blue;
+
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10);
+}
+
+.filter-field select {
+  cursor: pointer;
+}
+
+
+/* =========================================================
+   5. ACCIONES DE FILTROS
+   ========================================================= */
+
+.filter-action {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.btn-search,
+.btn-clear {
+  height: 40px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+
+  padding: 0 14px;
+
+  border-radius: 8px;
+
+  font-family: inherit;
+  font-size: 0.76rem;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease,
+    transform 0.18s ease;
+}
+
+.btn-search {
+  flex: 1;
+
+  background: $blue;
+  border: 1px solid $blue;
+
+  color: $white;
+}
+
+.btn-search:hover {
+  background: $blue-hover;
+  border-color: $blue-hover;
+  transform: translateY(-1px);
+}
+
+.btn-clear {
+  background: $white;
+  border: 1px solid $border;
+
+  color: $text-medium;
+}
+
+.btn-clear:hover {
+  background: $gray-bg;
+  border-color: #cbd5e1;
+  color: $text-dark;
+}
+
+
+/* =========================================================
+   6. SECCIÓN DE INSPECCIONES
+   ========================================================= */
+
+.inspections-section {
+  width: 100%;
+}
+
+.inspections-card {
+  width: 100%;
+
+  background: $surface;
+  border: 1px solid $border;
+  border-radius: 12px;
+
+  overflow: hidden;
+
+  box-shadow: $shadow-sm;
+}
+
+.table-header {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+
+  padding: 18px 22px;
+
+  background: $surface-soft;
+  border-bottom: 1px solid $border;
+
+  box-sizing: border-box;
+}
+
+.table-title {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.table-title-icon {
+  width: 32px;
+  height: 32px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #dbeafe;
+  border-radius: 8px;
+
+  color: $blue;
+  font-size: 0.82rem;
+}
+
+.table-title h2 {
+  margin: 0;
+
+  color: $text-dark;
+  font-size: 1rem;
+  line-height: 1.3;
+  font-weight: 800;
+}
+
+.table-counter {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 32px;
+  padding: 0 12px;
+
+  background: #dbeafe;
+  border: 1px solid #bfdbfe;
+  border-radius: 8px;
+
+  color: #1d4ed8;
+
+  font-size: 0.72rem;
+  font-weight: 700;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   7. TABLA
+   ========================================================= */
+
+.table-wrapper {
+  width: 100%;
+
+  overflow-x: auto;
+
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+
+.inspections-table {
+  width: 100%;
+  min-width: 900px;
+
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.inspections-table thead {
+  background: $navy-dark;
+}
+
+.inspections-table thead th {
+  padding: 14px 16px;
+
+  color: $white;
+
+  text-align: left;
+
+  font-size: 0.69rem;
+  line-height: 1.3;
+  font-weight: 800;
+
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+
+  white-space: nowrap;
+  border: none;
+}
+
+.inspections-table tbody tr {
+  background: $white;
+  border-bottom: 1px solid $border-light;
+
+  transition: background 0.15s ease;
+}
+
+.inspections-table tbody tr:nth-child(even) {
+  background: #fafbfc;
+}
+
+.inspections-table tbody tr:hover {
+  background: #f1f5f9;
+}
+
+.inspections-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.inspections-table tbody td {
+  padding: 15px 16px;
+
+  color: $text-medium;
+
+  font-size: 0.80rem;
+  line-height: 1.4;
+
+  vertical-align: middle;
+}
+
+
+/* =========================================================
+   8. FECHA
+   ========================================================= */
+
+.date-main {
+  color: $text-dark;
+  font-size: 0.82rem;
+  line-height: 1.3;
+  font-weight: 700;
+}
+
+.date-time {
+  margin-top: 3px;
+
+  color: $text-muted;
+  font-size: 0.72rem;
+  line-height: 1.3;
+}
+
+
+/* =========================================================
+   9. OPERADOR
+   ========================================================= */
+
+.operator-cell {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+
+  min-width: 170px;
+}
+
+.operator-icon {
+  width: 32px;
+  height: 32px;
+
+  flex: 0 0 32px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #eff6ff;
+  border-radius: 8px;
+
+  color: $blue;
+  font-size: 0.78rem;
+}
+
+.operator-cell span {
+  color: $text-medium;
+  font-size: 0.80rem;
+  font-weight: 600;
+}
+
+
+/* =========================================================
+   10. ACTIVO / VEHÍCULO / MAQUINARIA
+   ========================================================= */
+
+.asset-cell {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+
+  min-width: 190px;
+}
+
+.asset-icon {
+  width: 34px;
+  height: 34px;
+
+  flex: 0 0 34px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #f1f5f9;
+  border: 1px solid $border;
+
+  border-radius: 8px;
+
+  color: $text-medium;
+  font-size: 0.8rem;
+}
+
+.asset-info {
+  min-width: 0;
+}
+
+.asset-name {
+  color: $text-dark;
+  font-size: 0.82rem;
+  line-height: 1.3;
+  font-weight: 800;
+}
+
+.asset-type {
+  margin-top: 3px;
+
+  color: $text-muted;
+  font-size: 0.70rem;
+  line-height: 1.3;
+}
+
+
+/* =========================================================
+   11. ESTADOS DE INSPECCIÓN
+   ========================================================= */
+
+.inspection-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 90px;
+
+  padding: 5px 10px;
+
+  border-radius: 999px;
+
+  font-size: 0.65rem;
+  line-height: 1.2;
+  font-weight: 800;
+
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+
+  white-space: nowrap;
+}
+
+
+/* Estados comunes */
+
+.inspection-status.estado-finalizada,
+.inspection-status.finalizada,
+.inspection-status.estado-revisada,
+.inspection-status.revisada {
+  background: $green-bg;
+  color: #15803d;
+}
+
+.inspection-status.estado-en_proceso,
+.inspection-status.en_proceso {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.inspection-status.estado-pendiente_cierre,
+.inspection-status.pendiente_cierre {
+  background: $yellow-bg;
+  color: #b45309;
+}
+
+.inspection-status.estado-borrador,
+.inspection-status.borrador {
+  background: #e5e7eb;
+  color: #475569;
+}
+
+.inspection-status.estado-anulada,
+.inspection-status.anulada {
+  background: $red-bg;
+  color: #b91c1c;
+}
+
+
+/* =========================================================
+   12. ACCIONES DE TABLA
+   ========================================================= */
+
+.inspection-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+}
+
+.action-btn {
+  width: 34px;
+  height: 34px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+  border-radius: 8px;
+
+  cursor: pointer;
+
+  transition:
+    background 0.18s ease,
+    color 0.18s ease,
+    transform 0.18s ease;
+}
+
+.action-btn:hover {
+  transform: translateY(-1px);
+}
+
+.action-btn i {
+  font-size: 0.78rem;
+}
+
+
+/* Ver */
+
+.action-view {
+  background: #dbeafe;
+  color: $blue;
+}
+
+.action-view:hover {
+  background: $blue;
+  color: $white;
+}
+
+
+/* PDF */
+
+.action-pdf {
+  background: $red-bg;
+  color: $red;
+}
+
+.action-pdf:hover {
+  background: $red;
+  color: $white;
+}
+
+
+/* =========================================================
+   13. ESTADO VACÍO DE TABLA
+   ========================================================= */
+
+.empty-table-cell {
+  padding: 0 !important;
+}
+
+.empty-state {
+  min-height: 220px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding: 30px;
+
+  text-align: center;
+}
+
+.empty-icon {
+  width: 56px;
+  height: 56px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 12px;
+
+  background: $gray-bg;
+  border-radius: 12px;
+
+  color: $text-light;
+  font-size: 24px;
+}
+
+.empty-state h3 {
+  margin: 0;
+
+  color: $text-medium;
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+.empty-state p {
+  margin: 5px 0 0;
+
+  color: $text-muted;
+  font-size: 0.76rem;
+}
+
+
+/* =========================================================
+   14. MODAL - FONDO
+   ========================================================= */
+
+.inspection-modal-backdrop {
+  position: fixed;
+  inset: 0;
+
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  background: rgba(15, 23, 42, 0.68);
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   15. MODAL - CONTENEDOR
+   ========================================================= */
+
+.inspection-modal {
+  width: 100%;
+  max-width: 1050px;
+  max-height: calc(100vh - 40px);
+
+  display: flex;
+  flex-direction: column;
+
+  background: $white;
+
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 14px;
+
+  overflow: hidden;
+
+  box-shadow: $shadow-modal;
+
+  animation: modalAppear 0.18s ease-out;
+}
+
+@keyframes modalAppear {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.99);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+
+/* =========================================================
+   16. HEADER DEL MODAL
+   ========================================================= */
+
+.inspection-modal-header {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+
+  padding: 18px 20px;
+
+  background: $navy;
+
+  box-sizing: border-box;
+}
+
+.modal-header-info {
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.modal-header-icon {
+  width: 42px;
+  height: 42px;
+
+  flex: 0 0 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(255, 255, 255, 0.10);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+
+  border-radius: 9px;
+
+  color: $white;
+  font-size: 17px;
+}
+
+.modal-header-info h2 {
+  margin: 0;
+
+  color: $white;
+
+  font-size: 1.05rem;
+  line-height: 1.3;
+  font-weight: 800;
+}
+
+.modal-header-info p {
+  margin: 4px 0 0;
+
+  color: #cbd5e1;
+
+  font-size: 0.72rem;
+  line-height: 1.4;
+}
+
+.modal-close-btn {
+  width: 36px;
+  height: 36px;
+
+  flex: 0 0 36px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+
+  border-radius: 8px;
+
+  color: $white;
+  font-size: 0.85rem;
+
+  cursor: pointer;
+
+  transition:
+    background 0.18s ease,
+    transform 0.18s ease;
+}
+
+.modal-close-btn:hover {
+  background: rgba(255, 255, 255, 0.17);
+  transform: rotate(2deg);
+}
+
+
+/* =========================================================
+   17. CONTENIDO DEL MODAL
+   ========================================================= */
+
+.inspection-modal-content {
+  width: 100%;
+
+  padding: 20px;
+
+  overflow-y: auto;
+
+  box-sizing: border-box;
+
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+
+
+/* =========================================================
+   18. RESUMEN GENERAL
+   ========================================================= */
+
+.inspection-summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+
+  margin-bottom: 20px;
+}
+
+.summary-card {
+  min-width: 0;
+
+  padding: 14px;
+
+  background: $surface-soft;
+  border: 1px solid $border;
+
+  border-radius: 10px;
+}
+
+.summary-label {
+  margin-bottom: 6px;
+
+  color: $text-muted;
+
+  font-size: 0.65rem;
+  line-height: 1.3;
+  font-weight: 800;
+
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.summary-value {
+  color: $text-dark;
+
+  font-size: 0.82rem;
+  line-height: 1.4;
+  font-weight: 700;
+
+  word-break: break-word;
+}
+
+.summary-number {
+  color: $blue;
+
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   19. CATEGORÍAS
+   ========================================================= */
+
+.inspection-category {
+  margin-bottom: 16px;
+
+  background: $white;
+  border: 1px solid $border;
+
+  border-radius: 10px;
+
+  overflow: hidden;
+}
+
+.inspection-category:last-child {
+  margin-bottom: 0;
+}
+
+.category-header {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+
+  padding: 13px 15px;
+
+  background: $surface-soft;
+  border-bottom: 1px solid $border;
+
+  color: $text-dark;
+
+  font-size: 0.84rem;
+  font-weight: 800;
+}
+
+.category-header i {
+  color: $blue;
+  font-size: 0.78rem;
+}
+
+
+/* =========================================================
+   20. ITEMS DE INSPECCIÓN
+   ========================================================= */
+
+.inspection-item {
+  padding: 14px 15px;
+
+  border-bottom: 1px solid $border-light;
+}
+
+.inspection-item:last-child {
+  border-bottom: none;
+}
+
+.question-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.question-text {
+  flex: 1;
+  min-width: 0;
+
+  color: $text-medium;
+
+  font-size: 0.79rem;
+  line-height: 1.5;
+  font-weight: 600;
+}
+
+
+/* =========================================================
+   21. RESPUESTAS
+   ========================================================= */
+
+.answer-badge {
+  flex: 0 0 auto;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 58px;
+
+  padding: 5px 10px;
+
+  border-radius: 999px;
+
+  font-size: 0.64rem;
+  line-height: 1.2;
+  font-weight: 800;
+
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+
+  white-space: nowrap;
+}
+
+.answer-si {
+  background: $green-bg;
+  color: #15803d;
+}
+
+.answer-no {
+  background: $red-bg;
+  color: #b91c1c;
+}
+
+.answer-na {
+  background: $yellow-bg;
+  color: #b45309;
+}
+
+.answer-empty {
+  background: #e5e7eb;
+  color: #64748b;
+}
+
+
+/* =========================================================
+   22. OBSERVACIONES
+   ========================================================= */
+
+.observation-box {
+  margin-top: 11px;
+
+  padding: 11px 12px;
+
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+
+  border-radius: 8px;
+}
+
+.observation-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  margin-bottom: 5px;
+
+  color: #c2410c;
+
+  font-size: 0.68rem;
+  line-height: 1.3;
+  font-weight: 800;
+}
+
+.observation-title i {
+  font-size: 0.7rem;
+}
+
+.observation-text {
+  margin: 0;
+
+  color: #7c2d12;
+
+  font-size: 0.75rem;
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   23. EVIDENCIAS
+   ========================================================= */
+
+.evidence-section {
+  margin-top: 12px;
+}
+
+.evidence-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  margin-bottom: 9px;
+
+  color: $text-medium;
+
+  font-size: 0.70rem;
+  line-height: 1.3;
+  font-weight: 800;
+}
+
+.evidence-title i {
+  color: $blue;
+}
+
+.evidence-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.evidence-link {
+  display: block;
+
+  aspect-ratio: 4 / 3;
+
+  background: $gray-bg;
+  border: 1px solid $border;
+
+  border-radius: 8px;
+
+  overflow: hidden;
+
+  text-decoration: none;
+}
+
+.evidence-image {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+
+  transition: transform 0.2s ease;
+}
+
+.evidence-link:hover .evidence-image {
+  transform: scale(1.04);
+}
+
+
+/* =========================================================
+   24. SCROLLBARS
+   ========================================================= */
+
+.table-wrapper::-webkit-scrollbar,
+.inspection-modal-content::-webkit-scrollbar {
+  height: 7px;
+  width: 7px;
+}
+
+.table-wrapper::-webkit-scrollbar-track,
+.inspection-modal-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb,
+.inspection-modal-content::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb:hover,
+.inspection-modal-content::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+
+/* =========================================================
+   25. RESPONSIVE - TABLET
+   ========================================================= */
+
+@media (max-width: 1200px) {
+
+  .filters-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .inspection-summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+}
+
+
+/* =========================================================
+   26. RESPONSIVE - 768PX
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+  .preoperacional-page {
+    padding: 16px;
+  }
+
+
+  /* HEADER */
+
+  .preoperacional-header {
+    flex-direction: column;
+    align-items: flex-start;
+
+    padding: 18px;
+
+    gap: 13px;
+  }
+
+  .header-icon {
+    width: 42px;
+    height: 42px;
+
+    flex-basis: 42px;
+
+    font-size: 17px;
+  }
+
+  .header-info h1 {
+    font-size: 1.3rem;
+  }
+
+  .header-info p {
+    font-size: 0.8rem;
+  }
+
+
+  /* FILTROS */
+
+  .filters-card {
+    padding: 16px;
+  }
+
+  .filters-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+
+  /* TABLE */
+
+  .table-header {
+    align-items: flex-start;
+    flex-direction: column;
+
+    padding: 16px;
+  }
+
+  .table-counter {
+    width: fit-content;
+  }
+
+
+  /* MODAL */
+
+  .inspection-modal-backdrop {
+    padding: 12px;
+  }
+
+  .inspection-modal {
+    max-height: calc(100vh - 24px);
+
+    border-radius: 12px;
+  }
+
+  .inspection-modal-header {
+    padding: 16px;
+  }
+
+  .inspection-modal-content {
+    padding: 16px;
+  }
+
+}
+
+
+/* =========================================================
+   27. RESPONSIVE - 480PX
+   ========================================================= */
+
+@media (max-width: 480px) {
+
+  .preoperacional-page {
+    padding: 12px;
+  }
+
+
+  /* HEADER */
+
+  .preoperacional-header {
+    padding: 16px;
+
+    border-radius: 10px;
+  }
+
+  .header-info h1 {
+    font-size: 1.18rem;
+  }
+
+  .header-info p {
+    font-size: 0.74rem;
+  }
+
+
+  /* FILTROS */
+
+  .filters-card {
+    padding: 14px;
+
+    border-radius: 10px;
+  }
+
+  .section-title {
+    margin-bottom: 14px;
+
+    font-size: 0.9rem;
+  }
+
+  .filters-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .filter-action {
+    width: 100%;
+  }
+
+  .btn-search,
+  .btn-clear {
+    flex: 1;
+  }
+
+
+  /* TABLE */
+
+  .inspections-card {
+    border-radius: 10px;
+  }
+
+  .table-header {
+    padding: 14px;
+  }
+
+  .table-title h2 {
+    font-size: 0.92rem;
+  }
+
+  .table-counter {
+    min-height: 30px;
+
+    font-size: 0.67rem;
+  }
+
+
+  /* MODAL */
+
+  .inspection-modal-backdrop {
+    padding: 8px;
+  }
+
+  .inspection-modal {
+    max-height: calc(100vh - 16px);
+
+    border-radius: 10px;
+  }
+
+  .inspection-modal-header {
+    padding: 14px;
+  }
+
+  .modal-header-icon {
+    width: 36px;
+    height: 36px;
+
+    flex-basis: 36px;
+
+    font-size: 15px;
+  }
+
+  .modal-header-info h2 {
+    font-size: 0.92rem;
+  }
+
+  .modal-header-info p {
+    font-size: 0.67rem;
+  }
+
+  .modal-close-btn {
+    width: 32px;
+    height: 32px;
+
+    flex-basis: 32px;
+  }
+
+  .inspection-modal-content {
+    padding: 12px;
+  }
+
+
+  /* SUMMARY */
+
+  .inspection-summary {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .summary-card {
+    padding: 12px;
+  }
+
+
+  /* QUESTIONS */
+
+  .question-row {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .answer-badge {
+    align-self: flex-start;
+  }
+
+
+  /* EVIDENCE */
+
+  .evidence-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+}
+
+
+/* =========================================================
+   28. RESPONSIVE - 360PX
+   ========================================================= */
+
+@media (max-width: 360px) {
+
+  .preoperacional-page {
+    padding: 10px;
+  }
+
+  .preoperacional-header {
+    padding: 14px;
+  }
+
+  .header-info h1 {
+    font-size: 1.08rem;
+  }
+
+  .header-info p {
+    font-size: 0.70rem;
+  }
+
+  .filters-card {
+    padding: 12px;
+  }
+
+  .table-header {
+    padding: 12px;
+  }
+
+  .inspection-modal-content {
+    padding: 10px;
+  }
+
+  .category-header {
+    padding: 11px 12px;
+  }
+
+  .inspection-item {
+    padding: 12px;
+  }
+
+  .evidence-grid {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+
+/* =========================================================
+   29. REDUCIR ANIMACIONES SI EL USUARIO LO PREFIERE
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .inspection-modal {
+    animation: none;
+  }
+
+  .action-btn,
+  .btn-search,
+  .btn-clear,
+  .modal-close-btn,
+  .evidence-image,
+  .filter-field input,
+  .filter-field select {
+    transition: none;
+  }
+
+}
+
+/* =========================================================
+   LECTURAS INICIAL / FINAL
+========================================================= */
+
+.inspection-readings {
+    margin-top: 22px;
+    margin-bottom: 26px;
+    padding: 20px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+}
+
+.readings-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.readings-header-icon {
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    background: #dbeafe;
+    color: #2563eb;
+    border-radius: 9px;
+    font-size: 15px;
+}
+
+.readings-header h3 {
+    margin: 0;
+    color: #1e293b;
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.readings-header p {
+    margin: 3px 0 0;
+    color: #64748b;
+    font-size: 11px;
+}
+
+.readings-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.reading-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+    padding: 16px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.reading-card:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 16px rgba(15, 23, 42, 0.07);
+}
+
+.reading-icon {
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border-radius: 9px;
+    font-size: 14px;
+}
+
+.reading-initial .reading-icon {
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+.reading-final .reading-icon {
+    background: #ecfdf5;
+    color: #059669;
+}
+
+.reading-difference .reading-icon {
+    background: #f5f3ff;
+    color: #7c3aed;
+}
+
+.reading-info {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.reading-label {
+    color: #64748b;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.reading-value {
+    display: flex;
+    align-items: baseline;
+    gap: 5px;
+    color: #0f172a;
+    font-size: 19px;
+    line-height: 1.2;
+    font-weight: 800;
+}
+
+.reading-value small {
+    color: #64748b;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .readings-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .reading-difference {
+        grid-column: 1 / -1;
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .inspection-readings {
+        padding: 15px;
+    }
+
+    .readings-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .reading-difference {
+        grid-column: auto;
+    }
+
+    .reading-card {
+        padding: 14px;
+    }
+
+}
+
+@media (max-width: 400px) {
+
+    .readings-header {
+        align-items: flex-start;
+    }
+
+    .readings-header-icon {
+        width: 34px;
+        height: 34px;
+    }
+
+    .reading-value {
+        font-size: 17px;
+    }
+
+}

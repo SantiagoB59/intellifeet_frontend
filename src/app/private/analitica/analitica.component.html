@@ -1,5 +1,47 @@
 <div class="analitica-page">
+  <div class="analitica-loading" *ngIf="cargando">
 
+    <div class="loading-box">
+
+      <div class="loading-spinner"></div>
+
+      <strong>
+        Cargando analítica...
+      </strong>
+
+      <span>
+        Consultando información de la flota
+      </span>
+
+    </div>
+
+  </div>
+
+  <div
+  class="analitica-error"
+  *ngIf="error && !cargando">
+
+  <div>
+
+    <strong>
+      No se pudo cargar la analítica
+    </strong>
+
+    <span>
+      {{ error }}
+    </span>
+
+    <button
+      type="button"
+      (click)="actualizarDashboard()">
+
+      Reintentar
+
+    </button>
+
+  </div>
+
+</div>
   <!-- =========================================================
        HEADER
   ========================================================== -->
@@ -20,11 +62,13 @@
       <div class="date-selector">
         <span class="selector-icon">📅</span>
 
-        <select [(ngModel)]="periodoSeleccionado">
+        <select [(ngModel)]="periodoSeleccionado" (ngModelChange)="cambiarPeriodo()">
+
           <option value="7">Últimos 7 días</option>
           <option value="30">Últimos 30 días</option>
           <option value="90">Últimos 90 días</option>
           <option value="365">Último año</option>
+
         </select>
       </div>
 
@@ -47,21 +91,15 @@
 
       <div class="segmented-control">
 
-        <button
-          [class.active]="tipoActivo === 'TODOS'"
-          (click)="cambiarTipoActivo('TODOS')">
+        <button [class.active]="tipoActivo === 'TODOS'" (click)="cambiarTipoActivo('TODOS')">
           Todos
         </button>
 
-        <button
-          [class.active]="tipoActivo === 'VEHICULOS'"
-          (click)="cambiarTipoActivo('VEHICULOS')">
+        <button [class.active]="tipoActivo === 'VEHICULOS'" (click)="cambiarTipoActivo('VEHICULOS')">
           🚛 Vehículos
         </button>
 
-        <button
-          [class.active]="tipoActivo === 'MAQUINARIA'"
-          (click)="cambiarTipoActivo('MAQUINARIA')">
+        <button [class.active]="tipoActivo === 'MAQUINARIA'" (click)="cambiarTipoActivo('MAQUINARIA')">
           🚜 Maquinaria
         </button>
 
@@ -72,13 +110,16 @@
     <div class="filter-group asset-filter">
       <label>Activo</label>
 
-      <select [(ngModel)]="activoSeleccionado">
-        <option value="TODOS">Todos los activos</option>
+      <select [(ngModel)]="activoSeleccionado" (ngModelChange)="cambiarActivo()">
 
-        <option
-          *ngFor="let activo of activos"
-          [value]="activo.id">
+        <option value="TODOS">
+          Todos los activos
+        </option>
+
+        <option *ngFor="let activo of activos" [value]="activo.id">
+
           {{ activo.nombre }}
+
         </option>
 
       </select>
@@ -88,11 +129,13 @@
     <div class="filter-group">
       <label>Periodo</label>
 
-      <select [(ngModel)]="periodoSeleccionado">
+      <select [(ngModel)]="periodoSeleccionado" (ngModelChange)="cambiarPeriodo()">
+
         <option value="7">7 días</option>
         <option value="30">30 días</option>
         <option value="90">90 días</option>
         <option value="365">1 año</option>
+
       </select>
     </div>
 
@@ -343,35 +386,21 @@
             <div class="grid-line"></div>
             <div class="grid-line"></div>
 
-            <svg
-              viewBox="0 0 600 220"
-              preserveAspectRatio="none"
-              class="line-chart">
+            <svg viewBox="0 0 600 220" preserveAspectRatio="none" class="line-chart">
 
               <defs>
 
-                <linearGradient
-                  id="areaGradient"
-                  x1="0"
-                  y1="0"
-                  x2="0"
-                  y2="1">
+                <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
 
-                  <stop
-                    offset="0%"
-                    stop-opacity="0.25"/>
+                  <stop offset="0%" stop-opacity="0.25" />
 
-                  <stop
-                    offset="100%"
-                    stop-opacity="0"/>
+                  <stop offset="100%" stop-opacity="0" />
 
                 </linearGradient>
 
               </defs>
 
-              <path
-                class="chart-area-fill"
-                d="M0,180
+              <path class="chart-area-fill" d="M0,180
                    L50,165
                    L100,175
                    L150,135
@@ -388,9 +417,7 @@
                    L0,220 Z">
               </path>
 
-              <polyline
-                class="chart-line"
-                points="
+              <polyline class="chart-line" points="
                 0,180
                 50,165
                 100,175
@@ -443,9 +470,7 @@
 
         <div class="fuel-chart">
 
-          <div
-            class="fuel-bar"
-            *ngFor="let dato of consumoCombustible">
+          <div class="fuel-bar" *ngFor="let dato of consumoCombustible">
 
             <div class="fuel-info">
 
@@ -461,9 +486,7 @@
 
             <div class="bar-container">
 
-              <div
-                class="bar-fill"
-                [style.width.%]="dato.porcentaje">
+              <div class="bar-fill" [style.width.%]="dato.porcentaje">
               </div>
 
             </div>
@@ -532,8 +555,7 @@
 
           <tbody>
 
-            <tr
-              *ngFor="let activo of rendimientoActivos">
+            <tr *ngFor="let activo of rendimientoActivos">
 
               <td>
 
@@ -589,9 +611,7 @@
 
                   <div class="mini-progress">
 
-                    <div
-                      class="mini-progress-fill"
-                      [style.width.%]="activo.consumoPorcentaje">
+                    <div class="mini-progress-fill" [style.width.%]="activo.consumoPorcentaje">
                     </div>
 
                   </div>
@@ -612,9 +632,7 @@
 
               <td>
 
-                <span
-                  class="availability"
-                  [class.high]="activo.disponibilidad >= 90"
+                <span class="availability" [class.high]="activo.disponibilidad >= 90"
                   [class.medium]="activo.disponibilidad >= 75 && activo.disponibilidad < 90"
                   [class.low]="activo.disponibilidad < 75">
 
@@ -627,9 +645,7 @@
 
               <td>
 
-                <div
-                  class="efficiency"
-                  [class.good]="activo.eficiencia >= 80"
+                <div class="efficiency" [class.good]="activo.eficiencia >= 80"
                   [class.medium]="activo.eficiencia >= 60 && activo.eficiencia < 80"
                   [class.bad]="activo.eficiencia < 60">
 
@@ -639,8 +655,7 @@
 
                   <div class="efficiency-bar">
 
-                    <div
-                      [style.width.%]="activo.eficiencia">
+                    <div [style.width.%]="activo.eficiencia">
                     </div>
 
                   </div>
@@ -652,9 +667,7 @@
 
               <td>
 
-                <span
-                  class="status-badge"
-                  [class.operativo]="activo.estado === 'OPERATIVO'"
+                <span class="status-badge" [class.operativo]="activo.estado === 'OPERATIVO'"
                   [class.mantenimiento]="activo.estado === 'MANTENIMIENTO'"
                   [class.detener]="activo.estado === 'DETENIDO'">
 
@@ -834,9 +847,7 @@
 
         <div class="donut-container">
 
-          <div
-            class="donut"
-            [style.--percentage]="mantenimiento.porcentajeCumplimiento + '%'">
+          <div class="donut" [style.--percentage]="mantenimiento.porcentajeCumplimiento + '%'">
 
             <div class="donut-center">
 
@@ -889,15 +900,10 @@
 
         <div class="alert-list">
 
-          <div
-            class="alert-row"
-            *ngFor="let alerta of alertasMantenimiento">
+          <div class="alert-row" *ngFor="let alerta of alertasMantenimiento">
 
-            <div
-              class="alert-icon"
-              [class.critical]="alerta.prioridad === 'CRITICA'"
-              [class.high]="alerta.prioridad === 'ALTA'"
-              [class.medium]="alerta.prioridad === 'MEDIA'">
+            <div class="alert-icon" [class.critical]="alerta.prioridad === 'CRITICA'"
+              [class.high]="alerta.prioridad === 'ALTA'" [class.medium]="alerta.prioridad === 'MEDIA'">
 
               ⚠️
 
@@ -915,11 +921,8 @@
 
             </div>
 
-            <span
-              class="priority-badge"
-              [class.critical]="alerta.prioridad === 'CRITICA'"
-              [class.high]="alerta.prioridad === 'ALTA'"
-              [class.medium]="alerta.prioridad === 'MEDIA'">
+            <span class="priority-badge" [class.critical]="alerta.prioridad === 'CRITICA'"
+              [class.high]="alerta.prioridad === 'ALTA'" [class.medium]="alerta.prioridad === 'MEDIA'">
 
               {{ alerta.prioridad }}
 
@@ -981,8 +984,7 @@
 
         <div class="large-progress">
 
-          <div
-            [style.width.%]="operacion.utilizacion">
+          <div [style.width.%]="operacion.utilizacion">
           </div>
 
         </div>
@@ -1201,9 +1203,7 @@
 
           <div class="profit-bar">
 
-            <div
-              class="income"
-              [style.width.%]="100">
+            <div class="income" [style.width.%]="100">
             </div>
 
           </div>
@@ -1224,9 +1224,7 @@
 
           <div class="profit-bar">
 
-            <div
-              class="expenses"
-              [style.width.%]="rentabilidad.porcentajeCostos">
+            <div class="expenses" [style.width.%]="rentabilidad.porcentajeCostos">
             </div>
 
           </div>
@@ -1411,9 +1409,7 @@
 
         <div class="ranking-list">
 
-          <div
-            class="ranking-item"
-            *ngFor="let activo of rankingMejores; let i = index">
+          <div class="ranking-item" *ngFor="let activo of rankingMejores; let i = index">
 
             <span class="ranking-position">
               {{ i + 1 }}
@@ -1465,9 +1461,7 @@
 
         <div class="ranking-list">
 
-          <div
-            class="ranking-item"
-            *ngFor="let activo of rankingPeores; let i = index">
+          <div class="ranking-item" *ngFor="let activo of rankingPeores; let i = index">
 
             <span class="ranking-position">
               {{ i + 1 }}
@@ -1530,15 +1524,10 @@
 
     <div class="alerts-table-card">
 
-      <div
-        class="alert-history-row"
-        *ngFor="let alerta of ultimasAlertas">
+      <div class="alert-history-row" *ngFor="let alerta of ultimasAlertas">
 
-        <div
-          class="history-alert-icon"
-          [class.critical]="alerta.prioridad === 'CRITICA'"
-          [class.high]="alerta.prioridad === 'ALTA'"
-          [class.medium]="alerta.prioridad === 'MEDIA'">
+        <div class="history-alert-icon" [class.critical]="alerta.prioridad === 'CRITICA'"
+          [class.high]="alerta.prioridad === 'ALTA'" [class.medium]="alerta.prioridad === 'MEDIA'">
 
           ⚠️
 
@@ -1568,11 +1557,8 @@
         </div>
 
 
-        <span
-          class="priority-badge"
-          [class.critical]="alerta.prioridad === 'CRITICA'"
-          [class.high]="alerta.prioridad === 'ALTA'"
-          [class.medium]="alerta.prioridad === 'MEDIA'">
+        <span class="priority-badge" [class.critical]="alerta.prioridad === 'CRITICA'"
+          [class.high]="alerta.prioridad === 'ALTA'" [class.medium]="alerta.prioridad === 'MEDIA'">
 
           {{ alerta.prioridad }}
 

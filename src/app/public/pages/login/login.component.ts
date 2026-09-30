@@ -16,7 +16,7 @@ export class LoginComponent {
   isLoginFailed = false;
   isLoading = false;
   showPass = false;
-
+currentYear = new Date().getFullYear();
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,

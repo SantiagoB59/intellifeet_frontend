@@ -1,115 +1,305 @@
-<div class="min-h-screen flex items-center justify-center px-4 sm:px-6 relative overflow-hidden bg-[#050816]">
+<div class="login-page">
 
-  <!-- 🌌 FONDO -->
-  <div class="absolute inset-0 bg-gradient-to-br from-[#050816] via-[#0B1A3A] to-[#020617]"></div>
+  <!-- =====================================================
+       BACKGROUND
+  ====================================================== -->
 
-  <!-- GLOW RESPONSIVE -->
-  <div class="absolute w-[300px] h-[300px] sm:w-[600px] sm:h-[600px] bg-[#2F80ED]/20 blur-[120px] rounded-full top-[-100px] left-[-100px]"></div>
-  <div class="absolute w-[250px] h-[250px] sm:w-[500px] sm:h-[500px] bg-blue-500/10 blur-[120px] rounded-full bottom-[-100px] right-[-100px]"></div>
+  <div class="login-background">
 
-  <!-- 🧊 CARD WRAPPER -->
-  <div class="relative z-10 w-full max-w-md p-[1px] rounded-3xl bg-gradient-to-br from-[#2F80ED]/40 to-transparent">
 
-    <!-- CARD -->
-    <div class="relative bg-white rounded-3xl p-6 sm:p-10 space-y-6 sm:space-y-8 shadow-2xl transition-all duration-300 hover:scale-[1.01]">
+    <div class="login-grid"></div>
 
-      <!-- BORDE SUTIL -->
-      <div class="absolute inset-0 rounded-3xl border border-blue-100 pointer-events-none"></div>
+    <div class="login-glow login-glow-left"></div>
 
-      <!-- LOGO -->
-      <div class="text-center space-y-3 sm:space-y-4">
-        <img src="assets/img/intellifeet.png" class="w-12 sm:w-14 mx-auto opacity-90">
+    <div class="login-glow login-glow-right"></div>
 
-        <h1 class="text-xl sm:text-2xl font-semibold text-slate-900 tracking-wide">
-          Intelli<span class="text-[#2F80ED]">Fleet</span>
+
+  </div>
+
+
+  <!-- =====================================================
+       MAIN
+  ====================================================== -->
+
+  <main class="login-main">
+
+
+    <section class="login-card">
+
+
+      <!-- TOP ACCENT -->
+
+      <div class="login-accent"></div>
+
+
+      <!-- =================================================
+       BRAND
+  ================================================== -->
+
+      <div class="login-brand">
+
+        <div class="brand-icon">
+
+          <img src="assets/img/logo3.png" alt="IntelliFeet" />
+
+        </div>
+
+        <h1>
+          Intelli<span>Fleet</span>
         </h1>
 
-        <p class="text-[11px] sm:text-xs text-slate-500">
+        <p>
           Sistema inteligente de gestión de flotas
         </p>
+
       </div>
 
-      <!-- TITLE -->
-      <div class="text-center">
-        <h2 class="text-base sm:text-lg text-slate-800 font-medium tracking-wide">
-          Acceso seguro
-        </h2>
-        <p class="text-[11px] sm:text-xs text-slate-400">
-          Autenticación protegida · Nivel corporativo
-        </p>
+      <!-- =================================================
+     WEB SITE
+================================================== -->
+
+<div class="website-access">
+
+  <div class="website-divider">
+    <span>¿Quieres conocer IntelliFeet?</span>
+  </div>
+
+  <a
+    href="/"
+    class="website-button">
+
+    <span class="website-button-content">
+      <i class="fas fa-globe"></i>
+      <span>Visitar página web</span>
+      <i class="fas fa-arrow-right website-arrow"></i>
+    </span>
+
+  </a>
+
+</div>
+
+      <!-- =================================================
+       SECURITY HEADER
+  ================================================== -->
+
+      <div class="security-header">
+
+        <div class="security-icon">
+
+          <i class="fas fa-shield-alt"></i>
+
+        </div>
+
+        <div>
+
+          <h2>
+            Acceso seguro
+          </h2>
+
+          <p>
+            Autenticación protegida · Nivel corporativo
+          </p>
+
+        </div>
+
+        <div class="security-status">
+
+          <span></span>
+
+          Seguro
+
+        </div>
+
       </div>
 
-      <!-- ERROR -->
-      <div *ngIf="isLoginFailed" class="text-red-500 text-sm text-center">
-        Credenciales incorrectas
+
+      <!-- =================================================
+       ERROR
+  ================================================== -->
+
+      <div *ngIf="isLoginFailed" class="login-error">
+
+        <i class="fas fa-exclamation-circle"></i>
+
+        <span>
+          Credenciales incorrectas. Verifica tu usuario y contraseña.
+        </span>
+
       </div>
 
-      <!-- FORM -->
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-5 sm:space-y-6">
+
+      <!-- =================================================
+       FORM
+  ================================================== -->
+
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+
 
         <!-- USER -->
-        <div class="relative">
-          <input
-            formControlName="username"
-            type="text"
-            placeholder="Usuario"
-            class="w-full px-4 py-3 sm:py-3.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 placeholder-slate-400 focus:border-[#2F80ED] focus:ring-2 focus:ring-[#2F80ED]/30 outline-none transition"
-          >
+
+        <div class="form-group">
+
+          <label for="username">
+            Usuario
+          </label>
+
+          <div class="input-container">
+
+            <i class="fas fa-user"></i>
+
+            <input id="username" formControlName="username" type="text" placeholder="Ingresa tu usuario"
+              autocomplete="username" />
+
+          </div>
+
+          <small *ngIf="
+          username?.touched &&
+          username?.errors?.['required']
+        " class="field-error">
+            El usuario es obligatorio.
+          </small>
+
+          <small *ngIf="
+          username?.touched &&
+          username?.errors?.['minlength']
+        " class="field-error">
+            El usuario debe tener al menos 3 caracteres.
+          </small>
+
         </div>
+
 
         <!-- PASSWORD -->
-        <div class="relative">
-          <input
-            [type]="showPass ? 'text' : 'password'"
-            formControlName="password"
-            placeholder="Contraseña"
-            class="w-full px-4 py-3 sm:py-3.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 placeholder-slate-400 focus:border-[#2F80ED] focus:ring-2 focus:ring-[#2F80ED]/30 outline-none transition"
-          >
 
-          <button
-            type="button"
-            (click)="togglePassword()"
-            class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-[#2F80ED] transition"
-          >
-            <i class="fas" [ngClass]="showPass ? 'fa-eye-slash' : 'fa-eye'"></i>
-          </button>
+        <div class="form-group">
+
+          <div class="password-label">
+
+            <label for="password">
+              Contraseña
+            </label>
+
+          </div>
+
+          <div class="input-container">
+
+            <i class="fas fa-lock"></i>
+
+            <input id="password" formControlName="password" [type]="showPass ? 'text' : 'password'"
+              placeholder="Ingresa tu contraseña" autocomplete="current-password" />
+
+            <button type="button" class="password-toggle" (click)="togglePassword()" [attr.aria-label]="
+            showPass
+              ? 'Ocultar contraseña'
+              : 'Mostrar contraseña'
+          ">
+
+              <i class="fas" [ngClass]="
+              showPass
+                ? 'fa-eye-slash'
+                : 'fa-eye'
+            "></i>
+
+            </button>
+
+          </div>
+
+          <small *ngIf="
+          password?.touched &&
+          password?.errors?.['required']
+        " class="field-error">
+            La contraseña es obligatoria.
+          </small>
+
         </div>
+
 
         <!-- OPTIONS -->
-        <div class="flex justify-between text-xs text-slate-500">
-          <label class="flex items-center gap-2 cursor-pointer">
-            <input type="checkbox" class="accent-[#2F80ED]">
-            Recordarme
+
+        <div class="form-options">
+
+          <label class="remember-option">
+
+            <input type="checkbox" />
+
+            <span>
+              Recordarme
+            </span>
+
           </label>
+
         </div>
 
+
         <!-- BUTTON -->
-        <button
-          type="submit"
-          [disabled]="isLoading"
-          class="w-full relative overflow-hidden bg-gradient-to-r from-[#2F80ED] to-blue-600 hover:from-[#1C5ED6] hover:to-blue-700 text-white py-3 sm:py-3.5 rounded-xl font-semibold text-sm sm:text-base transition flex justify-center items-center gap-2 shadow-lg shadow-blue-500/30 active:scale-[0.98]"
-        >
 
-          <!-- glow hover -->
-          <span class="absolute inset-0 bg-white/20 opacity-0 hover:opacity-100 transition"></span>
+        <button type="submit" class="login-button" [disabled]="isLoading">
 
-          <span *ngIf="!isLoading">Iniciar sesión</span>
+          <span *ngIf="!isLoading" class="button-content">
 
-          <span *ngIf="isLoading" class="flex items-center gap-2">
-            <i class="fas fa-circle-notch animate-spin"></i>
-            Validando...
+            <span>
+              Iniciar sesión
+            </span>
+
+            <i class="fas fa-arrow-right"></i>
+
+          </span>
+
+
+          <span *ngIf="isLoading" class="button-content">
+
+            <i class="fas fa-circle-notch fa-spin"></i>
+
+            <span>
+              Validando...
+            </span>
+
           </span>
 
         </button>
 
       </form>
 
-      <!-- FOOTER -->
-      <div class="text-center text-[10px] text-slate-400 pt-4 border-t border-slate-200">
-        © 2026 IntelliFleet · SB Tech.
+
+      <!-- =================================================
+       SECURITY NOTE
+  ================================================== -->
+
+      <div class="security-note">
+
+        <i class="fas fa-lock"></i>
+
+        <span>
+          Tu conexión está protegida y tus credenciales
+          son procesadas de forma segura.
+        </span>
+
       </div>
 
-    </div>
-  </div>
+
+      <!-- =================================================
+       FOOTER
+  ================================================== -->
+
+      <div class="login-footer">
+
+        <span>
+          © {{ currentYear }} IntelliFeet
+        </span>
+
+        <span class="footer-separator">
+          ·
+        </span>
+
+        <span>
+          SB Tech
+        </span>
+
+      </div>
+
+    </section>
+
+
+  </main>
 
 </div>
