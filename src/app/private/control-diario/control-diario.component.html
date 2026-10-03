@@ -1,0 +1,385 @@
+<div class="control-page">
+
+    <!-- ===================================================== -->
+    <!-- HEADER -->
+    <!-- ===================================================== -->
+
+    <header class="page-header">
+
+        <div class="header-content">
+
+            <span class="eyebrow">
+                OPERACIÓN
+            </span>
+
+            <h1>
+                Control diario
+            </h1>
+
+            <p>
+                Carga y consulta las evidencias de operación
+                de tus vehículos y maquinaria.
+            </p>
+
+        </div>
+
+    </header>
+
+
+    <!-- ===================================================== -->
+    <!-- MENSAJES -->
+    <!-- ===================================================== -->
+
+    <div *ngIf="mensaje" class="message success">
+        {{ mensaje }}
+    </div>
+
+    <div *ngIf="error" class="message error">
+        {{ error }}
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- CARGAR -->
+    <!-- ===================================================== -->
+
+    <section class="card upload-card">
+
+        <div class="card-header">
+
+            <div>
+
+                <h2>
+                    Cargar evidencia
+                </h2>
+
+                <p>
+                    Registra el control correspondiente al día.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="form-grid">
+
+            <!-- FECHA -->
+
+            <div class="field">
+
+                <label>
+                    Fecha
+                </label>
+
+                <input type="date" [(ngModel)]="fecha" />
+
+            </div>
+
+
+            <!-- ACTIVO -->
+
+            <div class="field">
+
+                <label>
+                    Vehículo / maquinaria
+                </label>
+
+                <select [(ngModel)]="activoSeleccionado">
+
+                    <option value="">
+                        Seleccione un activo
+                    </option>
+
+                    <option *ngFor="let activo of activos" [value]="activo.tipo + '-' + activo.id">
+                        {{ activo.tipo === 'VEHICULO' ? 'Vehículo' : 'Maquinaria' }}
+                        -
+                        {{ activo.nombre }}
+                    </option>
+
+                </select>
+
+            </div>
+
+
+
+            <!-- ===================================================== -->
+            <!-- EVIDENCIA -->
+            <!-- ===================================================== -->
+
+            <div class="field full">
+
+                <label>
+                    Evidencia
+                </label>
+
+
+                <!-- BOTÓN TOMAR FOTO -->
+
+                <button *ngIf="!archivo" type="button" class="btn-camera" (click)="abrirCamara()">
+
+                    <span class="camera-icon">
+                        📷
+                    </span>
+
+                    <span>
+                        Tomar foto
+                    </span>
+
+                </button>
+
+
+                <!-- ================================================= -->
+                <!-- PREVISUALIZACIÓN -->
+                <!-- ================================================= -->
+
+                <div *ngIf="archivo && fotoPreview" class="photo-preview">
+
+                    <div class="photo-preview-header">
+
+                        <div>
+
+                            <strong>
+                                Evidencia capturada
+                            </strong>
+
+                            <small>
+                                Revise la fotografía antes de cargarla.
+                            </small>
+
+                        </div>
+
+                        <button type="button" class="remove-photo" (click)="eliminarFoto()">
+                            ×
+                        </button>
+
+                    </div>
+
+
+                    <div class="photo-preview-image">
+
+                        <img [src]="fotoPreview" alt="Vista previa de la evidencia" />
+
+                    </div>
+
+
+                    <button type="button" class="btn-retake" (click)="abrirCamara()">
+
+                        📷
+
+                        Tomar otra foto
+
+                    </button>
+
+                </div>
+
+
+                <small>
+                    Tome una foto clara del control diario.
+                </small>
+
+            </div>
+            <!-- OBSERVACIONES -->
+
+            <div class="field full">
+
+                <label>
+                    Observaciones
+                </label>
+
+                <textarea rows="4" [(ngModel)]="observaciones" placeholder="Observaciones opcionales..."></textarea>
+
+            </div>
+
+        </div>
+
+
+        <div class="form-actions">
+
+            <button type="button" class="btn-primary" [disabled]="cargando" (click)="cargarControl()">
+
+                <span *ngIf="!cargando">
+                    Cargar control
+                </span>
+
+                <span *ngIf="cargando">
+                    Cargando...
+                </span>
+
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- ===================================================== -->
+    <!-- HISTORIAL -->
+    <!-- ===================================================== -->
+
+    <section class="card">
+
+        <div class="card-header">
+
+            <div>
+
+                <h2>
+                    Mis controles
+                </h2>
+
+                <p>
+                    Historial de evidencias cargadas.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div *ngIf="cargandoControles" class="loading">
+            Cargando controles...
+        </div>
+
+
+        <div *ngIf="!cargandoControles && controles.length === 0" class="empty">
+            No hay controles registrados.
+        </div>
+
+
+        <div *ngIf="!cargandoControles && controles.length > 0" class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Fecha
+                        </th>
+
+                        <th>
+                            Activo
+                        </th>
+
+                        <th>
+                            Archivo
+                        </th>
+
+                        <th>
+                            Estado
+                        </th>
+
+                        <th>
+                            Acción
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr *ngFor="let control of controles">
+
+                        <td>
+                            {{ control.fecha }}
+                        </td>
+
+                        <td>
+
+                            <strong>
+                                {{ control.activo_nombre }}
+                            </strong>
+
+                            <small>
+                                {{ control.tipo_activo }}
+                            </small>
+
+                        </td>
+
+                        <td>
+                            {{ control.archivo_nombre }}
+                        </td>
+
+                        <td>
+
+                            <span class="estado" [ngClass]="obtenerClaseEstado(control.estado)">
+                                {{ control.estado }}
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <a class="btn-link" [href]="obtenerUrlArchivo(control)" target="_blank">
+                                Ver evidencia
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+</div>
+
+
+
+<!-- ===================================================== -->
+<!-- MODAL CÁMARA -->
+<!-- ===================================================== -->
+
+<div *ngIf="mostrarCamara" class="camera-modal">
+
+    <div class="camera-modal-content">
+
+        <div class="camera-modal-header">
+
+            <div>
+
+                <h3>
+                    Tomar fotografía
+                </h3>
+
+                <p>
+                    Ubique el control dentro de la cámara.
+                </p>
+
+            </div>
+
+            <button type="button" class="camera-close" (click)="cerrarCamara()">
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="camera-preview">
+
+            <video #videoCamara autoplay playsinline muted></video>
+
+        </div>
+
+
+        <div class="camera-actions">
+
+            <button type="button" class="btn-camera-cancel" (click)="cerrarCamara()">
+                Cancelar
+            </button>
+
+            <button type="button" class="btn-camera-capture" (click)="tomarFoto()">
+                📷 Tomar foto
+            </button>
+
+        </div>
+
+    </div>
+
+</div>

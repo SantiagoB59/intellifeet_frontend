@@ -19,6 +19,18 @@ export class AlertasComponent implements OnInit {
   ejecutandoMotor = false;
 
   // =====================================================
+  // CAMPO DINÁMICO
+  // =====================================================
+
+  modalCampoDinamico = false;
+
+  alertaCampoDinamicoSeleccionada!: Alerta;
+
+  nuevaFechaCampoDinamico = '';
+
+  guardandoCampoDinamico = false;
+
+  // =====================================================
   // PESTAÑAS
   // =====================================================
   pestanaActiva: 'VERIFICAR' | 'HISTORICO' = 'VERIFICAR';
@@ -435,6 +447,17 @@ export class AlertasComponent implements OnInit {
       this.alertaSeleccionada = alerta;
 
       // ===================================================
+      // CAMPO DINÁMICO
+      // ===================================================
+
+      if (alerta.origen === 'CAMPO_DINAMICO') {
+
+        this.abrirModalCampoDinamico(alerta);
+
+        return;
+      }
+
+      // ===================================================
       // DOCUMENTO DE OPERADOR
       // ===================================================
 
@@ -444,7 +467,6 @@ export class AlertasComponent implements OnInit {
 
         return;
       }
-
 
       // ===================================================
       // DOCUMENTO DE VEHÍCULO / MAQUINARIA
@@ -488,6 +510,135 @@ export class AlertasComponent implements OnInit {
     // =====================================================
 
     this.resolver(alerta.id);
+  }
+
+  // =====================================================
+  // ABRIR MODAL CAMPO DINÁMICO
+  // =====================================================
+
+  abrirModalCampoDinamico(alerta: Alerta): void {
+
+    this.alertaCampoDinamicoSeleccionada = alerta;
+
+    this.nuevaFechaCampoDinamico =
+      alerta.metadata?.fecha_vencimiento || '';
+
+    this.modalCampoDinamico = true;
+  }
+
+
+  // =====================================================
+  // RESOLVER CAMPO DINÁMICO
+  // =====================================================
+
+  resolverCampoDinamico(): void {
+
+    if (!this.alertaCampoDinamicoSeleccionada) {
+      return;
+    }
+
+    if (!this.nuevaFechaCampoDinamico) {
+
+      alert(
+        'Debes seleccionar la nueva fecha de vencimiento.'
+      );
+
+      return;
+    }
+
+    const vehiculoId =
+      this.alertaCampoDinamicoSeleccionada.vehiculo_id;
+
+    const campoId =
+      this.alertaCampoDinamicoSeleccionada.metadata?.campo_id;
+
+    if (!vehiculoId) {
+
+      alert(
+        'No se encontró el vehículo asociado a la alerta.'
+      );
+
+      return;
+    }
+
+    if (!campoId) {
+
+      alert(
+        'No se encontró el campo dinámico asociado a la alerta.'
+      );
+
+      return;
+    }
+
+    const formData = new FormData();
+
+    // =====================================================
+    // VEHÍCULO
+    // =====================================================
+
+    formData.append(
+      'vehiculo_id',
+      vehiculoId.toString()
+    );
+
+    // =====================================================
+    // CAMPO DINÁMICO
+    // =====================================================
+
+    formData.append(
+      'campo_id',
+      campoId.toString()
+    );
+
+    // =====================================================
+    // NUEVA FECHA
+    // =====================================================
+
+    formData.append(
+      'fecha_vencimiento',
+      this.nuevaFechaCampoDinamico
+    );
+
+    this.guardandoCampoDinamico = true;
+
+    this.alertasService
+      .resolverCampoDinamico(
+        this.alertaCampoDinamicoSeleccionada.id,
+        formData
+      )
+      .subscribe({
+
+        next: () => {
+
+          this.guardandoCampoDinamico = false;
+
+          this.modalCampoDinamico = false;
+
+          this.cargarTodo();
+
+          this.alertasService.notificarAlertasActualizadas();
+
+          alert(
+            'Fecha actualizada y alerta resuelta correctamente.'
+          );
+        },
+
+        error: (err) => {
+
+          console.error(
+            'Error resolviendo campo dinámico:',
+            err
+          );
+
+          this.guardandoCampoDinamico = false;
+
+          alert(
+            err?.error?.message ||
+            'No fue posible actualizar la fecha.'
+          );
+        }
+
+      });
   }
 
 

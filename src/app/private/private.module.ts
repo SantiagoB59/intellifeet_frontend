@@ -33,6 +33,8 @@ import { PreoperacionalAdminComponent } from './preoperacional-admin/preoperacio
 import { ReportesPreoperacionalesComponent } from './reportes-preoperacionales/reportes-preoperacionales.component';
 import { AnaliticaComponent } from './analitica/analitica.component';
 import { AlertasFlotantesComponent } from './alertas-flotantes/alertas-flotantes.component';
+import { ControlDiarioAdminComponent } from './control-diario-admin/control-diario-admin.component';
+import { ControlDiarioComponent } from './control-diario/control-diario.component';
 
 @NgModule({
   declarations: [
@@ -60,7 +62,9 @@ import { AlertasFlotantesComponent } from './alertas-flotantes/alertas-flotantes
     PreoperacionalAdminComponent,
     ReportesPreoperacionalesComponent,
     AnaliticaComponent,
-    AlertasFlotantesComponent
+    AlertasFlotantesComponent,
+    ControlDiarioAdminComponent,
+    ControlDiarioComponent
   ],
   imports: [
     CommonModule,

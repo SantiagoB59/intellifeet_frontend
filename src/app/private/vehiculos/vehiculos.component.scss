@@ -2066,3 +2066,27 @@ tbody tr {
     padding: 12px;
   }
 }
+
+/* =========================================================
+   MODAL PRINCIPAL
+   ========================================================= */
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+}
+
+/* =========================================================
+   MODAL DE CONFIRMACIÓN
+   SIEMPRE ENCIMA DEL MODAL PRINCIPAL
+   ========================================================= */
+
+.modal-backdrop:has(.confirm-modal) {
+  z-index: 2000;
+}
+
+.confirm-modal {
+  position: relative;
+  z-index: 2001;
+}

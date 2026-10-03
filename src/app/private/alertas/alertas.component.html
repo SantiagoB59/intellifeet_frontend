@@ -736,7 +736,151 @@
 
 </main>
 
+<!-- ===================================================== -->
+<!-- MODAL CAMPO DINÁMICO -->
+<!-- ===================================================== -->
 
+<div *ngIf="modalCampoDinamico" class="modal-overlay">
+
+  <div class="modal-card">
+
+    <!-- HEADER -->
+
+    <div class="modal-header">
+
+      <div>
+
+        <h2>
+          Actualizar fecha
+        </h2>
+
+        <p>
+          {{
+          alertaCampoDinamicoSeleccionada?.metadata?.campo
+          || alertaCampoDinamicoSeleccionada?.categoria
+          || 'Campo dinámico'
+          }}
+        </p>
+
+      </div>
+
+      <button type="button" (click)="modalCampoDinamico = false" [disabled]="guardandoCampoDinamico"
+        class="modal-close">
+
+        <i class="fas fa-times"></i>
+
+      </button>
+
+    </div>
+
+
+    <!-- INFORMACIÓN -->
+
+    <div class="document-info">
+
+      <p>
+
+        <strong>
+          Vehículo:
+        </strong>
+
+        {{
+        alertaCampoDinamicoSeleccionada?.vehiculo?.placa
+        || 'Sin vehículo'
+        }}
+
+      </p>
+
+      <span>
+
+        {{
+        alertaCampoDinamicoSeleccionada?.vehiculo?.marca
+        || ''
+        }}
+
+      </span>
+
+    </div>
+
+
+    <!-- CAMPO -->
+
+    <div class="modal-field">
+
+      <label>
+        Campo
+      </label>
+
+      <input type="text" [value]="
+          alertaCampoDinamicoSeleccionada?.metadata?.campo
+          || alertaCampoDinamicoSeleccionada?.categoria
+          || ''
+        " disabled>
+
+    </div>
+
+
+    <!-- FECHA ACTUAL -->
+
+    <div class="modal-field">
+
+      <label>
+        Fecha actual
+      </label>
+
+      <input type="date" [value]="
+          alertaCampoDinamicoSeleccionada?.metadata?.fecha_vencimiento
+          || ''
+        " disabled>
+
+    </div>
+
+
+    <!-- NUEVA FECHA -->
+
+    <div class="modal-field">
+
+      <label>
+        Nueva fecha de vencimiento
+      </label>
+
+      <input type="date" [(ngModel)]="nuevaFechaCampoDinamico" [disabled]="guardandoCampoDinamico">
+
+    </div>
+
+
+    <!-- ACCIONES -->
+
+    <div class="modal-actions">
+
+      <button type="button" (click)="modalCampoDinamico = false" [disabled]="guardandoCampoDinamico"
+        class="modal-btn modal-btn-cancel">
+
+        Cancelar
+
+      </button>
+
+
+      <button type="button" (click)="resolverCampoDinamico()" [disabled]="guardandoCampoDinamico"
+        class="modal-btn modal-btn-save">
+
+        <i *ngIf="!guardandoCampoDinamico" class="fas fa-check"></i>
+
+        <i *ngIf="guardandoCampoDinamico" class="fas fa-spinner fa-spin"></i>
+
+        {{
+        guardandoCampoDinamico
+        ? 'Actualizando...'
+        : 'Actualizar y resolver'
+        }}
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
 <!-- ============================================================= -->
 <!-- MODAL DOCUMENTO -->
 <!-- ============================================================= -->

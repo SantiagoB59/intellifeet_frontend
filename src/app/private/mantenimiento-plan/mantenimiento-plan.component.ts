@@ -100,7 +100,7 @@ export class MantenimientoPlanComponent implements OnInit {
     private maquinariaService: MaquinariaService,
     private router: Router,
     private route: ActivatedRoute
-  ) {}
+  ) { }
 
   // =========================================================
   // INIT
@@ -296,29 +296,47 @@ export class MantenimientoPlanComponent implements OnInit {
     if (this.tipo === 'vehiculo') {
 
       if (!this.vehiculo) {
-
         console.error(
           'No existe información del vehículo.'
         );
-
+        this.planItems = [];
         return;
       }
 
-      // Intentamos obtener el ID directamente.
-      //
-      // Ejemplo:
-      // tipo_vehiculo_id = 3
-      //
-      // También soportamos una respuesta anidada:
-      // tipo_vehiculo: { id: 3 }
-      const tipoVehiculoId =
-        this.vehiculo.tipo_vehiculo_id ??
-        this.vehiculo.tipo_vehiculo?.id;
+      // =====================================================
+      // OBTENER TIPO DE VEHÍCULO
+      // =====================================================
 
+      const tipoVehiculoId = Number(
+        this.vehiculo.tipo_vehiculo_id ??
+        this.vehiculo.tipo_vehiculo?.id
+      );
+
+      console.log('================================');
+      console.log('VEHÍCULO ACTUAL');
+      console.log('ID:', this.vehiculo.id);
+      console.log('PLACA:', this.vehiculo.placa);
+      console.log('TIPO:', this.vehiculo.tipo_vehiculo);
       console.log(
         'TIPO VEHÍCULO ID:',
         tipoVehiculoId
       );
+      console.log('================================');
+
+      if (!tipoVehiculoId) {
+
+        console.error(
+          'El vehículo no tiene un tipo_vehiculo_id válido.'
+        );
+
+        this.planItems = [];
+
+        return;
+      }
+
+      // =====================================================
+      // CONSULTAR PLANES
+      // =====================================================
 
       this.service
         .getPlanItems(
@@ -329,12 +347,31 @@ export class MantenimientoPlanComponent implements OnInit {
 
           next: (res) => {
 
-            this.planItems = res;
-
             console.log(
-              'PLAN ITEMS VEHÍCULO:',
+              'PLAN ITEMS RECIBIDOS:',
               res
             );
+
+            // =================================================
+            // FILTRAR POR TIPO DE VEHÍCULO
+            // =================================================
+
+            this.planItems = res.filter(
+              (p: any) => {
+
+                return (
+                  p.tipo_activo === 'VEHICULO' &&
+                  Number(p.tipo_vehiculo_id) === tipoVehiculoId
+                );
+
+              }
+            );
+
+            console.log(
+              'PLAN ITEMS PARA ESTE VEHÍCULO:',
+              this.planItems
+            );
+
           },
 
           error: (err) => {
@@ -343,11 +380,16 @@ export class MantenimientoPlanComponent implements OnInit {
               'Error cargando plan items del vehículo:',
               err
             );
+
+            this.planItems = [];
+
           }
+
         });
 
       return;
     }
+
 
     // =======================================================
     // MAQUINARIA
@@ -361,22 +403,50 @@ export class MantenimientoPlanComponent implements OnInit {
           'No existe información de la maquinaria.'
         );
 
+        this.planItems = [];
+
         return;
       }
 
-      // Ejemplo:
-      // tipo_maquinaria_id = 6
-      //
-      // También soportamos:
-      // tipo_maquinaria: { id: 6 }
-      const tipoMaquinariaId =
-        this.maquinaria.tipo_maquinaria_id ??
-        this.maquinaria.tipo_maquinaria?.id;
+      // =====================================================
+      // OBTENER TIPO DE MAQUINARIA
+      // =====================================================
 
+      const tipoMaquinariaId = Number(
+        this.maquinaria.tipo_maquinaria_id ??
+        this.maquinaria.tipo_maquinaria?.id
+      );
+
+      console.log('================================');
+      console.log('MAQUINARIA ACTUAL');
+      console.log(
+        'ID:',
+        this.maquinaria.id
+      );
+      console.log(
+        'CÓDIGO:',
+        this.maquinaria.codigo
+      );
       console.log(
         'TIPO MAQUINARIA ID:',
         tipoMaquinariaId
       );
+      console.log('================================');
+
+      if (!tipoMaquinariaId) {
+
+        console.error(
+          'La maquinaria no tiene un tipo_maquinaria_id válido.'
+        );
+
+        this.planItems = [];
+
+        return;
+      }
+
+      // =====================================================
+      // CONSULTAR PLANES
+      // =====================================================
 
       this.service
         .getPlanItems(
@@ -387,12 +457,31 @@ export class MantenimientoPlanComponent implements OnInit {
 
           next: (res) => {
 
-            this.planItems = res;
-
             console.log(
-              'PLAN ITEMS MAQUINARIA:',
+              'PLAN ITEMS MAQUINARIA RECIBIDOS:',
               res
             );
+
+            // =================================================
+            // FILTRAR POR TIPO DE MAQUINARIA
+            // =================================================
+
+            this.planItems = res.filter(
+              (p: any) => {
+
+                return (
+                  p.tipo_activo === 'MAQUINARIA' &&
+                  Number(p.tipo_maquinaria_id) === tipoMaquinariaId
+                );
+
+              }
+            );
+
+            console.log(
+              'PLAN ITEMS PARA ESTA MAQUINARIA:',
+              this.planItems
+            );
+
           },
 
           error: (err) => {
@@ -401,11 +490,14 @@ export class MantenimientoPlanComponent implements OnInit {
               'Error cargando plan items de maquinaria:',
               err
             );
+
+            this.planItems = [];
+
           }
+
         });
     }
   }
-
   // =========================================================
   // MODAL
   // =========================================================

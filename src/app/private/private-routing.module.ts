@@ -24,6 +24,8 @@ import { UsuariosComponent } from './usuarios/usuarios.component';
 import { PreoperacionalAdminComponent } from './preoperacional-admin/preoperacional-admin.component';
 import { ReportesPreoperacionalesComponent } from './reportes-preoperacionales/reportes-preoperacionales.component';
 import { AnaliticaComponent } from './analitica/analitica.component';
+import { ControlDiarioComponent } from './control-diario/control-diario.component';
+import { ControlDiarioAdminComponent } from './control-diario-admin/control-diario-admin.component';
 
 const routes: Routes = [
   {
@@ -53,7 +55,9 @@ const routes: Routes = [
       {path: 'usuarios', component: UsuariosComponent},
       {path: 'preoperacional-admin', component: PreoperacionalAdminComponent},
       {path: 'reportes-preoperacionales', component: ReportesPreoperacionalesComponent},
-      {path: 'analitica', component: AnaliticaComponent}
+      {path: 'analitica', component: AnaliticaComponent},
+      {path: 'control-diario', component: ControlDiarioComponent},
+      {path: 'control-diario-admin',component: ControlDiarioAdminComponent}
     ]
   }
 ];

@@ -1,0 +1,1254 @@
+<div class="control-admin-page">
+
+  <!-- ====================================================== -->
+  <!-- HEADER -->
+  <!-- ====================================================== -->
+
+  <header class="page-header">
+
+    <div class="header-content">
+
+      <div class="header-text">
+
+        <span class="eyebrow">
+          ADMINISTRACIÓN
+        </span>
+
+        <h1>
+          Control diario
+        </h1>
+
+        <p>
+          Supervisión y validación de evidencias
+          operativas de vehículos y maquinaria.
+        </p>
+
+      </div>
+
+      <div class="header-actions">
+
+        <button
+          type="button"
+          class="btn-excel"
+          [disabled]="descargandoExcel"
+          (click)="descargarExcel()"
+        >
+
+          <span
+            *ngIf="!descargandoExcel"
+          >
+            ↓
+          </span>
+
+          <span
+            *ngIf="descargandoExcel"
+            class="spinner-small"
+          ></span>
+
+          <span>
+            {{
+              descargandoExcel
+                ? 'Generando...'
+                : 'Descargar Excel'
+            }}
+          </span>
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+  <!-- ====================================================== -->
+  <!-- MENSAJES -->
+  <!-- ====================================================== -->
+
+  <div
+    *ngIf="mensaje"
+    class="message success"
+  >
+    <span>✓</span>
+    {{ mensaje }}
+
+    <button
+      type="button"
+      (click)="mensaje = ''"
+    >
+      ×
+    </button>
+
+  </div>
+
+
+  <div
+    *ngIf="error"
+    class="message error"
+  >
+    <span>!</span>
+    {{ error }}
+
+    <button
+      type="button"
+      (click)="error = ''"
+    >
+      ×
+    </button>
+
+  </div>
+
+
+  <!-- ====================================================== -->
+  <!-- FILTROS -->
+  <!-- ====================================================== -->
+
+  <section class="card filters-card">
+
+    <div class="card-header">
+
+      <div>
+
+        <span class="section-label">
+          CONSULTA
+        </span>
+
+        <h2>
+          Filtros
+        </h2>
+
+        <p>
+          Seleccione los criterios para consultar
+          las evidencias registradas.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div class="filters-grid">
+
+      <!-- MES -->
+
+      <div class="field">
+
+        <label>
+          Mes
+        </label>
+
+        <select
+          [(ngModel)]="mes"
+        >
+
+          <option value="">
+            Todos los meses
+          </option>
+
+          <option value="1">
+            Enero
+          </option>
+
+          <option value="2">
+            Febrero
+          </option>
+
+          <option value="3">
+            Marzo
+          </option>
+
+          <option value="4">
+            Abril
+          </option>
+
+          <option value="5">
+            Mayo
+          </option>
+
+          <option value="6">
+            Junio
+          </option>
+
+          <option value="7">
+            Julio
+          </option>
+
+          <option value="8">
+            Agosto
+          </option>
+
+          <option value="9">
+            Septiembre
+          </option>
+
+          <option value="10">
+            Octubre
+          </option>
+
+          <option value="11">
+            Noviembre
+          </option>
+
+          <option value="12">
+            Diciembre
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <!-- AÑO -->
+
+      <div class="field">
+
+        <label>
+          Año
+        </label>
+
+        <input
+          type="number"
+          [(ngModel)]="anio"
+          placeholder="Ej. 2026"
+          min="2000"
+          max="2100"
+        />
+
+      </div>
+
+
+      <!-- ACTIVO -->
+
+      <div class="field">
+
+        <label>
+          Vehículo / maquinaria
+        </label>
+
+        <select
+          [(ngModel)]="activoSeleccionado"
+        >
+
+          <option value="">
+            Todos los activos
+          </option>
+
+          <option
+            *ngFor="let activo of activos; trackBy: trackById"
+            [value]="activo.tipo + '-' + activo.id"
+          >
+
+            {{
+              activo.tipo === 'VEHICULO'
+                ? 'Vehículo'
+                : 'Maquinaria'
+            }}
+
+            -
+
+            {{ activo.nombre }}
+
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <!-- OPERADOR -->
+
+      <div class="field">
+
+        <label>
+          Operador
+        </label>
+
+        <select
+          [(ngModel)]="operadorSeleccionado"
+        >
+
+          <option value="">
+            Todos los operadores
+          </option>
+
+          <option
+            *ngFor="
+              let operador of operadores;
+              trackBy: trackById
+            "
+            [value]="operador.id"
+          >
+            {{ operador.nombre }}
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <!-- ESTADO -->
+
+      <div class="field">
+
+        <label>
+          Estado
+        </label>
+
+        <select
+          [(ngModel)]="estadoSeleccionado"
+        >
+
+          <option value="">
+            Todos los estados
+          </option>
+
+          <option value="PENDIENTE">
+            Pendiente
+          </option>
+
+          <option value="VALIDADO">
+            Validado
+          </option>
+
+          <option value="RECHAZADO">
+            Rechazado
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <!-- FECHA DESDE -->
+
+      <div class="field">
+
+        <label>
+          Fecha desde
+        </label>
+
+        <input
+          type="date"
+          [(ngModel)]="fechaDesde"
+        />
+
+      </div>
+
+
+      <!-- FECHA HASTA -->
+
+      <div class="field">
+
+        <label>
+          Fecha hasta
+        </label>
+
+        <input
+          type="date"
+          [(ngModel)]="fechaHasta"
+        />
+
+      </div>
+
+    </div>
+
+
+    <!-- ACCIONES -->
+
+    <div class="filter-actions">
+
+      <button
+        type="button"
+        class="btn-secondary"
+        (click)="limpiarFiltros()"
+      >
+        Limpiar filtros
+      </button>
+
+      <button
+        type="button"
+        class="btn-primary"
+        [disabled]="cargando"
+        (click)="aplicarFiltros()"
+      >
+
+        <span
+          *ngIf="!cargando"
+        >
+          Consultar
+        </span>
+
+        <span
+          *ngIf="cargando"
+        >
+          Consultando...
+        </span>
+
+      </button>
+
+    </div>
+
+  </section>
+
+
+  <!-- ====================================================== -->
+  <!-- KPIs -->
+  <!-- ====================================================== -->
+
+  <section class="kpi-grid">
+
+    <article class="kpi-card">
+
+      <div class="kpi-icon total">
+        ≡
+      </div>
+
+      <div>
+
+        <span>
+          Total controles
+        </span>
+
+        <strong>
+          {{ totalControles }}
+        </strong>
+
+      </div>
+
+    </article>
+
+
+    <article class="kpi-card">
+
+      <div class="kpi-icon pending">
+        !
+      </div>
+
+      <div>
+
+        <span>
+          Pendientes
+        </span>
+
+        <strong>
+          {{ totalPendientes }}
+        </strong>
+
+      </div>
+
+    </article>
+
+
+    <article class="kpi-card">
+
+      <div class="kpi-icon validated">
+        ✓
+      </div>
+
+      <div>
+
+        <span>
+          Validados
+        </span>
+
+        <strong>
+          {{ totalValidados }}
+        </strong>
+
+      </div>
+
+    </article>
+
+
+    <article class="kpi-card">
+
+      <div class="kpi-icon rejected">
+        ×
+      </div>
+
+      <div>
+
+        <span>
+          Rechazados
+        </span>
+
+        <strong>
+          {{ totalRechazados }}
+        </strong>
+
+      </div>
+
+    </article>
+
+  </section>
+
+
+  <!-- ====================================================== -->
+  <!-- TABLA -->
+  <!-- ====================================================== -->
+
+  <section class="card table-card">
+
+    <div class="card-header table-header">
+
+      <div>
+
+        <span class="section-label">
+          REGISTROS
+        </span>
+
+        <h2>
+          Evidencias cargadas
+        </h2>
+
+        <p>
+          Revise y valide los controles registrados
+          por los operadores.
+        </p>
+
+      </div>
+
+      <div class="record-count">
+
+        {{ totalControles }}
+
+        {{
+          totalControles === 1
+            ? 'registro'
+            : 'registros'
+        }}
+
+      </div>
+
+    </div>
+
+
+    <!-- LOADING -->
+
+    <div
+      *ngIf="cargando"
+      class="loading-state"
+    >
+
+      <div class="loading-spinner"></div>
+
+      <span>
+        Cargando controles...
+      </span>
+
+    </div>
+
+
+    <!-- EMPTY -->
+
+    <div
+      *ngIf="
+        !cargando &&
+        controles.length === 0
+      "
+      class="empty-state"
+    >
+
+      <div class="empty-icon">
+        □
+      </div>
+
+      <h3>
+        No hay controles registrados
+      </h3>
+
+      <p>
+        No se encontraron evidencias con
+        los filtros seleccionados.
+      </p>
+
+    </div>
+
+
+    <!-- TABLE -->
+
+    <div
+      *ngIf="
+        !cargando &&
+        controles.length > 0
+      "
+      class="table-wrapper"
+    >
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th>
+              Fecha
+            </th>
+
+            <th>
+              Activo
+            </th>
+
+            <th>
+              Operador
+            </th>
+
+            <th>
+              Evidencia
+            </th>
+
+            <th>
+              Estado
+            </th>
+
+            <th>
+              Acción
+            </th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody>
+
+          <tr
+            *ngFor="
+              let control of controles;
+              trackBy: trackById
+            "
+          >
+
+            <!-- FECHA -->
+
+            <td>
+
+              <div class="date-cell">
+
+                <strong>
+                  {{ control.fecha }}
+                </strong>
+
+              </div>
+
+            </td>
+
+
+            <!-- ACTIVO -->
+
+            <td>
+
+              <div class="asset-cell">
+
+                <strong>
+                  {{ control.activo_nombre || 'Sin activo' }}
+                </strong>
+
+                <small>
+                  {{
+                    control.tipo_activo === 'VEHICULO'
+                      ? 'Vehículo'
+                      : 'Maquinaria'
+                  }}
+                </small>
+
+              </div>
+
+            </td>
+
+
+            <!-- OPERADOR -->
+
+            <td>
+
+              <div class="operator-cell">
+
+                <span class="operator-avatar">
+                  {{
+                    (
+                      control.usuario ||
+                      '?'
+                    ).charAt(0).toUpperCase()
+                  }}
+                </span>
+
+                <span>
+                  {{ control.usuario || 'Sin usuario' }}
+                </span>
+
+              </div>
+
+            </td>
+
+
+            <!-- EVIDENCIA -->
+
+            <td>
+
+              <button
+                type="button"
+                class="evidence-link"
+                (click)="abrirDetalle(control)"
+              >
+
+                <span
+                  *ngIf="esImagen(control)"
+                  class="evidence-icon image"
+                >
+                  ▧
+                </span>
+
+                <span
+                  *ngIf="esPdf(control)"
+                  class="evidence-icon pdf"
+                >
+                  PDF
+                </span>
+
+                <span>
+                  Ver evidencia
+                </span>
+
+              </button>
+
+            </td>
+
+
+            <!-- ESTADO -->
+
+            <td>
+
+              <span
+                class="estado"
+                [ngClass]="
+                  obtenerClaseEstado(
+                    control.estado
+                  )
+                "
+              >
+
+                <span class="estado-dot"></span>
+
+                {{ control.estado }}
+
+              </span>
+
+            </td>
+
+
+            <!-- ACCIÓN -->
+
+            <td>
+
+              <button
+                type="button"
+                class="btn-review"
+                (click)="abrirDetalle(control)"
+              >
+                Revisar
+              </button>
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </section>
+
+
+  <!-- ====================================================== -->
+  <!-- MODAL -->
+  <!-- ====================================================== -->
+
+  <div
+    *ngIf="mostrarModal && controlSeleccionado"
+    class="modal-backdrop"
+    (click)="cerrarDetalle()"
+  >
+
+    <div
+      class="review-modal"
+      (click)="$event.stopPropagation()"
+    >
+
+      <!-- HEADER -->
+
+      <div class="modal-header">
+
+        <div>
+
+          <span class="section-label">
+            REVISIÓN
+          </span>
+
+          <h2>
+            Control diario
+          </h2>
+
+          <p>
+            Verifique la evidencia antes de validar
+            el registro.
+          </p>
+
+        </div>
+
+        <button
+          type="button"
+          class="modal-close"
+          (click)="cerrarDetalle()"
+        >
+          ×
+        </button>
+
+      </div>
+
+
+      <!-- BODY -->
+
+      <div class="modal-body">
+
+
+        <!-- INFORMACIÓN -->
+
+        <div class="detail-grid">
+
+          <div class="detail-item">
+
+            <span>
+              Fecha
+            </span>
+
+            <strong>
+              {{ controlSeleccionado.fecha }}
+            </strong>
+
+          </div>
+
+
+          <div class="detail-item">
+
+            <span>
+              Activo
+            </span>
+
+            <strong>
+              {{
+                controlSeleccionado.activo_nombre ||
+                'Sin activo'
+              }}
+            </strong>
+
+          </div>
+
+
+          <div class="detail-item">
+
+            <span>
+              Tipo
+            </span>
+
+            <strong>
+              {{
+                controlSeleccionado.tipo_activo ===
+                'VEHICULO'
+                  ? 'Vehículo'
+                  : 'Maquinaria'
+              }}
+            </strong>
+
+          </div>
+
+
+          <div class="detail-item">
+
+            <span>
+              Operador
+            </span>
+
+            <strong>
+              {{
+                controlSeleccionado.usuario ||
+                'Sin usuario'
+              }}
+            </strong>
+
+          </div>
+
+
+          <div class="detail-item">
+
+            <span>
+              Estado
+            </span>
+
+            <span
+              class="estado"
+              [ngClass]="
+                obtenerClaseEstado(
+                  controlSeleccionado.estado
+                )
+              "
+            >
+
+              <span class="estado-dot"></span>
+
+              {{ controlSeleccionado.estado }}
+
+            </span>
+
+          </div>
+
+
+          <div class="detail-item">
+
+            <span>
+              Archivo
+            </span>
+
+            <strong class="filename">
+              {{
+                controlSeleccionado.archivo_nombre
+              }}
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <!-- EVIDENCIA -->
+
+        <div class="evidence-section">
+
+          <div class="evidence-section-header">
+
+            <div>
+
+              <h3>
+                Evidencia
+              </h3>
+
+              <p>
+                Archivo cargado por el operador.
+              </p>
+
+            </div>
+
+            <a
+              *ngIf="controlSeleccionado"
+              [href]="
+                obtenerUrlArchivo(
+                  controlSeleccionado
+                )
+              "
+              target="_blank"
+              rel="noopener noreferrer"
+              class="open-file"
+            >
+              Abrir archivo
+            </a>
+
+          </div>
+
+
+          <!-- IMAGEN -->
+
+          <div
+            *ngIf="
+              esImagen(
+                controlSeleccionado
+              )
+            "
+            class="image-viewer"
+          >
+
+            <img
+              [src]="
+                obtenerUrlArchivo(
+                  controlSeleccionado
+                )
+              "
+              alt="Evidencia del control diario"
+            />
+
+          </div>
+
+
+          <!-- PDF -->
+
+          <div
+            *ngIf="
+              esPdf(
+                controlSeleccionado
+              )
+            "
+            class="pdf-viewer"
+          >
+
+            <div class="pdf-icon">
+              PDF
+            </div>
+
+            <strong>
+              Documento PDF
+            </strong>
+
+            <p>
+              El documento se abrirá en una
+              nueva pestaña para su revisión.
+            </p>
+
+            <a
+              [href]="
+                obtenerUrlArchivo(
+                  controlSeleccionado
+                )
+              "
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn-open-pdf"
+            >
+              Abrir PDF
+            </a>
+
+          </div>
+
+        </div>
+
+
+        <!-- OBSERVACIÓN OPERADOR -->
+
+        <div
+          *ngIf="
+            controlSeleccionado.observaciones
+          "
+          class="observation-box"
+        >
+
+          <span>
+            Observación del operador
+          </span>
+
+          <p>
+            {{
+              controlSeleccionado.observaciones
+            }}
+          </p>
+
+        </div>
+
+
+        <!-- OBSERVACIÓN VALIDACIÓN EXISTENTE -->
+
+        <div
+          *ngIf="
+            controlSeleccionado
+              .observacion_validacion
+          "
+          class="validation-history"
+        >
+
+          <div>
+
+            <span>
+              Observación de validación
+            </span>
+
+            <p>
+              {{
+                controlSeleccionado
+                  .observacion_validacion
+              }}
+            </p>
+
+          </div>
+
+          <div
+            *ngIf="
+              controlSeleccionado.validador
+            "
+          >
+
+            <span>
+              Revisado por
+            </span>
+
+            <strong>
+              {{
+                controlSeleccionado.validador
+              }}
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <!-- VALIDACIÓN -->
+
+        <div
+          *ngIf="
+            controlSeleccionado.estado ===
+            'PENDIENTE'
+          "
+          class="validation-section"
+        >
+
+          <div class="validation-title">
+
+            <div>
+
+              <h3>
+                Decisión
+              </h3>
+
+              <p>
+                Puede validar la evidencia o
+                rechazarla indicando el motivo.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <!-- OBSERVACIÓN PARA VALIDAR -->
+
+          <div
+            *ngIf="!mostrarRechazo"
+            class="field"
+          >
+
+            <label>
+              Observación de validación
+              <small>(opcional)</small>
+            </label>
+
+            <textarea
+              rows="3"
+              [(ngModel)]="
+                observacionValidacion
+              "
+              placeholder="Agregue una observación opcional..."
+            ></textarea>
+
+          </div>
+
+
+          <!-- RECHAZO -->
+
+          <div
+            *ngIf="mostrarRechazo"
+            class="reject-box"
+          >
+
+            <div class="reject-title">
+
+              <span>
+                Motivo del rechazo
+              </span>
+
+              <button
+                type="button"
+                (click)="cancelarRechazo()"
+              >
+                ×
+              </button>
+
+            </div>
+
+            <textarea
+              rows="4"
+              [(ngModel)]="motivoRechazo"
+              placeholder="Indique claramente por qué la evidencia debe ser rechazada..."
+            ></textarea>
+
+          </div>
+
+
+          <!-- ACTIONS -->
+
+          <div class="validation-actions">
+
+            <button
+              *ngIf="!mostrarRechazo"
+              type="button"
+              class="btn-reject"
+              [disabled]="
+                procesandoValidacion ||
+                procesandoRechazo
+              "
+              (click)="abrirRechazo()"
+            >
+              Rechazar
+            </button>
+
+
+            <button
+              *ngIf="mostrarRechazo"
+              type="button"
+              class="btn-secondary"
+              [disabled]="
+                procesandoRechazo
+              "
+              (click)="cancelarRechazo()"
+            >
+              Cancelar
+            </button>
+
+
+            <button
+              *ngIf="mostrarRechazo"
+              type="button"
+              class="btn-reject-confirm"
+              [disabled]="
+                procesandoRechazo ||
+                !motivoRechazo.trim()
+              "
+              (click)="rechazarControl()"
+            >
+
+              {{
+                procesandoRechazo
+                  ? 'Rechazando...'
+                  : 'Confirmar rechazo'
+              }}
+
+            </button>
+
+
+            <button
+              *ngIf="!mostrarRechazo"
+              type="button"
+              class="btn-validate"
+              [disabled]="
+                procesandoValidacion
+              "
+              (click)="validarControl()"
+            >
+
+              {{
+                procesandoValidacion
+                  ? 'Validando...'
+                  : 'Validar control'
+              }}
+
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

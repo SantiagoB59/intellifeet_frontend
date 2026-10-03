@@ -356,4 +356,17 @@ export class AlertasService {
 
   }
 
+
+  resolverCampoDinamico(
+    alertaId: number,
+    formData: FormData
+  ) {
+
+    return this.http.post(
+      `${this.base}/${alertaId}/resolver-campo-dinamico`,
+      formData
+    );
+
+  }
+
 }

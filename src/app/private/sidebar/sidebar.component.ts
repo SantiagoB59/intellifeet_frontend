@@ -321,6 +321,20 @@ setActiveByUrl(url: string) {
       route: '/dashboard/preoperacional',
       roles: ['operador']
     },
+    {
+      key: 'control-diario',
+      label: 'Facturero',
+      icon: 'fas fa-map-marked-alt',
+      route: '/dashboard/control-diario',
+      roles: ['operador']
+    },
+    {
+      key: 'control-diario-admin',
+      label: 'Facturero',
+      icon: 'fas fa-map-marked-alt',
+      route: '/dashboard/control-diario-admin',
+      roles: ['admin']
+    },
     
   ];
   // =========================
@@ -379,6 +393,8 @@ setActiveByUrl(url: string) {
       case 'preoperacional':
         return `${base} bg-blue-50 text-blue-700 ring-blue-200`;
       case 'activo-operador':
+        return `${base} bg-blue-50 text-blue-700 ring-blue-200`;
+      case 'control-diario':
         return `${base} bg-blue-50 text-blue-700 ring-blue-200`;
 
       default:
