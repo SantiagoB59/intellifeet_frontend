@@ -467,7 +467,7 @@
                             <div *ngIf="respuestas[item.id]?.fotos?.length > 0" class="grid grid-cols-2 gap-3 mt-4">
 
                                 <img *ngFor="let foto of respuestas[item.id].fotos"
-                                    [src]="'http://localhost:5000/' + foto.archivo"
+                                    [src]="'https://intellifleet.sbtechgroup.com/' + foto.archivo"
                                     class="w-full aspect-square object-cover rounded-xl border-2 border-red-500 shadow-sm">
 
                             </div>

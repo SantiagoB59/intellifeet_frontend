@@ -1,10 +1,10 @@
 // src/environments/environment.ts
 
 // para pruebas
-export const environment = {
-  production: false,
-  apiUrl: 'http://localhost:5000'
-};
+// export const environment = {
+//   production: false,
+//   apiUrl: 'http://localhost:5000'
+// };
 
 // para celular
 // export const environment = {
@@ -14,7 +14,7 @@ export const environment = {
 
 
 // para produccion
-// export const environment = {
-//   production: true,
-//   apiUrl: 'https://transmenasmart.com'
-// };
+export const environment = {
+  production: true,
+  apiUrl: 'https://intellifleet.sbtechgroup.com'
+};
