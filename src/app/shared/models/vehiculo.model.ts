@@ -24,6 +24,8 @@ export interface Vehiculo {
   notas?: string;
 
   foto_url?: string;
+  tarjeta_registro?: string;
+  ficha_tecnica?: string;
 
   // 🔥 AGREGA ESTO
   documentos?: DocumentoForm[];

@@ -521,6 +521,121 @@
                         </div>
                     </div>
                 </div>
+                <!-- ========================================================= -->
+                <!-- DOCUMENTACIÓN TÉCNICA -->
+                <!-- ========================================================= -->
+
+                <div class="form-section">
+
+                    <div class="form-section-title">
+                        <i class="fas fa-file-pdf"></i>
+                        <span>Documentación técnica</span>
+                    </div>
+
+                    <div class="form-grid">
+
+                        <!-- ===================================================== -->
+                        <!-- TARJETA DE REGISTRO -->
+                        <!-- ===================================================== -->
+
+                        <div class="form-field">
+
+                            <label for="tarjeta_registro">
+                                Tarjeta de registro
+                            </label>
+
+                            <input id="tarjeta_registro" type="file" accept="application/pdf,.pdf"
+                                (change)="onTarjetaRegistroSelected($event)" [disabled]="modalMode === 'ver'">
+
+                            <!-- Archivo nuevo seleccionado -->
+                            <div class="selected-document" *ngIf="selectedTarjetaRegistro">
+                                <i class="fas fa-file-pdf"></i>
+
+                                <div class="document-info">
+                                    <strong>{{ selectedTarjetaRegistro.name }}</strong>
+                                    <small>
+                                        {{ (selectedTarjetaRegistro.size / 1024 / 1024).toFixed(2) }} MB
+                                    </small>
+                                </div>
+                            </div>
+
+                            <!-- Documento que ya existe -->
+                            <div class="existing-document" *ngIf="vehiculoSeleccionado?.tarjeta_registro">
+
+                                <i class="fas fa-file-pdf"></i>
+
+                                <div class="document-info">
+                                    <strong>Tarjeta de registro cargada</strong>
+                                    <small>Documento disponible</small>
+                                </div>
+
+                                <a [href]="environment.apiUrl + vehiculoSeleccionado!.tarjeta_registro" target="_blank"
+                                    rel="noopener noreferrer" class="document-button">
+                                    <i class="fas fa-eye"></i>
+                                    Ver PDF
+                                </a>
+
+                            </div>
+
+                            <small class="field-help">
+                                Formato permitido: PDF · Máximo 10 MB
+                            </small>
+
+                        </div>
+
+
+                        <!-- ===================================================== -->
+                        <!-- FICHA TÉCNICA -->
+                        <!-- ===================================================== -->
+
+                        <div class="form-field">
+
+                            <label for="ficha_tecnica">
+                                Ficha técnica
+                            </label>
+
+                            <input id="ficha_tecnica" type="file" accept="application/pdf,.pdf"
+                                (change)="onFichaTecnicaSelected($event)" [disabled]="modalMode === 'ver'">
+
+                            <!-- Archivo nuevo seleccionado -->
+                            <div class="selected-document" *ngIf="selectedFichaTecnica">
+                                <i class="fas fa-file-pdf"></i>
+
+                                <div class="document-info">
+                                    <strong>{{ selectedFichaTecnica.name }}</strong>
+                                    <small>
+                                        {{ (selectedFichaTecnica.size / 1024 / 1024).toFixed(2) }} MB
+                                    </small>
+                                </div>
+                            </div>
+
+                            <!-- Documento que ya existe -->
+                            <div class="existing-document" *ngIf="vehiculoSeleccionado?.ficha_tecnica">
+
+                                <i class="fas fa-file-pdf"></i>
+
+                                <div class="document-info">
+                                    <strong>Ficha técnica cargada</strong>
+                                    <small>Documento disponible</small>
+                                </div>
+
+                                <a [href]="environment.apiUrl + vehiculoSeleccionado!.ficha_tecnica" target="_blank"
+                                    rel="noopener noreferrer" class="document-button">
+                                    <i class="fas fa-eye"></i>
+                                    Ver PDF
+                                </a>
+
+                            </div>
+
+                            <small class="field-help">
+                                Formato permitido: PDF · Máximo 10 MB
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </div>
 
                 <!-- ───────── NOTAS ───────── -->
                 <div class="form-section">

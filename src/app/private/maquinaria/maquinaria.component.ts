@@ -12,7 +12,7 @@ type ModalMode = 'crear' | 'editar' | 'ver';
   styleUrls: ['./maquinaria.component.scss']
 })
 export class MaquinariaComponent implements OnInit {
-
+  environment = environment;
   maquinaria: any[] = [];
 
   stats: any = {
@@ -49,7 +49,7 @@ export class MaquinariaComponent implements OnInit {
   constructor(
     private svc: MaquinariaService,
     private fb: FormBuilder
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.buildForm();
@@ -66,6 +66,7 @@ export class MaquinariaComponent implements OnInit {
       tipo_maquinaria_id: [null, Validators.required],
 
       marca: [''],
+      linea: [''],
       modelo: [''],
 
       horometro_actual: [0, Validators.required],
@@ -74,7 +75,9 @@ export class MaquinariaComponent implements OnInit {
       gps_id: [''],
 
       estado: ['OPERATIVA'],
-      notas: ['']
+      notas: [''],
+      tarjeta_registro: [null],
+      ficha_tecnica: [null]
     });
   }
 
@@ -150,7 +153,10 @@ export class MaquinariaComponent implements OnInit {
         operador: full.operador,
         gps_id: full.gps_id,
         estado: full.estado,
-        notas: full.notas
+        notas: full.notas,
+        linea: full.linea,
+        tarjeta_registro: full.tarjeta_registro,
+        ficha_tecnica: full.ficha_tecnica
       });
 
       this.previewUrl = full.foto_url
@@ -222,6 +228,25 @@ export class MaquinariaComponent implements OnInit {
 
     if (this.selectedFile) {
       formData.append('foto', this.selectedFile);
+      const tarjetaRegistro =
+        this.form.get('tarjeta_registro')?.value;
+
+      const fichaTecnica =
+        this.form.get('ficha_tecnica')?.value;
+
+      if (tarjetaRegistro instanceof File) {
+        formData.append(
+          'tarjeta_registro',
+          tarjetaRegistro
+        );
+      }
+
+      if (fichaTecnica instanceof File) {
+        formData.append(
+          'ficha_tecnica',
+          fichaTecnica
+        );
+      }
     }
 
     const req = this.modalMode === 'crear'
@@ -248,6 +273,69 @@ export class MaquinariaComponent implements OnInit {
   confirmarEliminar(id: number): void {
     this.idEliminar = id;
     this.showConfirm = true;
+  }
+
+  onPdfSelected(
+    event: Event,
+    controlName: 'tarjeta_registro' | 'ficha_tecnica'
+  ): void {
+
+    const input = event.target as HTMLInputElement;
+
+    const file = input.files?.[0];
+
+    if (!file) {
+      return;
+    }
+
+    // ==========================================
+    // VALIDAR TIPO
+    // ==========================================
+
+    const esPdf =
+      file.type === 'application/pdf' ||
+      file.name.toLowerCase().endsWith('.pdf');
+
+    if (!esPdf) {
+
+      Swal.fire(
+        'Archivo no válido',
+        'Solo se permiten archivos PDF.',
+        'warning'
+      );
+
+      input.value = '';
+
+      return;
+    }
+
+    // ==========================================
+    // VALIDAR TAMAÑO
+    // ==========================================
+
+    const maxSize =
+      10 * 1024 * 1024; // 10 MB
+
+    if (file.size > maxSize) {
+
+      Swal.fire(
+        'Archivo demasiado grande',
+        'El PDF no puede superar los 10 MB.',
+        'warning'
+      );
+
+      input.value = '';
+
+      return;
+    }
+
+    // ==========================================
+    // GUARDAR ARCHIVO
+    // ==========================================
+
+    this.form
+      .get(controlName)
+      ?.setValue(file);
   }
 
   eliminar(): void {

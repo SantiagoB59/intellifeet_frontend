@@ -185,7 +185,7 @@
               </td>
 
 
-            
+
 
 
               <!-- ==================================================
@@ -284,7 +284,7 @@
         <div class="form-grid">
 
           <div class="form-field">
-            <label>Código *</label>
+            <label>Numero de registro *</label>
             <input formControlName="codigo" placeholder="Ej: CAT-320D-01">
           </div>
 
@@ -299,12 +299,17 @@
 
           <div class="form-field">
             <label>Marca</label>
-            <input formControlName="marca">
+            <input type="text" formControlName="marca" placeholder="Ej: Caterpillar">
+          </div>
+
+          <div class="form-field">
+            <label>Línea</label>
+            <input type="text" formControlName="linea" placeholder="Ej: 320D">
           </div>
 
           <div class="form-field">
             <label>Modelo</label>
-            <input formControlName="modelo">
+            <input type="text" formControlName="modelo" placeholder="Ej: 2024">
           </div>
 
         </div>
@@ -347,6 +352,83 @@
           <img [src]="previewUrl" class="preview-img">
         </div>
       </div>
+      <!-- ───────── DOCUMENTACIÓN ───────── -->
+      <div class="form-section">
+
+        <div class="form-section-title">
+          <i class="fas fa-file-pdf"></i>
+          Documentación
+        </div>
+
+        <div class="form-grid">
+
+          <!-- TARJETA DE REGISTRO -->
+          <div class="form-field">
+
+            <label>
+              Tarjeta de registro
+            </label>
+
+            <input type="file" accept="application/pdf,.pdf" (change)="onPdfSelected($event, 'tarjeta_registro')">
+
+            <small class="form-help">
+              Documento PDF. Campo opcional.
+            </small>
+
+            <div *ngIf="maquinariaSeleccionada?.tarjeta_registro" class="document-existing">
+
+              <i class="fas fa-file-pdf"></i>
+
+              <span>
+                Tarjeta de registro cargada
+              </span>
+
+              <a [href]="environment.apiUrl + maquinariaSeleccionada.tarjeta_registro" target="_blank"
+                rel="noopener noreferrer">
+
+                Ver PDF
+              </a>
+
+            </div>
+
+          </div>
+
+
+          <!-- FICHA TÉCNICA -->
+          <div class="form-field">
+
+            <label>
+              Ficha técnica
+            </label>
+
+            <input type="file" accept="application/pdf,.pdf" (change)="onPdfSelected($event, 'ficha_tecnica')">
+
+            <small class="form-help">
+              Documento PDF. Campo opcional.
+            </small>
+
+            <div *ngIf="maquinariaSeleccionada?.ficha_tecnica" class="document-existing">
+
+              <i class="fas fa-file-pdf"></i>
+
+              <span>
+                Ficha técnica cargada
+              </span>
+
+              <a [href]="environment.apiUrl + maquinariaSeleccionada.ficha_tecnica" target="_blank"
+                rel="noopener noreferrer">
+
+                Ver PDF
+              </a>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
 
       <!-- ───────── NOTAS ───────── -->
       <div class="form-section">

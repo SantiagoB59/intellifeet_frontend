@@ -2198,3 +2198,253 @@ tbody td {
     height: 34px;
   }
 }
+
+
+/* ========================================================= */
+/* DOCUMENTACIÓN - MAQUINARIA */
+/* ========================================================= */
+
+.form-section {
+  .form-section-title {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    i {
+      font-size: 15px;
+    }
+  }
+}
+
+/* ========================================================= */
+/* INPUT PDF */
+/* ========================================================= */
+
+.form-field input[type="file"] {
+  width: 100%;
+  box-sizing: border-box;
+
+  padding: 9px 10px;
+
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+
+  background: #ffffff;
+  color: #475569;
+
+  font-size: 12px;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.form-field input[type="file"]:hover {
+  border-color: #94a3b8;
+}
+
+.form-field input[type="file"]:focus {
+  outline: none;
+
+  border-color: #64748b;
+
+  box-shadow:
+    0 0 0 3px rgba(100, 116, 139, 0.10);
+}
+
+.form-field input[type="file"]:disabled {
+  background: #f1f5f9;
+  color: #94a3b8;
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+/* ========================================================= */
+/* BOTÓN NATIVO DEL INPUT */
+/* ========================================================= */
+
+.form-field input[type="file"]::file-selector-button {
+  margin-right: 10px;
+
+  padding: 7px 12px;
+
+  border: none;
+  border-radius: 6px;
+
+  background: #1e293b;
+  color: #ffffff;
+
+  font-size: 11px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.form-field input[type="file"]::file-selector-button:hover {
+  background: #334155;
+}
+
+/* ========================================================= */
+/* AYUDA DEL CAMPO */
+/* ========================================================= */
+
+.form-help {
+  display: block;
+
+  margin-top: 6px;
+
+  font-size: 11px;
+  line-height: 1.4;
+
+  color: #64748b;
+}
+
+/* ========================================================= */
+/* DOCUMENTO EXISTENTE */
+/* ========================================================= */
+
+.document-existing {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+
+  margin-top: 10px;
+
+  padding: 10px 12px;
+
+  min-height: 52px;
+  box-sizing: border-box;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 9px;
+
+  background: #fefce8;
+}
+
+/* ========================================================= */
+/* ICONO PDF */
+/* ========================================================= */
+
+.document-existing > i {
+  flex-shrink: 0;
+
+  font-size: 20px;
+
+  color: #dc2626;
+}
+
+/* ========================================================= */
+/* TEXTO */
+/* ========================================================= */
+
+.document-existing span {
+  flex: 1;
+  min-width: 0;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  color: #334155;
+}
+
+/* ========================================================= */
+/* BOTÓN VER PDF */
+/* ========================================================= */
+
+.document-existing a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  flex-shrink: 0;
+
+  padding: 7px 11px;
+
+  border: 1px solid #d1d5db;
+  border-radius: 7px;
+
+  background: #ffffff;
+
+  color: #334155;
+
+  font-size: 11px;
+  font-weight: 600;
+
+  text-decoration: none;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.document-existing a::before {
+  content: "\f06e";
+
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+
+  font-size: 10px;
+}
+
+.document-existing a:hover {
+  background: #f8fafc;
+  border-color: #94a3b8;
+  color: #111827;
+
+  transform: translateY(-1px);
+}
+
+/* ========================================================= */
+/* RESPONSIVE */
+/* ========================================================= */
+
+@media (max-width: 768px) {
+
+  .document-existing {
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+
+  .document-existing span {
+    padding-top: 2px;
+  }
+
+  .document-existing a {
+    width: 100%;
+    margin-top: 3px;
+  }
+
+}
+
+@media (max-width: 480px) {
+
+  .document-existing {
+    padding: 9px;
+    gap: 9px;
+  }
+
+  .document-existing > i {
+    font-size: 18px;
+  }
+
+  .document-existing span {
+    font-size: 11px;
+  }
+
+  .document-existing a {
+    font-size: 11px;
+  }
+
+}

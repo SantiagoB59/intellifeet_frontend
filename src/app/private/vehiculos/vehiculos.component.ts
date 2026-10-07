@@ -19,7 +19,7 @@ type ModalMode = 'crear' | 'editar' | 'ver';
   styleUrls: ['./vehiculos.component.scss']
 })
 export class VehiculosComponent implements OnInit {
-
+  environment = environment;
   vehiculos: Vehiculo[] = [];
   stats: FlotaStats = { total: 0, operativos: 0, en_taller: 0, inactivos: 0 };
 
@@ -47,6 +47,9 @@ export class VehiculosComponent implements OnInit {
   selectedFile: File | null = null;
   previewUrl: string | null = null;
 
+  // 📄 DOCUMENTOS TÉCNICOS
+  selectedTarjetaRegistro: File | null = null;
+  selectedFichaTecnica: File | null = null;
   camposVisibles: string[] = [];
 
   readonly ESTADOS: EstadoVehiculo[] = ['OPERATIVO', 'TALLER', 'INACTIVO'];
@@ -94,7 +97,9 @@ export class VehiculosComponent implements OnInit {
 
       gps_id: [''],
       estado: ['OPERATIVO'],
-      notas: ['']
+      notas: [''],
+      tarjeta_registro: [null],
+      ficha_tecnica: [null]
     });
   }
 
@@ -215,7 +220,8 @@ export class VehiculosComponent implements OnInit {
     this.documentos = [];
     this.previewUrl = null;
     this.selectedFile = null;
-
+    this.selectedTarjetaRegistro = null;
+    this.selectedFichaTecnica = null;
     this.showModal = true;
   }
   abrirEditar(v: Vehiculo): void {
@@ -434,8 +440,13 @@ export class VehiculosComponent implements OnInit {
   cerrarModal(): void {
     this.showModal = false;
     this.form.enable();
+
     this.previewUrl = null;
     this.selectedFile = null;
+
+    // 📄 LIMPIAR DOCUMENTOS TÉCNICOS
+    this.selectedTarjetaRegistro = null;
+    this.selectedFichaTecnica = null;
   }
 
   // ================================
@@ -496,8 +507,36 @@ export class VehiculosComponent implements OnInit {
 
       formData.append('campos_dinamicos', JSON.stringify(dinamicos));
 
+      // =====================================================
+      // 🖼 FOTO
+      // =====================================================
+
       if (this.selectedFile) {
         formData.append('foto', this.selectedFile);
+      }
+
+
+      // =====================================================
+      // 📄 TARJETA DE REGISTRO
+      // =====================================================
+
+      if (this.selectedTarjetaRegistro) {
+        formData.append(
+          'tarjeta_registro',
+          this.selectedTarjetaRegistro
+        );
+      }
+
+
+      // =====================================================
+      // 📄 FICHA TÉCNICA
+      // =====================================================
+
+      if (this.selectedFichaTecnica) {
+        formData.append(
+          'ficha_tecnica',
+          this.selectedFichaTecnica
+        );
       }
 
       const req = this.modalMode === 'crear'
@@ -581,6 +620,55 @@ export class VehiculosComponent implements OnInit {
     const reader = new FileReader();
     reader.onload = () => this.previewUrl = reader.result as string;
     reader.readAsDataURL(file);
+  }
+
+  // =====================================================
+  // 📄 TARJETA DE REGISTRO
+  // =====================================================
+
+  onTarjetaRegistroSelected(event: any): void {
+    const file = event.target.files?.[0];
+
+    if (!file) return;
+
+    if (file.type !== 'application/pdf') {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Archivo inválido',
+        text: 'La tarjeta de registro debe ser un archivo PDF.'
+      });
+
+      event.target.value = '';
+      this.selectedTarjetaRegistro = null;
+      return;
+    }
+
+    this.selectedTarjetaRegistro = file;
+  }
+
+
+  // =====================================================
+  // 📄 FICHA TÉCNICA
+  // =====================================================
+
+  onFichaTecnicaSelected(event: any): void {
+    const file = event.target.files?.[0];
+
+    if (!file) return;
+
+    if (file.type !== 'application/pdf') {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Archivo inválido',
+        text: 'La ficha técnica debe ser un archivo PDF.'
+      });
+
+      event.target.value = '';
+      this.selectedFichaTecnica = null;
+      return;
+    }
+
+    this.selectedFichaTecnica = file;
   }
 
 

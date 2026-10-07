@@ -509,6 +509,10 @@ export class UsuariosComponent implements OnInit {
   // GUARDAR DOCUMENTOS
   // =====================================================
 
+  // =====================================================
+  // GUARDAR DOCUMENTOS
+  // =====================================================
+
   guardarDocumentos(): void {
 
     if (!this.documentos.length) {
@@ -521,20 +525,18 @@ export class UsuariosComponent implements OnInit {
 
     }
 
-
     this.cargandoDocumentos = true;
 
-
-    let pendientes =
-      this.documentos.length;
-
+    let pendientes = this.documentos.length;
     let huboError = false;
-
 
     this.documentos.forEach(
       (documento: any) => {
 
         const data = {
+
+          documento_tipo_id:
+            documento.documento_tipo_id,
 
           fecha_vencimiento:
             documento.fecha_vencimiento || null,
@@ -547,69 +549,151 @@ export class UsuariosComponent implements OnInit {
 
         };
 
+        // =====================================================
+        // DOCUMENTO EXISTENTE → ACTUALIZAR
+        // =====================================================
 
-        this.usuarioDocumentoService
+        if (documento.id) {
 
-          .actualizarDocumento(
-            documento.id,
-            data
-          )
+          this.usuarioDocumentoService
+            .actualizarDocumento(
+              documento.id,
+              {
+                fecha_vencimiento:
+                  documento.fecha_vencimiento || null,
 
-          .subscribe({
+                archivo_url:
+                  documento.archivo_url || null,
 
-            next: () => {
-
-              pendientes--;
-
-              if (pendientes === 0) {
-
-                this.cargandoDocumentos = false;
-
-                this.finalizarGuardado(
-                  'Usuario y documentos actualizados correctamente.'
-                );
-
+                activo:
+                  documento.activo !== false
               }
+            )
+            .subscribe({
 
-            },
+              next: () => {
 
-            error: (err) => {
+                pendientes--;
 
-              console.error(
-                'ERROR ACTUALIZANDO DOCUMENTO',
-                err
-              );
+                if (pendientes === 0) {
 
-              huboError = true;
-
-              pendientes--;
-
-              if (pendientes === 0) {
-
-                this.cargandoDocumentos = false;
-
-                if (huboError) {
-
-                  this.finalizarGuardado(
-                    'Usuario actualizado, pero algunos documentos no pudieron guardarse.'
+                  this.finalizarProcesoDocumentos(
+                    huboError
                   );
 
-                } else {
+                }
 
-                  this.finalizarGuardado(
-                    'Usuario y documentos actualizados correctamente.'
+              },
+
+              error: (err) => {
+
+                console.error(
+                  'ERROR ACTUALIZANDO DOCUMENTO',
+                  err
+                );
+
+                huboError = true;
+
+                pendientes--;
+
+                if (pendientes === 0) {
+
+                  this.finalizarProcesoDocumentos(
+                    huboError
                   );
 
                 }
 
               }
 
-            }
+            });
 
-          });
+        }
+
+        // =====================================================
+        // DOCUMENTO NUEVO → CREAR
+        // =====================================================
+
+        else {
+
+          this.usuarioDocumentoService
+            .crearDocumento(
+              this.form.id,
+              data
+            )
+            .subscribe({
+
+              next: (resp: any) => {
+
+                console.log(
+                  'DOCUMENTO CREADO:',
+                  resp
+                );
+
+                pendientes--;
+
+                if (pendientes === 0) {
+
+                  this.finalizarProcesoDocumentos(
+                    huboError
+                  );
+
+                }
+
+              },
+
+              error: (err) => {
+
+                console.error(
+                  'ERROR CREANDO DOCUMENTO',
+                  err
+                );
+
+                huboError = true;
+
+                pendientes--;
+
+                if (pendientes === 0) {
+
+                  this.finalizarProcesoDocumentos(
+                    huboError
+                  );
+
+                }
+
+              }
+
+            });
+
+        }
 
       }
 
+    );
+
+  }
+  // =====================================================
+  // FINALIZAR PROCESO DE DOCUMENTOS
+  // =====================================================
+
+  finalizarProcesoDocumentos(
+    huboError: boolean
+  ): void {
+
+    this.cargandoDocumentos = false;
+
+    if (huboError) {
+
+      this.finalizarGuardado(
+        'Usuario actualizado, pero algunos documentos no pudieron guardarse.'
+      );
+
+      return;
+
+    }
+
+    this.finalizarGuardado(
+      'Usuario y documentos actualizados correctamente.'
     );
 
   }
@@ -1084,220 +1168,218 @@ export class UsuariosComponent implements OnInit {
 
 
   obtenerDocumentoOperador(
-  operador: any,
-  documentoTipoId: number
-): any {
+    operador: any,
+    documentoTipoId: number
+  ): any {
 
-  return operador.documentos?.find(
-    (documento: any) =>
-      documento.documento_tipo_id === documentoTipoId
-  ) || null;
+    return operador.documentos?.find(
+      (documento: any) =>
+        documento.documento_tipo_id === documentoTipoId
+    ) || null;
 
-}
+  }
 
-documentosControl(): any[] {
+  documentosControl(): any[] {
 
-  const mapa = new Map<number, any>();
+    const mapa = new Map<number, any>();
 
-  this.operadoresDocumentos.forEach(
-    (operador: any) => {
+    this.operadoresDocumentos.forEach(
+      (operador: any) => {
 
-      (operador.documentos || []).forEach(
-        (documento: any) => {
+        (operador.documentos || []).forEach(
+          (documento: any) => {
 
-          if (
-            !mapa.has(
-              documento.documento_tipo_id
-            )
-          ) {
+            if (
+              !mapa.has(
+                documento.documento_tipo_id
+              )
+            ) {
 
-            mapa.set(
-              documento.documento_tipo_id,
-              {
-                id: documento.documento_tipo_id,
-                nombre: documento.documento
-              }
-            );
+              mapa.set(
+                documento.documento_tipo_id,
+                {
+                  id: documento.documento_tipo_id,
+                  nombre: documento.documento
+                }
+              );
+
+            }
 
           }
+        );
 
-        }
-      );
+      }
+    );
 
+    return Array.from(
+      mapa.values()
+    );
+
+  }
+
+
+  // =====================================================
+  // CALCULAR DÍAS RESTANTES
+  // =====================================================
+
+  obtenerDiasDocumento(documento: any): number | null {
+
+    if (!documento?.fecha_vencimiento) {
+      return null;
     }
-  );
 
-  return Array.from(
-    mapa.values()
-  );
+    const hoy = new Date();
+    hoy.setHours(0, 0, 0, 0);
 
-}
+    const fecha = String(documento.fecha_vencimiento).substring(0, 10);
 
+    const fechaVencimiento = new Date(`${fecha}T00:00:00`);
+    fechaVencimiento.setHours(0, 0, 0, 0);
 
-// =====================================================
-// CALCULAR DÍAS RESTANTES
-// =====================================================
+    const diferencia =
+      fechaVencimiento.getTime() - hoy.getTime();
 
-obtenerDiasDocumento(documento: any): number | null {
-
-  if (!documento?.fecha_vencimiento) {
-    return null;
+    return Math.ceil(
+      diferencia / (1000 * 60 * 60 * 24)
+    );
   }
 
-  const hoy = new Date();
-  hoy.setHours(0, 0, 0, 0);
 
-  const fecha = String(documento.fecha_vencimiento).substring(0, 10);
+  // =====================================================
+  // TEXTO DEL ESTADO
+  // =====================================================
 
-  const fechaVencimiento = new Date(`${fecha}T00:00:00`);
-  fechaVencimiento.setHours(0, 0, 0, 0);
+  textoDiasDocumento(documento: any): string {
 
-  const diferencia =
-    fechaVencimiento.getTime() - hoy.getTime();
+    const dias = this.obtenerDiasDocumento(documento);
 
-  return Math.ceil(
-    diferencia / (1000 * 60 * 60 * 24)
-  );
-}
+    if (dias === null) {
+      return 'SIN FECHA';
+    }
 
+    if (dias < 0) {
 
-// =====================================================
-// TEXTO DEL ESTADO
-// =====================================================
+      const vencido = Math.abs(dias);
 
-textoDiasDocumento(documento: any): string {
+      return `VENCIDO HACE ${vencido} ${vencido === 1 ? 'DÍA' : 'DÍAS'
+        }`;
+    }
 
-  const dias = this.obtenerDiasDocumento(documento);
+    if (dias === 0) {
+      return 'VENCE HOY';
+    }
 
-  if (dias === null) {
-    return 'SIN FECHA';
+    return `${dias} ${dias === 1 ? 'DÍA' : 'DÍAS'
+      }`;
   }
 
-  if (dias < 0) {
 
-    const vencido = Math.abs(dias);
+  // =====================================================
+  // CLASE DEL ESTADO
+  // =====================================================
 
-    return `VENCIDO HACE ${vencido} ${
-      vencido === 1 ? 'DÍA' : 'DÍAS'
-    }`;
+  claseEstadoDocumento(documento: any): string {
+
+    const dias = this.obtenerDiasDocumento(documento);
+
+    if (dias === null) {
+      return 'estado-sin-fecha';
+    }
+
+    if (dias < 0) {
+      return 'estado-rojo';
+    }
+
+    if (dias <= 15) {
+      return 'estado-amarillo';
+    }
+
+    return 'estado-verde';
   }
 
-  if (dias === 0) {
-    return 'VENCE HOY';
+
+  // =====================================================
+  // COLOR DE FONDO
+  // =====================================================
+
+  colorFondoDocumento(documento: any): string {
+
+    const dias = this.obtenerDiasDocumento(documento);
+
+    // SIN FECHA
+    if (dias === null) {
+      return '#f1f5f9';
+    }
+
+    // VENCIDO
+    if (dias < 0) {
+      return '#fee2e2';
+    }
+
+    // 0 - 15 DÍAS
+    if (dias <= 15) {
+      return '#fef3c7';
+    }
+
+    // MÁS DE 15 DÍAS
+    return '#dcfce7';
   }
 
-  return `${dias} ${
-    dias === 1 ? 'DÍA' : 'DÍAS'
-  }`;
-}
 
+  // =====================================================
+  // COLOR DEL TEXTO
+  // =====================================================
 
-// =====================================================
-// CLASE DEL ESTADO
-// =====================================================
+  colorTextoDocumento(documento: any): string {
 
-claseEstadoDocumento(documento: any): string {
+    const dias = this.obtenerDiasDocumento(documento);
 
-  const dias = this.obtenerDiasDocumento(documento);
+    // SIN FECHA
+    if (dias === null) {
+      return '#64748b';
+    }
 
-  if (dias === null) {
-    return 'estado-sin-fecha';
+    // VENCIDO
+    if (dias < 0) {
+      return '#991b1b';
+    }
+
+    // 0 - 15 DÍAS
+    if (dias <= 15) {
+      return '#92400e';
+    }
+
+    // MÁS DE 15 DÍAS
+    return '#166534';
   }
 
-  if (dias < 0) {
-    return 'estado-rojo';
+
+  // =====================================================
+  // COLOR DEL BORDE
+  // =====================================================
+
+  colorBordeDocumento(documento: any): string {
+
+    const dias = this.obtenerDiasDocumento(documento);
+
+    // SIN FECHA
+    if (dias === null) {
+      return '#cbd5e1';
+    }
+
+    // VENCIDO
+    if (dias < 0) {
+      return '#fca5a5';
+    }
+
+    // 0 - 15 DÍAS
+    if (dias <= 15) {
+      return '#fcd34d';
+    }
+
+    // MÁS DE 15 DÍAS
+    return '#86efac';
   }
-
-  if (dias <= 15) {
-    return 'estado-amarillo';
-  }
-
-  return 'estado-verde';
-}
-
-
-// =====================================================
-// COLOR DE FONDO
-// =====================================================
-
-colorFondoDocumento(documento: any): string {
-
-  const dias = this.obtenerDiasDocumento(documento);
-
-  // SIN FECHA
-  if (dias === null) {
-    return '#f1f5f9';
-  }
-
-  // VENCIDO
-  if (dias < 0) {
-    return '#fee2e2';
-  }
-
-  // 0 - 15 DÍAS
-  if (dias <= 15) {
-    return '#fef3c7';
-  }
-
-  // MÁS DE 15 DÍAS
-  return '#dcfce7';
-}
-
-
-// =====================================================
-// COLOR DEL TEXTO
-// =====================================================
-
-colorTextoDocumento(documento: any): string {
-
-  const dias = this.obtenerDiasDocumento(documento);
-
-  // SIN FECHA
-  if (dias === null) {
-    return '#64748b';
-  }
-
-  // VENCIDO
-  if (dias < 0) {
-    return '#991b1b';
-  }
-
-  // 0 - 15 DÍAS
-  if (dias <= 15) {
-    return '#92400e';
-  }
-
-  // MÁS DE 15 DÍAS
-  return '#166534';
-}
-
-
-// =====================================================
-// COLOR DEL BORDE
-// =====================================================
-
-colorBordeDocumento(documento: any): string {
-
-  const dias = this.obtenerDiasDocumento(documento);
-
-  // SIN FECHA
-  if (dias === null) {
-    return '#cbd5e1';
-  }
-
-  // VENCIDO
-  if (dias < 0) {
-    return '#fca5a5';
-  }
-
-  // 0 - 15 DÍAS
-  if (dias <= 15) {
-    return '#fcd34d';
-  }
-
-  // MÁS DE 15 DÍAS
-  return '#86efac';
-}
 
 
 
